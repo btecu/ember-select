@@ -1,0 +1,45 @@
+<div class="es-control">
+  <div class="es-input" {{action 'focus'}}>
+    {{#if hasValues}}
+      <span class="es-selections">
+        {{#each values as |option|}}
+          <span {{action 'remove' option}}>
+            {{if (get option labelKey) (get option labelKey) option}} ×
+          </span>
+        {{/each}}
+      </span>
+    {{/if}}
+
+    <input type="text"
+      autofocus={{autofocus}}
+      placeholder={{placeholder}}
+      readonly={{unless canSearch 'readonly'}}
+
+      oninput={{action 'change' value='target.value'}}
+      onkeydown={{action 'keypress'}}
+      onfocus={{action 'focus'}}
+      onblur={{action 'blur'}}>
+  </div>
+
+  {{#if canClear}}
+    <span class="es-clear-zone" title="Clear" aria-label="Clear" {{action 'clear'}}>
+      <span class="es-clear">×</span>
+    </span>
+  {{/if}}
+
+  {{#if hasDropdown}}
+    <span class="es-arrow-zone" {{action 'dropdown'}}>
+      <span class="es-arrow"></span>
+    </span>
+  {{/if}}
+</div>
+
+{{#if isOpen}}
+  <div class="es-options">
+    {{component dropdown
+      model=model token=token values=values
+      labelKey=labelKey valueKey=valueKey
+      freeText=freeText
+      select=(action 'select')}}
+  </div>
+{{/if}}

@@ -1,0 +1,178 @@
+.ember-select {
+  position: relative;
+}
+
+.es-control {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-color: #d9d9d9 #ccc #b3b3b3;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #333;
+  cursor: text;
+  display: table;
+  height: 36px;
+  outline: none;
+  overflow: hidden;
+  padding: 6px 12px;
+  position: relative;
+  width: 100%;
+}
+
+.es-control:hover {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+}
+
+.es-multiple .es-control {
+  padding: 4px 12px;
+}
+
+.es-multiple .es-input > input {
+  width: auto;
+}
+
+.es-open > .es-control {
+  background: #fff;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-color: #b3b3b3 #ccc #d9d9d9;
+}
+
+.es-focus:not(.es-open) > .es-control {
+  border-color: #08c #0099e6 #0099e6;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1), 0 0 5px -1px rgba(0, 136, 204, 0.5);
+}
+
+.es-selections {
+  margin-right: 1rem;
+}
+
+.es-selections span {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-block;
+  margin: 2px 0;
+  padding: 0 6px;
+}
+
+.es-selections span:hover {
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+
+.es-input > input {
+  border: 0 none;
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+  width: 100%;
+}
+
+.es-select,
+.es-select input,
+.es-select .es-control .es-input > input {
+  cursor: pointer;
+}
+
+/* Hide IE `clear` on input */
+.es-input > input::-ms-clear {
+  display: none;
+}
+
+.es-focus .es-input > input {
+  cursor: text;
+}
+
+/* Clear */
+.es-clear-zone {
+  color: #999;
+  cursor: pointer;
+  display: table-cell;
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  width: 20px;
+}
+
+.es-clear-zone:hover {
+  color: #D0021B;
+}
+
+.es-clear {
+  display: inline-block;
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* Options */
+.es-options {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-top-color: #e6e6e6;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+  margin-top: -2px;
+  max-height: 200px;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  z-index: 1;
+}
+
+.es-option {
+  cursor: pointer;
+  display: block;
+  padding: 0.25rem 1.5rem;
+}
+
+.es-option:last-child {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.es-options .es-highlight {
+  background-color: #f2f9fc;
+  color: #333;
+}
+
+/* Dropdown */
+.es-arrow-zone {
+  cursor: pointer;
+  display: table-cell;
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  width: 20px;
+}
+
+.es-arrow {
+  border-color: #999 transparent transparent;
+  border-style: solid;
+  border-width: 5px 5px 2.5px;
+  display: inline-block;
+  height: 0;
+  width: 0;
+}
+
+.es-open .es-arrow,
+.es-arrow-zone:hover > .es-arrow {
+  border-top-color: #666;
+}
+
+/* Groups */
+.es-group {
+  font-weight: bold;
+  padding: 1rem 0 0 0.5rem;
+}
+
+/* Pseudo elements to disable IE `helpfulness`.
+   Avoids clear and show password buttons. */
+::-ms-clear,
+::-ms-reveal {
+  display: none;
+}
