@@ -152,7 +152,3 @@ The component accepts both flat and complex (objects) lists.
 ]
 ```
 Note: Groups require a `parentId`.
-
-
-## License
-[MIT License](https://github.com/btecu/ember-cli-bootstrap-datetimepicker/blob/master/LICENSE.md)
