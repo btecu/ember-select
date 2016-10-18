@@ -1,6 +1,44 @@
 # ember-select
 Ready to use and extensible select component
 
+<details>
+  <summary>Why not use an existing solution?</summary>
+  <p>
+Existing components either do too much or too little.
+I wanted a solution that would work for most cases, while still allows extensibility.
+
+Some issues and dislikes of existing solutions:
+ - `ember-select-box`
+    * no css, have to style it
+    * too abstract, over 50 files
+    * multiple ways to do the same (compose, extend, create)
+    * api surface very large
+ - `ember-cli-selectize`
+    * based on a jQuery plugin
+    * dependent on bower
+    * doesn't work properly with a plain array of objects
+    * mutates the model directly
+    * style issues (from `selectize`)
+    * `selectize` not really maintained anymore
+ - `ember-power-select`
+    * [huge api surface](https://twitter.com/ember_map/status/761994924724260865)
+    * very large payload
+    * default style based on `select2` (ugly)
+    * does things that do not belong in a select component, such as data fetching
+
+
+Size is another issue. While the compressed code might not be huge, it's still code that will have to be executed on the client, which is not great for mobile devices.
+
+Size difference based on `Ember 2.8`:
+
+|                       | CSS     | CSS gzip | JS        | JS gzip  | Total gzip | Diff gzip |
+|-----------------------|---------|----------|-----------|----------|------------|-----------|
+| `ember-select`        | 2.26 KB | 837 B    | 27.63 KB  | 4.82 KB  | 4.83 KB    | -         |
+| `ember-select-box`    | 0       | 0        | 47.25 KB  | 6.27 KB  | 6.27 KB    | +30%      |
+| `ember-cli-selectize` | 9.06 KB | 1.91 KB  | 56.29 KB  | 16.58 KB | 18.49 KB   | +282%     |
+| `ember-power-select`  | 6.07 KB | 1.27 KB  | 160.13 KB | 31.49 KB | 32.76 KB   | +578%     |
+  </p>
+</details>
 
 ## Installation
 
