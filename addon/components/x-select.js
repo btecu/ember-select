@@ -77,6 +77,13 @@ export default Component.extend(BusPublisherMixin, {
     }
   },
 
+  didUpdateAttrs() {
+    this._super(...arguments);
+
+    // Need to open on lazy models
+    this.open();
+  },
+
   actions: {
     blur() {
       if (this.get('isDirty')) {

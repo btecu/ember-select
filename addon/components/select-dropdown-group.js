@@ -24,7 +24,7 @@ export default SelectDropdown.extend({
     this.setProperties({ list, groups });
   },
 
-  options: computed('token', 'values.[]', function() {
+  options: computed('token', 'model.[]', 'values.[]', function() {
     this.filterModel();
 
     return this.get('groups');

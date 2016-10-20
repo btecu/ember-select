@@ -29,7 +29,7 @@ export default Component.extend(BusSubscriberMixin, {
     this.setProperties({ list });
   },
 
-  options: computed('token', 'values.[]', function() {
+  options: computed('token', 'model.[]', 'values.[]', function() {
     this.filterModel();
 
     return this.get('list');
