@@ -81,7 +81,9 @@ export default Component.extend(BusPublisherMixin, {
     this._super(...arguments);
 
     // Need to open on lazy models
-    this.open();
+    if (this.get('canSearch')) {
+      this.open();
+    }
   },
 
   actions: {
@@ -196,13 +198,30 @@ export default Component.extend(BusPublisherMixin, {
     });
   },
 
-  setOption(option, selected, notify) {
+/* Retrieve `option`, `value` and `label` given a selection
+ * which can be either an option (object) or a value */
+  retrieveOption(option) {
+    let model = this.get('model');
     let label = option;
+    let value = option;
 
-    // Extract label from object
     if (typeof option === 'object') {
       label = get(option, this.get('labelKey'));
+      value = get(option, this.get('valueKey'));
+    } else if (isPresent(model) && typeof model[0] === 'object') {
+      let id = this.get('valueKey')
+      option = model.find(x => get(x, id) === option);
+
+      if (option) {
+        label = get(option, this.get('labelKey'));
+      }
     }
+
+    return { option, value, label };
+  },
+
+  setOption(selection, selected, notify) {
+    let { option, value, label } = this.retrieveOption(selection);
 
     if (this.get('multiple')) {
       label = '';
@@ -216,7 +235,7 @@ export default Component.extend(BusPublisherMixin, {
     this.set('isDirty', false);
 
     if (notify) {
-      this.sendAction('onSelect', option, selected);
+      this.sendAction('onSelect', value, option, selected);
       this.set('isOpen', false);
     }
   }
