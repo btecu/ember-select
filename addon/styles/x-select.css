@@ -5,7 +5,6 @@
 .es-control {
   background-color: #fff;
   border: 1px solid #ccc;
-  border-color: #d9d9d9 #ccc #b3b3b3;
   border-radius: 4px;
   box-sizing: border-box;
   color: #333;
@@ -39,7 +38,7 @@
 }
 
 .es-focus:not(.es-open) > .es-control {
-  border-color: #08c #0099e6 #0099e6;
+  border-color: #0099e6;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1), 0 0 5px -1px rgba(0, 136, 204, 0.5);
 }
 
