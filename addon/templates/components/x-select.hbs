@@ -12,7 +12,7 @@
 
     <input type="text"
       autofocus={{autofocus}}
-      placeholder={{unless hasValues placeholder}}
+      placeholder={{unless hasValues placeholder ''}}
       readonly={{unless canSearch 'readonly'}}
 
       oninput={{action 'change' value='target.value'}}
