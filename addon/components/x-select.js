@@ -111,7 +111,7 @@ export default Component.extend(BusPublisherMixin, {
     },
 
     clear() {
-      this.setOption('', false, true);
+      this.setOption('', false, !this.get('multiple'));
       this.sendAction('onClear');
       this.send('focus');
     },
