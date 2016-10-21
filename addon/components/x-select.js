@@ -81,7 +81,7 @@ export default Component.extend(BusPublisherMixin, {
     this._super(...arguments);
 
     // Need to open on lazy models
-    if (this.get('canSearch')) {
+    if (this.get('isDirty')) {
       this.open();
     }
   },
