@@ -14,7 +14,7 @@ export default SelectDropdown.extend({
   groups: null,
   list: null,
 
-  init() {
+  didReceiveAttrs() {
     this._super(...arguments);
 
     // Tree built in extended component

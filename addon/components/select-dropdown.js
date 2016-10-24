@@ -19,7 +19,7 @@ export default Component.extend(BusSubscriberMixin, {
   layout,
   list: null,
 
-  init() {
+  didReceiveAttrs() {
     this._super(...arguments);
 
     let options = this.getProperties('valueKey', 'labelKey');
