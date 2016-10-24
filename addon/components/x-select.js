@@ -173,15 +173,14 @@ export default Component.extend(BusPublisherMixin, {
     },
 
     select(option, selected) {
-      let isNew = this.get('freeText') && this.get('isDirty');
+      let isNew = !selected && this.get('freeText') && this.get('isDirty');
       let allowNew = isPresent(this.attrs.onCreate);
       let valid = isPresent(option);
 
       /* Notify when option is either
        *  - selected
-       *  - new and non empty
        *  - new, empty and cannot be created */
-      let notify = selected || isNew && (valid || !allowNew);
+      let notify = selected || isNew && !allowNew;
 
       if (allowNew && valid && isNew) {
         this.attrs.onCreate(option);
@@ -198,8 +197,8 @@ export default Component.extend(BusPublisherMixin, {
     });
   },
 
-/* Retrieve `option`, `value` and `label` given a selection
- * which can be either an option (object) or a value */
+  /* Retrieve `option`, `value` and `label` given a selection
+   * which can be either an option (object) or a value */
   retrieveOption(option) {
     let model = this.get('model');
     let label = option;
