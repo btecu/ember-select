@@ -21,7 +21,10 @@ export function buildTree(model, options) {
 
   if (isEmpty(model)) {
     return roots;
-  } else if (typeof model[0] !== 'object') {
+  }
+
+  let element = model[0] || get(model, 'firstObject');
+  if (typeof element !== 'object') {
     // Not a model of objects, hence it should be a flat list
     return buildFlatList(model);
   }
