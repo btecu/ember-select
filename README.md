@@ -112,7 +112,7 @@ Fired when a new option was created.
 Available when `multiple` is enabled.  
 Fired when an option was removed.
 
-#### onSelect(option, isSelected)
+#### onSelect(value, option, isSelected)
 Fired when an option was selected.  
 `value` and `option` are different only when the model is an object.  
 `isSelected` is useful if `freeText` is enabled.
