@@ -43,9 +43,20 @@ export default Component.extend(BusPublisherMixin, {
   hasOptions: computed.or('hasInput', 'hasValues'),
   hasValues: computed.notEmpty('values'),
   multiple: computed.bool('values'),
+  shouldFilter: computed.or('isDirty', 'hasChanged'),
 
   input: computed(function() {
     return document.querySelector(`#${this.elementId} input`);
+  }),
+
+  hasChanged: computed('token', 'value', function() {
+    let token = this.get('token');
+    let option = this.get('value');
+
+    if (isPresent(token) && isPresent(option)) {
+      let { value } = this.retrieveOption(option);
+      return token !== value;
+    }
   }),
 
   init() {
@@ -208,7 +219,7 @@ export default Component.extend(BusPublisherMixin, {
       label = get(option, this.get('labelKey'));
       value = get(option, this.get('valueKey'));
     } else if (isPresent(model) && typeof model[0] === 'object') {
-      let id = this.get('valueKey')
+      let id = this.get('valueKey');
       option = model.filter(x => get(x, id) === option).shift();
 
       if (option) {

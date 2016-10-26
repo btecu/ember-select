@@ -30,7 +30,9 @@ export default Component.extend(BusSubscriberMixin, {
   },
 
   options: computed('token', 'model.[]', 'values.[]', function() {
-    this.filterModel();
+    if (this.get('shouldFilter')) {
+      this.filterModel();
+    }
 
     return this.get('list');
   }),
