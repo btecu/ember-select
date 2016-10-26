@@ -209,7 +209,7 @@ export default Component.extend(BusPublisherMixin, {
       value = get(option, this.get('valueKey'));
     } else if (isPresent(model) && typeof model[0] === 'object') {
       let id = this.get('valueKey')
-      option = model.find(x => get(x, id) === option);
+      option = model.filter(x => get(x, id) === option).shift();
 
       if (option) {
         label = get(option, this.get('labelKey'));

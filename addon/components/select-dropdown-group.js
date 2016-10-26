@@ -36,7 +36,12 @@ export default SelectDropdown.extend({
       .filter(el => get(el, 'name').toLowerCase().indexOf(token) > -1)
       .forEach(el => {
         el.set('isVisible', true);
-        list.find(x => x.id === get(el, 'parentId')).set('isVisible', true);
+
+        // Mark parent visible
+        list
+          .filter(x => x.id === get(el, 'parentId'))
+          .shift()
+          .set('isVisible', true);
       });
   },
 
