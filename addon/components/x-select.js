@@ -43,7 +43,7 @@ export default Component.extend(BusPublisherMixin, {
   hasOptions: computed.or('hasInput', 'hasValues'),
   hasValues: computed.notEmpty('values'),
   multiple: computed.bool('values'),
-  shouldFilter: computed.or('isDirty', 'hasChanged'),
+  shouldFilter: computed.or('isDirty', 'multiple', 'hasChanged'),
 
   input: computed(function() {
     return document.querySelector(`#${this.elementId} input`);
