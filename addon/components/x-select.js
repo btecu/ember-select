@@ -147,7 +147,11 @@ export default Component.extend(BusPublisherMixin, {
         case 8: { // Backspace
           let values = this.get('values');
           if (isPresent(values) && this.get('token') === '') {
-            this.attrs.onRemove(values[values.length - 1]);
+            let last = values.lastObject
+              ? values.get('lastObject')
+              : values[values.length - 1];
+
+            this.attrs.onRemove(last);
           }
 
           break;
