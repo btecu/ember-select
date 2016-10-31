@@ -54,8 +54,8 @@ export default Component.extend(BusPublisherMixin, {
     let option = this.get('value');
 
     if (isPresent(token) && isPresent(option)) {
-      let { value } = this.retrieveOption(option);
-      return token !== value;
+      let { label } = this.retrieveOption(option);
+      return token !== label;
     }
   }),
 
