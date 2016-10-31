@@ -88,6 +88,13 @@ export default Component.extend(BusSubscriberMixin, {
       token = token.toLowerCase();
       this.setVisibility(list, token);
     }
+
+    // Mark first visible element as selected
+    if (!this.get('freeText') && list.isAny('isVisible')) {
+      let firstVisible = list.findBy('isVisible');
+      firstVisible.set('isSelected', true);
+      this.set('selected', firstVisible);
+    }
   },
 
   // Prevent event bubbling up
