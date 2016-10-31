@@ -1,16 +1,16 @@
 import Ember from 'ember';
 import layout from '../templates/components/x-select';
-import { BusPublisherMixin } from 'ember-message-bus';
 
 const {
   Component,
   computed,
   get,
+  inject,
   isPresent,
   run
 } = Ember;
 
-export default Component.extend(BusPublisherMixin, {
+export default Component.extend({
   layout,
   classNames: ['ember-select'],
   classNameBindings: [
@@ -33,6 +33,8 @@ export default Component.extend(BusPublisherMixin, {
 
   labelKey: 'label',
   valueKey: 'value',
+
+  messageBus: inject.service(),
 
   canClear: computed.and('enabled', 'canSearch', 'hasOptions'),
   canOpen: computed.or('hasInput', 'openOnFocus'),
@@ -157,7 +159,7 @@ export default Component.extend(BusPublisherMixin, {
         case 9: // TAB
         case 13: // Enter
           if (isOpen) {
-            this.publish('select-key', e);
+            this.get('messageBus').publish('select-key', e);
           } else if (this.get('freeText')) {
             this.send('select', this.get('token'), false);
           }
@@ -169,7 +171,7 @@ export default Component.extend(BusPublisherMixin, {
         case 38: // Up Arrow
         case 40: // Down Arrow
           if (isOpen) {
-            this.publish('select-key', e);
+            this.get('messageBus').publish('select-key', e);
           } else {
             this.set('isOpen', true);
           }

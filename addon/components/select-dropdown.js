@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import layout from '../templates/components/select-dropdown';
-import { BusSubscriberMixin } from 'ember-message-bus';
 import { buildTree } from '../utils/tree';
 import { bringInView } from '../utils/view';
 
@@ -8,6 +7,7 @@ const {
   Component,
   computed,
   get,
+  inject,
   isEmpty,
   isNone,
   isPresent,
@@ -15,9 +15,17 @@ const {
   run
 } = Ember;
 
-export default Component.extend(BusSubscriberMixin, {
+export default Component.extend({
   layout,
   list: null,
+
+  messageBus: inject.service(),
+
+  init() {
+    this._super(...arguments);
+
+    this.get('messageBus').subscribe('select-key', this, this.keys);
+  },
 
   didReceiveAttrs() {
     this._super(...arguments);
@@ -35,22 +43,6 @@ export default Component.extend(BusSubscriberMixin, {
     }
 
     return this.get('list');
-  }),
-
-  keyboard: on('select-key', function(event) {
-    let selected = this.get('selected');
-
-    switch (event.keyCode) {
-      case 9: // TAB
-      case 13: // Enter
-        this.tabEnterKeys(selected);
-        break;
-
-      case 38: // Up
-      case 40: // Down
-        this.upDownKeys(selected);
-        break;
-    }
   }),
 
   actions: {
@@ -94,6 +86,22 @@ export default Component.extend(BusSubscriberMixin, {
       let firstVisible = list.findBy('isVisible');
       firstVisible.set('isSelected', true);
       this.set('selected', firstVisible);
+    }
+  },
+
+  keys(event) {
+    let selected = this.get('selected');
+
+    switch (event.keyCode) {
+      case 9: // TAB
+      case 13: // Enter
+        this.tabEnterKeys(selected);
+        break;
+
+      case 38: // Up
+      case 40: // Down
+        this.upDownKeys(selected);
+        break;
     }
   },
 
