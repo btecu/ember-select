@@ -147,10 +147,7 @@ export default Component.extend(BusPublisherMixin, {
         case 8: { // Backspace
           let values = this.get('values');
           if (isPresent(values) && this.get('token') === '') {
-            let last = values.lastObject
-              ? values.get('lastObject')
-              : values[values.length - 1];
-
+            let last = this.getElement(values, values.length - 1);
             this.attrs.onRemove(last);
           }
 
@@ -205,6 +202,11 @@ export default Component.extend(BusPublisherMixin, {
     }
   },
 
+  // Handle plain arrays and Ember Data relationships
+  getElement(model, position) {
+    return model[position] || model.objectAt(position);
+  },
+
   open() {
     this.setProperties({
       isOpen: this.get('hasDropdown') && this.get('canOpen'),
@@ -222,7 +224,7 @@ export default Component.extend(BusPublisherMixin, {
     if (typeof option === 'object') {
       label = get(option, this.get('labelKey'));
       value = get(option, this.get('valueKey'));
-    } else if (isPresent(model) && typeof model[0] === 'object') {
+    } else if (isPresent(model) && typeof this.getElement(model, 0) === 'object') {
       let id = this.get('valueKey');
       option = model.filter(x => get(x, id) === option).shift();
 
