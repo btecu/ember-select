@@ -82,8 +82,8 @@ export default Component.extend({
     }
 
     // Mark first visible element as selected
-    if (!this.get('freeText') && list.isAny('isVisible')) {
-      let firstVisible = list.findBy('isVisible');
+    if (!this.get('freeText') && list.some(x => get(x, 'isVisible'))) {
+      let [firstVisible] = list.filter(x => get(x, 'isVisible'));
       firstVisible.set('isSelected', true);
       this.set('selected', firstVisible);
     }
