@@ -130,7 +130,10 @@ export default Component.extend({
     },
 
     dropdown() {
-      this.toggleProperty('isOpen');
+      let isOpen = this.toggleProperty('isOpen');
+      if (isOpen) {
+        this.get('input').focus();
+      }
     },
 
     focus() {
