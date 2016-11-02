@@ -139,7 +139,9 @@ export default Component.extend({
       }
 
       this.get('input').focus();
-      this.open();
+      if (!this.get('isOpen')) {
+        this.open();
+      }
     },
 
     keypress(e) {
