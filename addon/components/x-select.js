@@ -220,6 +220,11 @@ export default Component.extend({
       }
 
       this.setOption(option, selected, notify);
+
+      // Blur on selection when single
+      if (!this.get('multiple')) {
+        this.get('input').blur();
+      }
     }
   },
 
