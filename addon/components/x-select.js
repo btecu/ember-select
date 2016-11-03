@@ -152,10 +152,14 @@ export default Component.extend({
         return this.send('blur');
       }
 
-      this.get('input').focus();
-      if (!this.get('isFocus')) {
+      let input = this.get('input');
+      if (input) {
+        input.focus();
+      }
+
+      if (input && !this.get('isFocus')) {
         // Select text (similar to TAB)
-        this.get('input').select();
+        input.select();
       }
 
       if (!this.get('isOpen')) {
