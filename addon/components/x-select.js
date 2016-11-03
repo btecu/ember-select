@@ -90,12 +90,21 @@ export default Component.extend({
     }
   },
 
-  didUpdateAttrs() {
+  didUpdateAttrs(attrs) {
     this._super(...arguments);
 
     // Need to open on lazy models
     if (this.get('isDirty')) {
       this.open();
+    }
+
+    // Update input if value has changed
+    let { value } = attrs.newAttrs;
+    if (value) {
+      let { label } = this.retrieveOption(value.value);
+      if (label !== this.get('token')) {
+        this.setOption(value.value);
+      }
     }
   },
 
