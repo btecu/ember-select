@@ -151,6 +151,11 @@ export default Component.extend({
       }
 
       this.get('input').focus();
+      if (!this.get('isFocus')) {
+        // Select text (similar to TAB)
+        this.get('input').select();
+      }
+
       if (!this.get('isOpen')) {
         this.open();
       }
