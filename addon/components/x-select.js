@@ -273,7 +273,12 @@ export default Component.extend({
       this.set('token', label);
     }
 
-    this.get('input').value = label;
+    // Ensure the component hasn't been destroyed before updating
+    let input = this.get('input');
+    if (input) {
+      input.value = label;
+    }
+
     this.set('isDirty', false);
 
     if (notify) {
