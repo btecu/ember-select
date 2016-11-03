@@ -162,9 +162,14 @@ Accepts: `string`
 Placeholder text to be displayed.  
 Note: IE placeholders are disabled because of a [bug](https://connect.microsoft.com/IE/feedback/details/810538/).
 
+#### required
+Default: `false`  
+Accepts: `boolean`  
+Revert changes when leaving input if an option wasn't selected.
+
 #### value
-Default: ``  
-Accepts: ``, `string`, `option`  
+Default: empty `string`  
+Accepts: `string`, `option`  
 Selected value.
 
 #### valueKey
