@@ -28,6 +28,7 @@ export default Component.extend({
   isOpen: false,
   openOnFocus: false,
   placeholder: 'Type...',
+  required: false,
   token: '',
   value: '',
 
@@ -267,6 +268,10 @@ export default Component.extend({
 
     if (this.get('multiple')) {
       label = '';
+    }
+
+    if (!selected && notify && this.get('required')) {
+      return this.setOption(this.get('value'));
     }
 
     if (this.get('canSearch')) {
