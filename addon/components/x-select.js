@@ -10,6 +10,8 @@ const {
   run
 } = Ember;
 
+const isEdgeIe = typeof StyleMedia !== 'undefined';
+
 export default Component.extend({
   layout,
   classNames: ['ember-select'],
@@ -227,15 +229,10 @@ export default Component.extend({
 
       this.setOption(option, selected, notify);
 
-      // Blur on selection when single
-      if (!this.get('multiple')) {
-        // IE doesn't run the events in the proper order
-        run.next(this, () => {
-          let input = this.get('input');
-          if ($(input).is(':focus')) {
-            input.blur();
-          }
-        });
+      /* Blur on selection when single
+       * IE & Edge do not run the events in proper order */
+      if (!this.get('multiple') && !isEdgeIe) {
+        this.get('input').blur();
       }
     }
   },
