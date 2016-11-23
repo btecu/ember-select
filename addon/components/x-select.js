@@ -176,7 +176,7 @@ export default Component.extend({
         case 8: { // Backspace
           let values = this.get('values');
           if (isPresent(values) && this.get('token') === '') {
-            let last = this.getElement(values, get(values, length) - 1);
+            let last = this.getElement(values, get(values, 'length') - 1);
             this.attrs.onRemove(last);
           }
 
