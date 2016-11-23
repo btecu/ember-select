@@ -185,7 +185,7 @@ export default Component.extend({
 
         case 9: // TAB
         case 13: // Enter
-          if (isOpen && this.get('isDirty')) {
+          if (isOpen) {
             this.get('messageBus').publish('select-key', e);
           } else if (this.get('freeText')) {
             this.send('select', this.get('token'), false);
