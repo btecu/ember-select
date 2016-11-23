@@ -154,7 +154,7 @@ export default Component.extend({
   },
 
   tabEnterKeys(selected) {
-    if (selected && selected.get('isVisible')) {
+    if (selected && this.get('options').includes(selected)) {
       this.send('select', selected);
     } else {
       let token = this.get('freeText') ? this.get('token') : '';
