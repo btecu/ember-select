@@ -180,6 +180,7 @@ export default Component.extend({
             this.attrs.onRemove(last);
           }
 
+          e.preventDefault();
           break;
         }
 
