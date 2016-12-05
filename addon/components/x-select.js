@@ -178,9 +178,9 @@ export default Component.extend({
           if (isPresent(values) && this.get('token') === '') {
             let last = this.getElement(values, get(values, 'length') - 1);
             this.attrs.onRemove(last);
+            e.preventDefault();
           }
 
-          e.preventDefault();
           break;
         }
 
