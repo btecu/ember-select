@@ -47,7 +47,7 @@ export default SelectDropdown.extend({
       });
   },
 
-  upDownKeys(selected) {
+  upDownKeys(selected, event) {
     let list = this.get('list')
       .filterBy('isVisible')
       .filter(el => isPresent(get(el, 'parentId')));

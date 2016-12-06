@@ -100,7 +100,7 @@ export default Component.extend({
 
       case 38: // Up
       case 40: // Down
-        this.upDownKeys(selected);
+        this.upDownKeys(selected, event);
         break;
     }
   },
@@ -162,7 +162,7 @@ export default Component.extend({
     }
   },
 
-  upDownKeys(selected) {
+  upDownKeys(selected, event) {
     let list = this.get('list').filterBy('isVisible');
     this.move(list, selected, event.keyCode);
   }
