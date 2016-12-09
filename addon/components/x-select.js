@@ -159,7 +159,7 @@ export default Component.extend({
         input.focus();
       }
 
-      if (input && !this.get('isFocus')) {
+      if (input && !this.get('isFocus') && this.get('canSearch')) {
         // Select text (similar to TAB)
         input.select();
       }
