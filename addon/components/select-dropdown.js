@@ -156,9 +156,8 @@ export default Component.extend({
   tabEnterKeys(selected) {
     if (selected && this.get('options').includes(selected)) {
       this.send('select', selected);
-    } else {
-      let token = this.get('freeText') ? this.get('token') : '';
-      this.attrs.select(token);
+    } else if (this.get('freeText')) {
+      this.attrs.select(this.get('token'));
     }
   },
 
