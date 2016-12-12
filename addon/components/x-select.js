@@ -194,7 +194,11 @@ export default Component.extend({
 
           break;
         case 27: // ESC
-          this.send('clear');
+          if (this.get('canSearch') && this.get('hasInput')) {
+            this.send('clear');
+          } else {
+            this.set('isOpen', false);
+          }
           break;
         case 38: // Up Arrow
         case 40: // Down Arrow
