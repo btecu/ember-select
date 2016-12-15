@@ -11,7 +11,6 @@ const {
   isEmpty,
   isNone,
   isPresent,
-  on,
   run
 } = Ember;
 
