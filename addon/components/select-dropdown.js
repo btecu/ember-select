@@ -11,7 +11,6 @@ const {
   isEmpty,
   isNone,
   isPresent,
-  on,
   run
 } = Ember;
 
@@ -154,7 +153,7 @@ export default Component.extend({
   },
 
   tabEnterKeys(selected) {
-    if (selected && this.get('options').includes(selected)) {
+    if (selected && this.get('list').includes(selected)) {
       this.send('select', selected);
     } else if (this.get('freeText')) {
       this.attrs.select(this.get('token'));
