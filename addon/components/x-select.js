@@ -6,6 +6,7 @@ const {
   computed,
   get,
   inject,
+  isBlank,
   isPresent,
   run
 } = Ember;
@@ -261,7 +262,9 @@ export default Component.extend({
     let label = option;
     let value = option;
 
-    if (typeof option === 'object') {
+    if (isBlank(option)) {
+      label = '';
+    } else if (typeof option === 'object') {
       label = get(option, this.get('labelKey'));
       value = get(option, this.get('valueKey'));
     } else if (isPresent(model) && typeof this.getElement(model, 0) === 'object') {
