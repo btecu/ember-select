@@ -75,7 +75,9 @@ export default Component.extend({
     if (!this.canSearch) {
       this.set('openOnFocus', true);
     }
+  },
 
+  didReceiveAttrs() {
     /* IE10+ Triggers an input event when focus changes on
      * an input element if the element has a placeholder.
      * https://connect.microsoft.com/IE/feedback/details/810538/
