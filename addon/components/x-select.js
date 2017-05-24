@@ -98,7 +98,7 @@ export default Component.extend({
     }
   },
 
-  didUpdateAttrs(attrs) {
+  didUpdateAttrs() {
     this._super(...arguments);
 
     // Need to open on lazy models
@@ -107,8 +107,8 @@ export default Component.extend({
     }
 
     // Update input if value has changed
-    let newValue = attrs.newAttrs.value;
-    let oldValue = attrs.oldAttrs.value;
+    let newValue = this.get('value');
+    let oldValue = this.get('_oldValue');
     if (oldValue && newValue && oldValue.value !== newValue.value) {
       let { label } = this.retrieveOption(newValue.value);
       if (label !== this.get('token')) {
