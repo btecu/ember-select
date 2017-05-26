@@ -75,6 +75,8 @@ export default Component.extend({
     if (!this.canSearch) {
       this.set('openOnFocus', true);
     }
+
+    this.set('oldValue', this.get('value'));
   },
 
   didReceiveAttrs() {
@@ -98,7 +100,7 @@ export default Component.extend({
     }
   },
 
-  didUpdateAttrs(attrs) {
+  didUpdateAttrs() {
     this._super(...arguments);
 
     // Need to open on lazy models
@@ -107,14 +109,16 @@ export default Component.extend({
     }
 
     // Update input if value has changed
-    let newValue = attrs.newAttrs.value;
-    let oldValue = attrs.oldAttrs.value;
-    if (oldValue && newValue && oldValue.value !== newValue.value) {
-      let { label } = this.retrieveOption(newValue.value);
+    let newValue = this.get('value');
+    let oldValue = this.get('oldValue');
+    if (oldValue && newValue && oldValue !== newValue) {
+      let { label } = this.retrieveOption(newValue);
       if (label !== this.get('token')) {
-        this.setOption(newValue.value);
+        this.setOption(newValue);
       }
     }
+
+    this.set('oldValue', newValue);
   },
 
   actions: {
