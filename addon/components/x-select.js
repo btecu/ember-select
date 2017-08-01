@@ -111,7 +111,7 @@ export default Component.extend({
     // Update input if value has changed
     let newValue = this.get('value');
     let oldValue = this.get('oldValue');
-    if (oldValue && newValue && oldValue !== newValue) {
+    if (oldValue !== newValue) {
       let { label } = this.retrieveOption(newValue);
       if (label !== this.get('token')) {
         this.setOption(newValue);
