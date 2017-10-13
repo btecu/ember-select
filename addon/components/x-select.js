@@ -79,18 +79,6 @@ export default Component.extend({
     this.set('oldValue', this.get('value'));
   },
 
-  didReceiveAttrs() {
-    this._super(...arguments);
-
-    /* IE10+ Triggers an input event when focus changes on
-     * an input element if the element has a placeholder.
-     * https://connect.microsoft.com/IE/feedback/details/810538/
-     */
-    if (document.documentMode) {
-      this.set('placeholder', null);
-    }
-  },
-
   didInsertElement() {
     this._super(...arguments);
 
@@ -141,6 +129,18 @@ export default Component.extend({
     },
 
     change(query) {
+      /* IE10+ Triggers an input event when focus changes on
+       * an input element if the element has a placeholder.
+       * https://connect.microsoft.com/IE/feedback/details/810538/
+       */
+      if (document.documentMode) {
+        let isDirty = this.get('isDirty');
+        let oldValue = this.get('oldValue');
+        if (!isDirty && oldValue === query) {
+          return;
+        }
+      }
+
       this.set('token', query);
       this.set('isDirty', true);
       this.sendAction('onChange', query);
