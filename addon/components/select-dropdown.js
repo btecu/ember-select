@@ -1,24 +1,17 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { computed, get } from '@ember/object';
+import { inject as service } from '@ember/service';
+import { isEmpty, isNone, isPresent } from '@ember/utils';
+import { run } from '@ember/runloop';
 import layout from '../templates/components/select-dropdown';
 import { buildTree } from '../utils/tree';
 import { bringInView } from '../utils/view';
-
-const {
-  Component,
-  computed,
-  get,
-  inject,
-  isEmpty,
-  isNone,
-  isPresent,
-  run
-} = Ember;
 
 export default Component.extend({
   layout,
   list: null,
 
-  messageBus: inject.service(),
+  messageBus: service(),
 
   init() {
     this._super(...arguments);

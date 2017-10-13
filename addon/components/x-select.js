@@ -1,15 +1,10 @@
-import Ember from 'ember';
+import { and, bool, not, notEmpty, or } from '@ember/object/computed';
+import Component from '@ember/component';
+import { computed, get } from '@ember/object';
+import { inject as service } from '@ember/service';
+import { isPresent, isBlank } from '@ember/utils';
+import { run } from '@ember/runloop';
 import layout from '../templates/components/x-select';
-
-const {
-  Component,
-  computed,
-  get,
-  inject,
-  isBlank,
-  isPresent,
-  run
-} = Ember;
 
 const isEdgeIe = typeof StyleMedia !== 'undefined';
 
@@ -38,18 +33,18 @@ export default Component.extend({
   labelKey: 'label',
   valueKey: 'value',
 
-  messageBus: inject.service(),
+  messageBus: service(),
 
-  canClear: computed.and('enabled', 'canSearch', 'hasOptions'),
-  canOpen: computed.or('hasInput', 'openOnFocus'),
-  enabled: computed.not('disabled'),
-  hasDropdown: computed.and('enabled', 'hasModel'),
-  hasInput: computed.notEmpty('token'),
-  hasModel: computed.notEmpty('model'),
-  hasOptions: computed.or('hasInput', 'hasValues'),
-  hasValues: computed.notEmpty('values'),
-  multiple: computed.bool('values'),
-  shouldFilter: computed.or('isDirty', 'multiple', 'hasChanged'),
+  canClear: and('enabled', 'canSearch', 'hasOptions'),
+  canOpen: or('hasInput', 'openOnFocus'),
+  enabled: not('disabled'),
+  hasDropdown: and('enabled', 'hasModel'),
+  hasInput: notEmpty('token'),
+  hasModel: notEmpty('model'),
+  hasOptions: or('hasInput', 'hasValues'),
+  hasValues: notEmpty('values'),
+  multiple: bool('values'),
+  shouldFilter: or('isDirty', 'multiple', 'hasChanged'),
 
   input: computed(function() {
     return document.querySelector(`#${this.elementId} input`);

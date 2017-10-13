@@ -1,12 +1,7 @@
-import Ember from 'ember';
-
-const {
-  A,
-  get,
-  isEmpty,
-  isPresent,
-  ObjectProxy
-} = Ember;
+import { A } from '@ember/array';
+import { get } from '@ember/object';
+import { isPresent, isEmpty } from '@ember/utils';
+import ObjectProxy from '@ember/object/proxy';
 
 /* Build a tree (nested objects) from a plain array
  * using `id` and `parentId` as references for the

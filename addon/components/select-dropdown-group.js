@@ -1,13 +1,8 @@
-import Ember from 'ember';
+import { computed, get } from '@ember/object';
+import { isPresent } from '@ember/utils';
 import layout from '../templates/components/select-dropdown-group';
 import SelectDropdown from './select-dropdown';
 import { getDescendents } from '../utils/tree';
-
-const {
-  computed,
-  get,
-  isPresent
-} = Ember;
 
 export default SelectDropdown.extend({
   layout,
