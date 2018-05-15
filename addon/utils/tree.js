@@ -70,7 +70,6 @@ export function buildTree(model, options) {
 // Builds a list of proxies from a model of values
 export function buildFlatList(model) {
   let list = model.map(node => ObjectProxy.create({
-    content: node,
     id: node,
     name: node,
     isSelected: false,

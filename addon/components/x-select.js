@@ -2,7 +2,6 @@ import { and, bool, not, notEmpty, or } from '@ember/object/computed';
 import Component from '@ember/component';
 import { computed, get } from '@ember/object';
 import Evented from '@ember/object/evented';
-import { inject as service } from '@ember/service';
 import { isPresent, isBlank } from '@ember/utils';
 import { run } from '@ember/runloop';
 import layout from '../templates/components/x-select';

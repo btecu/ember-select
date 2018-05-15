@@ -50,7 +50,7 @@ export default Component.extend({
     },
 
     select(node) {
-      this.attrs.select(node.content, true);
+      this.attrs.select(node.content || node.id, true);
     }
   },
 
