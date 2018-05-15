@@ -37,7 +37,7 @@
 
 {{#if isOpen}}
   <div class="es-options">
-    {{component dropdown
+    {{component dropdown parent=this
       model=model token=token values=values
       labelKey=labelKey valueKey=valueKey
       freeText=freeText shouldFilter=shouldFilter

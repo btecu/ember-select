@@ -1,6 +1,7 @@
 import { and, bool, not, notEmpty, or } from '@ember/object/computed';
 import Component from '@ember/component';
 import { computed, get } from '@ember/object';
+import Evented from '@ember/object/evented';
 import { inject as service } from '@ember/service';
 import { isPresent, isBlank } from '@ember/utils';
 import { run } from '@ember/runloop';
@@ -8,7 +9,7 @@ import layout from '../templates/components/x-select';
 
 const isEdgeIe = typeof StyleMedia !== 'undefined';
 
-export default Component.extend({
+export default Component.extend(Evented, {
   layout,
   classNames: ['ember-select'],
   classNameBindings: [
@@ -32,8 +33,6 @@ export default Component.extend({
 
   labelKey: 'label',
   valueKey: 'value',
-
-  messageBus: service(),
 
   canClear: and('enabled', 'canSearch', 'hasOptions'),
   canOpen: or('hasInput', 'openOnFocus'),
@@ -196,7 +195,7 @@ export default Component.extend({
         case 9: // TAB
         case 13: // Enter
           if (isOpen) {
-            this.get('messageBus').publish('select-key', e);
+            this.trigger('keyPress', e);
           } else if (this.get('freeText')) {
             this.send('select', this.get('token'), false);
           }
@@ -212,7 +211,7 @@ export default Component.extend({
         case 38: // Up Arrow
         case 40: // Down Arrow
           if (isOpen) {
-            this.get('messageBus').publish('select-key', e);
+            this.trigger('keyPress', e);
           } else {
             this.set('isOpen', true);
           }

@@ -1,6 +1,5 @@
 import Component from '@ember/component';
 import { computed, get } from '@ember/object';
-import { inject as service } from '@ember/service';
 import { isEmpty, isNone, isPresent } from '@ember/utils';
 import { run } from '@ember/runloop';
 import layout from '../templates/components/select-dropdown';
@@ -11,12 +10,9 @@ export default Component.extend({
   layout,
   list: null,
 
-  messageBus: service(),
-
-  init() {
+  didInsertElement() {
     this._super(...arguments);
-
-    this.get('messageBus').subscribe('select-key', this, this.keys);
+    this.parent.on('keyPress', this, this.keys);
   },
 
   didReceiveAttrs() {
@@ -27,6 +23,11 @@ export default Component.extend({
     let list = buildTree(model, options);
 
     this.setProperties({ list });
+  },
+
+  willDestroyElement() {
+    this._super(...arguments);
+    this.parent.off('keyPress', this, this.keys);
   },
 
   options: computed('token', 'model.[]', 'values.[]', function() {
