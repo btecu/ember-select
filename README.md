@@ -1,6 +1,11 @@
 # ember-select
 Ready to use and extensible select component
 
+
+**Note:**
+Current branch works best with [Materialize](https://materializecss.com) available.
+
+
 <details>
   <summary>Why not use an existing solution?</summary>
   <p>
@@ -149,6 +154,11 @@ Default: `false`
 Accepts: `boolean`  
 Allow any input set and not just a provided option.
 
+#### label
+Default: ``
+Accepts: `string`
+Label text to be displayed.
+
 #### labelKey
 Default: `label`  
 Accepts: `string`  
@@ -158,12 +168,6 @@ The property with the label, for objects.
 Default: `false`  
 Accepts: `boolean`  
 Open the dropdown when input has focus.
-
-#### placeholder
-Default: `Type...`  
-Accepts: `string`  
-Placeholder text to be displayed.  
-Note: IE placeholders are disabled because of a [bug](https://connect.microsoft.com/IE/feedback/details/810538/).
 
 #### required
 Default: `false`  

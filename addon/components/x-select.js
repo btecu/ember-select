@@ -25,7 +25,6 @@ export default Component.extend(Evented, {
   isFocus: false,
   isOpen: false,
   openOnFocus: false,
-  placeholder: 'Type...',
   required: false,
   token: '',
   value: '',
@@ -33,15 +32,13 @@ export default Component.extend(Evented, {
   labelKey: 'label',
   valueKey: 'value',
 
-  canClear: and('enabled', 'canSearch', 'hasOptions'),
   canOpen: or('hasInput', 'openOnFocus'),
   enabled: not('disabled'),
   hasDropdown: and('enabled', 'hasModel'),
   hasInput: notEmpty('token'),
   hasModel: notEmpty('model'),
-  hasOptions: or('hasInput', 'hasValue', 'hasValues'),
-  hasValue: notEmpty('value'),
   hasValues: notEmpty('values'),
+  isActive: or('hasInput', 'hasValues', 'isFocus'),
   multiple: bool('values'),
   shouldFilter: or('isDirty', 'multiple', 'hasChanged'),
 
@@ -126,18 +123,6 @@ export default Component.extend(Evented, {
     },
 
     change(query) {
-      /* IE10+ Triggers an input event when focus changes on
-       * an input element if the element has a placeholder.
-       * https://connect.microsoft.com/IE/feedback/details/810538/
-       */
-      if (document.documentMode) {
-        let isDirty = this.get('isDirty');
-        let oldValue = this.get('oldValue') || '';
-        if (!isDirty && oldValue === query) {
-          return;
-        }
-      }
-
       this.setProperties({
         isDirty: true,
         token: query
