@@ -174,6 +174,11 @@ Default: `false`
 Accepts: `boolean`  
 Revert changes when leaving input if an option wasn't selected.
 
+#### requiredMessage
+Default: ``  
+Accepts: `string`  
+Required message to be displayed.
+
 #### value
 Default: empty `string`  
 Accepts: `string`, `option`  

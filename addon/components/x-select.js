@@ -24,6 +24,7 @@ export default Component.extend(Evented, {
   isDirty: false,
   isFocus: false,
   isOpen: false,
+  isValid: true,
   openOnFocus: false,
   required: false,
   token: '',
@@ -111,6 +112,8 @@ export default Component.extend(Evented, {
         this.set('isDirty', false);
         this.setOption(option, false, !this.get('multiple'));
       }
+
+      run.next(this, this.validate);
 
       this.setProperties({
         isFocus: false,
@@ -312,5 +315,11 @@ export default Component.extend(Evented, {
       this.onSelect(value, option, selected);
       this.set('isOpen', false);
     }
+
+    this.validate();
+  },
+
+  validate() {
+    this.set('isValid', isPresent(this.value))
   }
 });

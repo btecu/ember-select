@@ -12,6 +12,7 @@
 
     <input
       type="text"
+      class={{if this.isValid "validate" "invalid"}}
       autocomplete="off"
       autofocus={{this.autofocus}}
       readonly={{unless this.canSearch "readonly"}}
@@ -25,7 +26,9 @@
       {{this.label}}
     </label>
 
-    {{yield}}
+    {{#if requiredMessage}}
+      <span class="helper-text" data-error={{requiredMessage}} />
+    {{/if}}
   </div>
 
   {{#if this.hasDropdown}}
