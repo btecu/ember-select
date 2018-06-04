@@ -128,7 +128,7 @@ export default Component.extend(Evented, {
        */
       if (document.documentMode) {
         let isDirty = this.get('isDirty');
-        let oldValue = this.get('oldValue');
+        let oldValue = this.get('oldValue') || '';
         if (!isDirty && oldValue === query) {
           return;
         }
