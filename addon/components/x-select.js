@@ -136,7 +136,10 @@ export default Component.extend(Evented, {
 
       this.set('token', query);
       this.set('isDirty', true);
-      this.sendAction('onChange', query);
+
+      if (this.onChange) {
+        this.onChange(query);
+      }
 
       if (isPresent(query)) {
         this.open();
@@ -145,7 +148,11 @@ export default Component.extend(Evented, {
 
     clear() {
       this.setOption('', false, !this.get('multiple'));
-      this.sendAction('onClear');
+
+      if (this.onClear) {
+        this.onClear();
+      }
+
       this.send('focus');
     },
 
@@ -184,7 +191,7 @@ export default Component.extend(Evented, {
           let values = this.get('values');
           if (isPresent(values) && this.get('token') === '') {
             let last = this.getElement(values, get(values, 'length') - 1);
-            this.attrs.onRemove(last);
+            this.onRemove(last);
             e.preventDefault();
           }
 
@@ -221,13 +228,13 @@ export default Component.extend(Evented, {
     },
 
     remove(selection) {
-      this.attrs.onRemove(selection);
+      this.onRemove(selection);
       this.send('focus');
     },
 
     select(option, selected) {
       let isNew = !selected && this.get('freeText') && this.get('isDirty');
-      let allowNew = isPresent(this.attrs.onCreate);
+      let allowNew = isPresent(this.onCreate);
       let valid = isPresent(option);
 
       /* Notify when option is either
@@ -236,7 +243,7 @@ export default Component.extend(Evented, {
       let notify = selected || isNew && !allowNew;
 
       if (allowNew && valid && isNew) {
-        this.attrs.onCreate(option);
+        this.onCreate(option);
       }
 
       this.setOption(option, selected, notify);
@@ -308,8 +315,8 @@ export default Component.extend(Evented, {
 
     this.set('isDirty', false);
 
-    if (notify) {
-      this.sendAction('onSelect', value, option, selected);
+    if (notify && this.onSelect) {
+      this.onSelect(value, option, selected);
       this.set('isOpen', false);
     }
   }

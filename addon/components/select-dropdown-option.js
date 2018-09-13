@@ -7,10 +7,10 @@ export default Component.extend({
   classNameBindings: ['model.isSelected:es-highlight'],
 
   click() {
-    this.attrs.select(this.get('model'));
+    this.select(this.get('model'));
   },
 
   mouseEnter() {
-    this.attrs.hover(this.get('model'));
+    this.hover(this.get('model'));
   }
 });

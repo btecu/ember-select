@@ -50,7 +50,7 @@ export default Component.extend({
     },
 
     select(node) {
-      this.attrs.select(node.content || node.id, true);
+      this.select(node.content || node.id, true);
     }
   },
 
@@ -150,7 +150,7 @@ export default Component.extend({
     if (selected && this.get('list').includes(selected)) {
       this.send('select', selected);
     } else if (this.get('freeText')) {
-      this.attrs.select(this.get('token'));
+      this.select(this.get('token'));
     }
   },
 
