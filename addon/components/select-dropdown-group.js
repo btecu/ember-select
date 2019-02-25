@@ -30,7 +30,7 @@ export default SelectDropdown.extend({
   setVisibility(list, token) {
     list
       .filter(el => isPresent(get(el, 'parentId')))
-      .filter(el => get(el, 'name').toLowerCase().indexOf(token) > -1)
+      .filter(el => get(el, 'name').toString().toLowerCase().indexOf(token) > -1)
       .forEach(el => {
         el.set('isVisible', true);
 
