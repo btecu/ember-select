@@ -93,13 +93,9 @@ export default Component.extend(Evented, {
     let newValue = this.get('value');
     let oldValue = this.get('oldValue');
     if (oldValue !== newValue) {
-      let { label } = this.retrieveOption(newValue);
-      if (label !== this.get('token')) {
-        this.setOption(newValue);
-      }
+      this.setOption(newValue);
+      this.set('oldValue', newValue);
     }
-
-    this.set('oldValue', newValue);
   },
 
   actions: {
