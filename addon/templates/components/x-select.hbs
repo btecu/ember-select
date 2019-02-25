@@ -1,5 +1,5 @@
-<div class="es-control">
-  <div class="es-input" {{action 'focus'}}>
+<div class="es-control" {{action 'focus' on='mouseDown'}}>
+  <div class="es-input">
     {{#if hasValues}}
       <span class="es-selections">
         {{#each values as |option|}}
@@ -29,7 +29,7 @@
   {{/if}}
 
   {{#if hasDropdown}}
-    <span class="es-arrow-zone" {{action 'dropdown' on='mouseDown'}}>
+    <span class="es-arrow-zone" {{action 'dropdown' on='mouseDown' bubbles=false}}>
       <span class="es-arrow"></span>
     </span>
   {{/if}}
