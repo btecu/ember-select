@@ -15,7 +15,7 @@
       autofocus={{autofocus}}
       placeholder={{unless hasValues placeholder ''}}
       readonly={{unless canSearch 'readonly'}}
-
+      id={{if inputId inputId ''}}
       oninput={{action 'change' value='target.value'}}
       onkeydown={{action 'keypress'}}
       onfocus={{action 'focus'}}
