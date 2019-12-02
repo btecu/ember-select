@@ -1,10 +1,17 @@
 import Component from '@ember/component';
+import { run } from '@ember/runloop';
 import layout from '../templates/components/select-dropdown-option';
 
 export default Component.extend({
   layout,
   classNames: ['es-option'],
   classNameBindings: ['model.isSelected:es-highlight'],
+
+  init() {
+    this._super(...arguments);
+
+    this.set('handleMouseEnter', run.bind(this, () => this.hover(this.model)));
+  },
 
   didInsertElement() {
     this._super(...arguments);
@@ -19,10 +26,6 @@ export default Component.extend({
   },
 
   click() {
-    this.select(this.get('model'));
-  },
-
-  handleMouseEnter() {
-    this.hover(this.get('model'));
+    this.select(this.model);
   }
 });
