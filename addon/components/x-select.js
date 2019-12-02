@@ -85,16 +85,17 @@ export default Component.extend(Evented, {
     this._super(...arguments);
 
     // Need to open on lazy models
-    if (this.get('isDirty')) {
+    if (this.isDirty) {
       this.open();
     }
 
     // Update input if value has changed
-    let newValue = this.get('value');
-    let oldValue = this.get('oldValue');
-    if (oldValue !== newValue) {
-      this.setOption(newValue);
-      this.set('oldValue', newValue);
+    let { label, value } = this.retrieveOption(this.value);
+
+    if (this.oldLabel !== label || this.oldValue !== value) {
+      this.setOption(value);
+      this.set('oldLabel', label);
+      this.set('oldValue', value);
     }
   },
 
