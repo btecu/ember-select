@@ -146,6 +146,11 @@ Default: `false`
 Accepts: `boolean`  
 Allow any input set and not just a provided option.
 
+#### inputId
+Default: ` `  
+Accepts: `string`  
+Sets ID attribute on the input
+
 #### labelKey
 Default: `label`  
 Accepts: `string`  
