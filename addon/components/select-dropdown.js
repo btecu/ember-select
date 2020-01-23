@@ -22,7 +22,8 @@ export default Component.extend({
     let model = this.get('model');
     let list = buildTree(model, options);
 
-    this.setProperties({ list });
+    this.set('list', list);
+    this.filterModel();
   },
 
   willDestroyElement() {

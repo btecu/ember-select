@@ -300,17 +300,19 @@ export default Component.extend(Evented, {
       return this.setOption(this.get('value'));
     }
 
-    if (this.get('canSearch')) {
-      this.set('token', label);
-    }
+    if (!this.get('isDirty')) {
+      if (this.get('canSearch')) {
+        this.set('token', label);
+      }
 
-    // Ensure the component hasn't been destroyed before updating
-    let input = this.get('input');
-    if (input) {
-      input.value = label;
-    }
-
-    this.set('isDirty', false);
+      // Ensure the component hasn't been destroyed before updating
+      let input = this.get('input');
+      if (input) {
+        input.value = label;
+      }
+    } else {
+      this.set('isDirty', false);
+    }    
 
     if (notify && this.onSelect) {
       this.onSelect(value, option, selected);
