@@ -4,7 +4,7 @@
     {{#each group.children as |option|}}
       {{#if option.isVisible}}
         {{select-dropdown-option model=option
-          select=(action 'select') hover=(action 'hover')}}
+          select=(action "select") hover=(action "hover")}}
       {{/if}}
     {{/each}}
   {{/if}}
