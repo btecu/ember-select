@@ -300,7 +300,9 @@ export default Component.extend(Evented, {
       return this.setOption(this.get('value'));
     }
 
-    if (!this.get('isDirty')) {
+    if (this.get('isDirty')) {
+      this.set('isDirty', false);
+    } else {
       if (this.get('canSearch')) {
         this.set('token', label);
       }
@@ -310,8 +312,6 @@ export default Component.extend(Evented, {
       if (input) {
         input.value = label;
       }
-    } else {
-      this.set('isDirty', false);
     }    
 
     if (notify && this.onSelect) {
