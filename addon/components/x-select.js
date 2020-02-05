@@ -39,7 +39,8 @@ export default Component.extend(Evented, {
   hasDropdown: and('enabled', 'hasModel'),
   hasInput: notEmpty('token'),
   hasModel: notEmpty('model'),
-  hasOptions: or('hasInput', 'hasValues'),
+  hasOptions: or('hasInput', 'hasValue', 'hasValues'),
+  hasValue: notEmpty('value'),
   hasValues: notEmpty('values'),
   multiple: bool('values'),
   shouldFilter: or('isDirty', 'multiple', 'hasChanged'),
@@ -108,7 +109,9 @@ export default Component.extend(Evented, {
 
       if (this.get('isDirty')) {
         // Clear unallowed input in strict single mode
-        let option = this.get('freeText') ? this.get('token') : '';
+        let option = this.get('freeText') ? this.get('value') : '';
+        
+        this.set('isDirty', false);
         this.setOption(option, false, !this.get('multiple'));
       }
 
@@ -116,6 +119,10 @@ export default Component.extend(Evented, {
         isFocus: false,
         isOpen: false
       });
+      
+      if (this.onBlur) {
+        this.onBlur();
+      }
     },
 
     change(query) {
@@ -131,8 +138,10 @@ export default Component.extend(Evented, {
         }
       }
 
-      this.set('token', query);
-      this.set('isDirty', true);
+      this.setProperties({
+        isDirty: true,
+        token: query
+      });
 
       if (this.onChange) {
         this.onChange(query);
@@ -144,6 +153,7 @@ export default Component.extend(Evented, {
     },
 
     clear() {
+      this.set('isDirty', false);
       this.setOption('', false, !this.get('multiple'));
 
       if (this.onClear) {
@@ -242,7 +252,8 @@ export default Component.extend(Evented, {
       if (allowNew && valid && isNew) {
         this.onCreate(option);
       }
-
+      
+      this.set('isDirty', false);
       this.setOption(option, selected, notify);
 
       /* Blur on selection when single
@@ -303,9 +314,7 @@ export default Component.extend(Evented, {
     if (this.get('isDirty')) {
       this.set('isDirty', false);
     } else {
-      if (this.get('canSearch')) {
-        this.set('token', label);
-      }
+      this.set('token', '');
 
       // Ensure the component hasn't been destroyed before updating
       let input = this.get('input');
