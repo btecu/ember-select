@@ -96,6 +96,9 @@ Group example (`id` / `name` properties):
 
 
 ### Available actions
+#### onBlur()
+Fired when the input is blurred.
+
 #### onChange(input)
 Fired when input changes.
 
