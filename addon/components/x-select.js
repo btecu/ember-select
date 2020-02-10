@@ -109,8 +109,8 @@ export default Component.extend(Evented, {
 
       if (this.get('isDirty')) {
         // Clear unallowed input in strict single mode
-        let option = this.get('freeText') ? this.get('value') : '';
-        
+        let option = this.get('freeText') ? this.get('token') : '';
+
         this.set('isDirty', false);
         this.setOption(option, false, !this.get('multiple'));
       }
@@ -119,7 +119,7 @@ export default Component.extend(Evented, {
         isFocus: false,
         isOpen: false
       });
-      
+
       if (this.onBlur) {
         this.onBlur();
       }
@@ -252,7 +252,7 @@ export default Component.extend(Evented, {
       if (allowNew && valid && isNew) {
         this.onCreate(option);
       }
-      
+
       this.set('isDirty', false);
       this.setOption(option, selected, notify);
 
@@ -321,7 +321,7 @@ export default Component.extend(Evented, {
       if (input) {
         input.value = label;
       }
-    }    
+    }
 
     if (notify && this.onSelect) {
       this.onSelect(value, option, selected);
