@@ -301,7 +301,7 @@ export default Component.extend(Evented, {
   },
 
   setOption(selection, selected, notify) {
-    let { option, value, label } = this.retrieveOption(selection);
+    let { option, value, label = '' } = this.retrieveOption(selection);
 
     if (this.get('multiple')) {
       label = '';
