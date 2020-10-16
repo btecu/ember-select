@@ -71,7 +71,7 @@ export default Component.extend({
     if (isEmpty(token)) {
       list.forEach(el => el.set('isVisible', true));
     } else {
-      token = token.toLowerCase();
+      token = typeof token === 'string' ? token.toLowerCase() : token;
       this.setVisibility(list, token);
     }
 
