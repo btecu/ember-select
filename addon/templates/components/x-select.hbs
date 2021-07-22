@@ -23,11 +23,11 @@
     >
 
     <label class="{{if this.isActive "active"}}">
-      {{this.label}}
+      {{@label}}
     </label>
 
-    {{#if requiredMessage}}
-      <span class="helper-text" data-error={{requiredMessage}} />
+    {{#if @requiredMessage}}
+      <span class="helper-text" data-error={{@requiredMessage}} />
     {{/if}}
   </div>
 

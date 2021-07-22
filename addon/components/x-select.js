@@ -113,7 +113,7 @@ export default Component.extend(Evented, {
         this.setOption(option, false, !this.get('multiple'));
       }
 
-      run.next(this, this.validate);
+      next(this, this.validate);
 
       this.setProperties({
         isFocus: false,
