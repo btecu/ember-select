@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import { computed, get } from '@ember/object';
 import { isEmpty, isNone, isPresent } from '@ember/utils';
-import { run } from '@ember/runloop';
+import { next } from '@ember/runloop';
 import layout from '../templates/components/select-dropdown';
 import { buildTree } from '../utils/tree';
 import { bringInView } from '../utils/view';
@@ -138,7 +138,7 @@ export default Component.extend({
     this.set('selected', node);
     node.set('isSelected', true);
 
-    run.next(this, bringInView, '.es-options', '.es-highlight');
+    next(this, bringInView, '.es-options', '.es-highlight');
   },
 
   setVisibility(list, token) {

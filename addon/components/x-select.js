@@ -3,7 +3,7 @@ import Component from '@ember/component';
 import { computed, get } from '@ember/object';
 import Evented from '@ember/object/evented';
 import { isPresent, isBlank } from '@ember/utils';
-import { run } from '@ember/runloop';
+import { next } from '@ember/runloop';
 import layout from '../templates/components/x-select';
 
 const isEdgeIe = typeof StyleMedia !== 'undefined';
@@ -78,7 +78,7 @@ export default Component.extend(Evented, {
 
     let value = this.get('value');
     if (isPresent(value)) {
-      run.next(this, () => this.setOption(value));
+      next(this, () => this.setOption(value));
     }
   },
 

@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { run } from '@ember/runloop';
+import { bind } from '@ember/runloop';
 import layout from '../templates/components/select-dropdown-option';
 
 export default Component.extend({
@@ -10,7 +10,7 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    this.set('handleMouseEnter', run.bind(this, () => this.hover(this.model)));
+    this.set('handleMouseEnter', bind(this, () => this.hover(this.model)));
   },
 
   didInsertElement() {
