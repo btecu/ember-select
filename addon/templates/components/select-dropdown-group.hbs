@@ -1,10 +1,13 @@
-{{#each options as |group|}}
+{{#each this.options as |group|}}
   {{#if group.isVisible}}
     <div class="es-group">{{group.name}}</div>
     {{#each group.children as |option|}}
       {{#if option.isVisible}}
-        {{select-dropdown-option model=option
-          select=(action "select") hover=(action "hover")}}
+        {{select-dropdown-option
+          model=option
+          select=(action "select")
+          hover=(action "hover")
+        }}
       {{/if}}
     {{/each}}
   {{/if}}

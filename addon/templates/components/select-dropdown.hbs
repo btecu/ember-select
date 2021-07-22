@@ -1,6 +1,9 @@
-{{#each options as |option|}}
+{{#each this.options as |option|}}
   {{#if option.isVisible}}
-    {{select-dropdown-option model=option
-      select=(action "select") hover=(action "hover")}}
+    {{select-dropdown-option
+      model=option
+      select=(action "select")
+      hover=(action "hover")
+    }}
   {{/if}}
 {{/each}}
