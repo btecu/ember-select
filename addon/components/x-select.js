@@ -38,8 +38,9 @@ export default Component.extend(Evented, {
   hasDropdown: and('enabled', 'hasModel'),
   hasInput: notEmpty('token'),
   hasModel: notEmpty('model'),
+  hasValue: notEmpty('value'),
   hasValues: notEmpty('values'),
-  isActive: or('hasInput', 'hasValues', 'isFocus'),
+  isActive: or('hasInput', 'hasValue', 'hasValues', 'isFocus'),
   multiple: bool('values'),
   shouldFilter: or('isDirty', 'multiple', 'hasChanged'),
 
