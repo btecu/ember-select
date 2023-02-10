@@ -1,1 +1,1 @@
-export { default } from 'ember-select/utils/view';
+export { bringInView } from 'ember-select/utils/view';

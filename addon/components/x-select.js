@@ -1,9 +1,10 @@
-import { and, bool, not, notEmpty, or } from '@ember/object/computed';
 import Component from '@ember/component';
 import { computed, get } from '@ember/object';
+import { and, bool, not, notEmpty, or } from '@ember/object/computed';
 import Evented from '@ember/object/evented';
-import { isPresent, isBlank } from '@ember/utils';
 import { next } from '@ember/runloop';
+import { isPresent, isBlank } from '@ember/utils';
+
 import layout from '../templates/components/x-select';
 
 const isEdgeIe = typeof StyleMedia !== 'undefined';

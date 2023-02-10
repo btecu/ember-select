@@ -1,7 +1,19 @@
 import { A } from '@ember/array';
 import { get } from '@ember/object';
-import { isPresent, isEmpty } from '@ember/utils';
 import ObjectProxy from '@ember/object/proxy';
+import { isPresent, isEmpty } from '@ember/utils';
+
+// Builds a list of proxies from a model of values
+export function buildFlatList(model) {
+  let list = model.map(node => ObjectProxy.create({
+    id: node,
+    name: node,
+    isSelected: false,
+    isVisible: true
+  }));
+
+  return A(list);
+}
 
 /* Build a tree (nested objects) from a plain array
  * using `id` and `parentId` as references for the
@@ -65,18 +77,6 @@ export function buildTree(model, options) {
   });
 
   return roots;
-}
-
-// Builds a list of proxies from a model of values
-export function buildFlatList(model) {
-  let list = model.map(node => ObjectProxy.create({
-    id: node,
-    name: node,
-    isSelected: false,
-    isVisible: true
-  }));
-
-  return A(list);
 }
 
 export function getDescendents(tree) {

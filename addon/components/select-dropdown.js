@@ -1,7 +1,8 @@
 import Component from '@ember/component';
 import { computed, get } from '@ember/object';
-import { isEmpty, isNone, isPresent } from '@ember/utils';
 import { next } from '@ember/runloop';
+import { isEmpty, isNone, isPresent } from '@ember/utils';
+
 import layout from '../templates/components/select-dropdown';
 import { buildTree } from '../utils/tree';
 import { bringInView } from '../utils/view';

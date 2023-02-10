@@ -1,1 +1,1 @@
-export { default } from 'ember-select/utils/tree';
+export { buildFlatList, buildTree, getDescendents } from 'ember-select/utils/tree';

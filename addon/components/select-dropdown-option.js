@@ -1,5 +1,6 @@
 import Component from '@ember/component';
 import { bind } from '@ember/runloop';
+
 import layout from '../templates/components/select-dropdown-option';
 
 export default Component.extend({

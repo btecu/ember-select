@@ -1,7 +1,8 @@
 import { computed, get } from '@ember/object';
 import { isPresent } from '@ember/utils';
-import layout from '../templates/components/select-dropdown-group';
+
 import SelectDropdown from './select-dropdown';
+import layout from '../templates/components/select-dropdown-group';
 import { getDescendents } from '../utils/tree';
 
 export default SelectDropdown.extend({
