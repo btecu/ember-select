@@ -46,9 +46,9 @@ export default Component.extend(Evented, {
   multiple: bool('values'),
   shouldFilter: or('isDirty', 'multiple', 'hasChanged'),
 
-  input: computed(function() {
+  get input() {
     return document.querySelector(`#${this.elementId} input`);
-  }),
+  },
 
   hasChanged: computed('token', 'value', function() {
     let token = this.get('token');
