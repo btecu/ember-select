@@ -7,8 +7,6 @@ import { isPresent, isBlank } from '@ember/utils';
 
 import layout from '../templates/components/x-select';
 
-const isEdgeIe = typeof StyleMedia !== 'undefined';
-
 export default Component.extend(Evented, {
   layout,
   classNames: ['ember-select'],
@@ -127,18 +125,6 @@ export default Component.extend(Evented, {
     },
 
     change(query) {
-      /* IE10+ Triggers an input event when focus changes on
-       * an input element if the element has a placeholder.
-       * https://connect.microsoft.com/IE/feedback/details/810538/
-       */
-      if (document.documentMode) {
-        let isDirty = this.get('isDirty');
-        let oldValue = this.get('oldValue') || '';
-        if (!isDirty && oldValue === query) {
-          return;
-        }
-      }
-
       this.setProperties({
         isDirty: true,
         token: query
@@ -257,9 +243,8 @@ export default Component.extend(Evented, {
       this.set('isDirty', false);
       this.setOption(option, selected, notify);
 
-      /* Blur on selection when single
-       * IE & Edge do not run the events in proper order */
-      if (!this.get('multiple') && !isEdgeIe) {
+      // Blur on selection when single
+      if (!this.get('multiple')) {
         this.get('input').blur();
       }
     }
