@@ -1,54 +1,56 @@
 import Component from '@ember/component';
 import { computed, get } from '@ember/object';
 import { and, bool, not, notEmpty, or } from '@ember/object/computed';
-import Evented from '@ember/object/evented';
 import { next } from '@ember/runloop';
+import { action } from '@ember/object';
+import Evented from '@ember/object/evented';
 import { isPresent, isBlank } from '@ember/utils';
-
 import layout from '../templates/components/x-select';
 
-export default Component.extend(Evented, {
-  layout,
-  classNames: ['ember-select'],
-  classNameBindings: [
+export default class XSelectComponent extends Component.extend(Evented) {
+  layout = layout;
+  classNames = ['ember-select'];
+  classNameBindings = [
     'isOpen:es-open', 'isFocus:es-focus',
     'canSearch::es-select', 'multiple:es-multiple'
-  ],
+  ];
 
-  autofocus: false,
-  canSearch: true,
-  disabled: false,
-  dropdown: 'select-dropdown',
-  freeText: false,
-  isDirty: false,
-  isFocus: false,
-  isOpen: false,
-  openOnFocus: false,
-  placeholder: 'Type...',
-  required: false,
-  token: '',
-  value: '',
+  autofocus = false;
+  canSearch = true;
+  disabled = false;
+  dropdown = 'select-dropdown';
+  freeText = false;
+  isDirty = false;
+  isFocus = false;
+  isOpen = false;
+  openOnFocus = false;
+  placeholder = 'Type...';
+  required = false;
+  token = '';
+  value = '';
 
-  labelKey: 'label',
-  valueKey: 'value',
+  labelKey = 'label';
+  valueKey = 'value';
 
-  canClear: and('enabled', 'canSearch', 'hasOptions'),
-  canOpen: or('hasInput', 'openOnFocus'),
-  enabled: not('disabled'),
-  hasDropdown: and('enabled', 'hasModel'),
-  hasInput: notEmpty('token'),
-  hasModel: notEmpty('model'),
-  hasOptions: or('hasInput', 'hasValue', 'hasValues'),
-  hasValue: notEmpty('value'),
-  hasValues: notEmpty('values'),
-  multiple: bool('values'),
-  shouldFilter: or('isDirty', 'multiple', 'hasChanged'),
+  @and('enabled', 'canSearch', 'hasOptions') canClear;
+  @or('hasInput', 'openOnFocus') canOpen;
+  @not('disabled') enabled;
+  @and('enabled', 'hasModel') hasDropdown;
+  @notEmpty('token') hasInput;
+  @notEmpty('model') hasModel;
+  @or('hasInput', 'hasValue', 'hasValues') hasOptions;
+  @notEmpty('value') hasValue;
+  @notEmpty('values') hasValues;
+  @bool('values') multiple;
+
+  @or('isDirty', 'multiple', 'hasChanged') shouldFilter;
 
   get input() {
     return document.querySelector(`#${this.elementId} input`);
-  },
+  }
 
-  hasChanged: computed('token', 'value', function() {
+  @computed('token', 'value')
+  get hasChanged() {
     let token = this.get('token');
     let option = this.get('value');
 
@@ -56,10 +58,10 @@ export default Component.extend(Evented, {
       let { label } = this.retrieveOption(option);
       return token !== label;
     }
-  }),
+  };
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
 
     if (this.disabled) {
       this.set('canSearch', false);
@@ -70,19 +72,19 @@ export default Component.extend(Evented, {
     }
 
     this.set('oldValue', this.get('value'));
-  },
+  }
 
   didInsertElement() {
-    this._super(...arguments);
+    super.didInsertElement(...arguments);
 
     let value = this.get('value');
     if (isPresent(value)) {
       next(this, () => this.setOption(value));
     }
-  },
+  }
 
   didUpdateAttrs() {
-    this._super(...arguments);
+    super.didUpdateAttrs(...arguments);
 
     // Need to open on lazy models
     if (this.isDirty) {
@@ -97,173 +99,178 @@ export default Component.extend(Evented, {
       this.set('oldLabel', label);
       this.set('oldValue', value);
     }
-  },
+  }
 
-  actions: {
-    blur() {
-      // IE bug: prevent closing dropdown on scrollbar click
-      if (document.activeElement.classList.contains('es-options')) {
-        return;
-      }
+  @action
+  blur() {
+    if (this.get('isDirty')) {
+      // Clear unallowed input in strict single mode
+      let option = this.get('freeText') ? this.get('token') : '';
 
-      if (this.get('isDirty')) {
-        // Clear unallowed input in strict single mode
-        let option = this.get('freeText') ? this.get('token') : '';
-
-        this.set('isDirty', false);
-        this.setOption(option, false, !this.get('multiple'));
-      }
-
-      this.setProperties({
-        isFocus: false,
-        isOpen: false
-      });
-
-      if (this.onBlur) {
-        this.onBlur();
-      }
-    },
-
-    change(query) {
-      this.setProperties({
-        isDirty: true,
-        token: query
-      });
-
-      if (this.onChange) {
-        this.onChange(query);
-      }
-
-      if (isPresent(query)) {
-        this.open();
-      }
-    },
-
-    clear() {
       this.set('isDirty', false);
-      this.setOption('', false, !this.get('multiple'));
+      this.setOption(option, false, !this.get('multiple'));
+    }
 
-      if (this.onClear) {
-        this.onClear();
-      }
+    this.setProperties({
+      isFocus: false,
+      isOpen: false
+    });
 
-      this.send('focus');
-    },
+    if (this.onBlur) {
+      this.onBlur();
+    }
+  }
 
-    dropdown() {
-      let isOpen = this.toggleProperty('isOpen');
-      if (isOpen) {
-        this.get('input').focus();
-      }
-    },
+  @action
+  clear() {
+    this.set('isDirty', false);
+    this.setOption('', false, !this.get('multiple'));
 
-    focus() {
-      if (this.get('disabled')) {
-        return this.send('blur');
-      }
+    if (this.onClear) {
+      this.onClear();
+    }
 
-      let input = this.get('input');
-      if (input) {
-        input.focus();
-      }
+    this.focus();
+  }
 
-      if (input && !this.get('isFocus') && this.get('canSearch')) {
-        // Select text (similar to TAB)
-        input.select();
-      }
+  @action
+  focus() {
+    if (this.get('disabled')) {
+      return this.blur();
+    }
 
-      if (!this.get('isOpen')) {
-        this.open();
-      }
-    },
+    let input = this.get('input');
+    if (input) {
+      input.focus();
+    }
 
-    keypress(e) {
-      let isOpen = this.get('isOpen');
+    if (input && !this.get('isFocus') && this.get('canSearch')) {
+      // Select text (similar to TAB)
+      input.select();
+    }
 
-      switch (e.keyCode) {
-        case 8: { // Backspace
-          let values = this.get('values');
-          if (isPresent(values) && this.get('token') === '') {
-            let last = this.getElement(values, get(values, 'length') - 1);
-            this.onRemove(last);
-            e.preventDefault();
-          }
+    if (!this.get('isOpen')) {
+      this.open();
+    }
+  }
 
-          break;
+  @action
+  keypress(e) {
+    let isOpen = this.get('isOpen');
+
+    switch (e.keyCode) {
+      case 8: { // Backspace
+        let values = this.get('values');
+        if (isPresent(values) && this.get('token') === '') {
+          let last = this.getElement(values, get(values, 'length') - 1);
+          this.onRemove(last);
+          e.preventDefault();
         }
 
-        case 9: // TAB
-        case 13: // Enter
-          if (isOpen) {
-            this.trigger('keyPress', e);
-          } else if (this.get('freeText')) {
-            this.send('select', this.get('token'), false);
-          }
-
-          break;
-        case 27: // ESC
-          if (this.get('canSearch') && this.get('hasInput')) {
-            this.send('clear');
-          } else {
-            this.set('isOpen', false);
-          }
-          break;
-        case 38: // Up Arrow
-        case 40: // Down Arrow
-          if (isOpen) {
-            this.trigger('keyPress', e);
-          } else {
-            this.set('isOpen', true);
-          }
-
-          e.preventDefault();
-          break;
-      }
-    },
-
-    remove(selection) {
-      this.onRemove(selection);
-      this.send('focus');
-    },
-
-    select(option, selected) {
-      let isNew = !selected && this.get('freeText') && this.get('isDirty');
-      let allowNew = isPresent(this.onCreate);
-      let valid = isPresent(option);
-
-      /* Notify when option is either
-       *  - selected
-       *  - new, empty and cannot be created */
-      let notify = selected || isNew && !allowNew;
-
-      if (allowNew && valid && isNew) {
-        this.onCreate(option);
+        break;
       }
 
-      this.set('isDirty', false);
-      this.setOption(option, selected, notify);
+      case 9: // TAB
+      case 13: // Enter
+        if (isOpen) {
+          this.trigger('keyPress', e);
+        } else if (this.get('freeText')) {
+          this.select(this.get('token'), false);
+        }
 
-      // Blur on selection when single
-      if (!this.get('multiple')) {
-        this.get('input').blur();
-      }
+        break;
+      case 27: // ESC
+        if (this.get('canSearch') && this.get('hasInput')) {
+          this.clear();
+        } else {
+          this.set('isOpen', false);
+        }
+        break;
+      case 38: // Up Arrow
+      case 40: // Down Arrow
+        if (isOpen) {
+          this.trigger('keyPress', e);
+        } else {
+          this.set('isOpen', true);
+        }
+
+        e.preventDefault();
+        break;
+      default:
+        // `onkeydown` is triggered before input value is updated, so we must figure it out ourselves
+        let query = this.input.value;
+
+        // Only append new character if it's printable
+        if (e.key.length === 1) {
+          query += e.key;
+        }
+
+        this.setProperties({
+          isDirty: true,
+          token: query
+        });
+
+        if (this.onChange) {
+            this.onChange(query);
+        }
+
+        if (isPresent(query)) {
+            this.open();
+        }
     }
-  },
+  }
 
-  // Handle plain arrays and Ember Data relationships
+  @action
+  remove(selection) {
+    this.onRemove(selection);
+    this.focus();
+  }
+
+  @action
+  select(option, selected) {
+    let isNew = !selected && this.get('freeText') && this.get('isDirty');
+    let allowNew = isPresent(this.onCreate);
+    let valid = isPresent(option);
+
+    /* Notify when option is either
+     *  - selected
+     *  - new, empty and cannot be created */
+    let notify = selected || isNew && !allowNew;
+
+    if (allowNew && valid && isNew) {
+      this.onCreate(option);
+    }
+
+    this.set('isDirty', false);
+    this.setOption(option, selected, notify);
+
+    // Blur on selection when single
+    if (!this.get('multiple')) {
+      this.get('input').blur();
+    }
+  }
+
+  @action
+  showDropdown(event) {
+    let isOpen = this.toggleProperty('isOpen');
+    if (isOpen) {
+      this.get('input').focus();
+    }
+
+    event.stopPropagation();
+  }
+
   getElement(model, position) {
     return model[position] || model.objectAt(position);
-  },
+  }
 
   open() {
     this.setProperties({
       isOpen: this.get('hasDropdown') && this.get('canOpen'),
       isFocus: true
     });
-  },
+  }
 
-  /* Retrieve `option`, `value` and `label` given a selection
-   * which can be either an option (object) or a value */
   retrieveOption(option) {
     let model = this.get('model');
     let label = option;
@@ -284,7 +291,7 @@ export default Component.extend(Evented, {
     }
 
     return { option, value, label };
-  },
+  }
 
   setOption(selection, selected, notify) {
     let { option, value, label = '' } = this.retrieveOption(selection);
@@ -314,4 +321,4 @@ export default Component.extend(Evented, {
       this.set('isOpen', false);
     }
   }
-});
+}

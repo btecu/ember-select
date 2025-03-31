@@ -1,32 +1,33 @@
 import { computed, get } from '@ember/object';
 import { isPresent } from '@ember/utils';
 
-import SelectDropdown from './select-dropdown';
+import SelectDropdownComponent from './select-dropdown';
 import layout from '../templates/components/select-dropdown-group';
 import { getDescendents } from '../utils/tree';
 
-export default SelectDropdown.extend({
-  layout,
-  groups: null,
-  list: null,
+export default class SelectDropdownGroupComponent extends SelectDropdownComponent {
+  layout = layout;
+  groups = null;
+  list = null;
 
   didReceiveAttrs() {
-    this._super(...arguments);
+    super.didReceiveAttrs(...arguments);
 
     // Tree built in extended component
     let groups = this.get('list');
     let list = getDescendents(groups);
 
     this.setProperties({ list, groups });
-  },
+  }
 
-  options: computed('token', 'model.[]', 'values.[]', function() {
+  @computed('token', 'model.[]', 'values.[]')
+  get options() {
     if (this.get('shouldFilter')) {
       this.filterModel();
     }
 
     return this.get('groups');
-  }),
+  }
 
   setVisibility(list, token) {
     list
@@ -41,7 +42,7 @@ export default SelectDropdown.extend({
           .shift()
           .set('isVisible', true);
       });
-  },
+  }
 
   upDownKeys(selected, event) {
     let list = this.get('list')
@@ -50,4 +51,4 @@ export default SelectDropdown.extend({
 
     this.move(list, selected, event.keyCode);
   }
-});
+}
