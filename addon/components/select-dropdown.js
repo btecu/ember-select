@@ -152,7 +152,7 @@ export default Component.extend({
     if (selected && this.get('list').includes(selected)) {
       this.send('select', selected);
     } else if (this.get('freeText')) {
-      this.select(this.get('token'));
+      this.select(this.get('token'), false);
     }
   },
 

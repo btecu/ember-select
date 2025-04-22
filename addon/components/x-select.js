@@ -293,7 +293,7 @@ export default Component.extend(Evented, {
       label = '';
     }
 
-    if (!selected && notify && this.get('required')) {
+    if (!selected && notify && this.required && (!this.freeText || label === '')) {
       return this.setOption(this.get('value'));
     }
 
