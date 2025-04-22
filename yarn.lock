@@ -297,7 +297,7 @@
     "@babel/helper-plugin-utils" "^7.20.2"
     "@babel/plugin-syntax-private-property-in-object" "^7.14.5"
 
-"@babel/plugin-syntax-decorators@^7.16.7", "@babel/plugin-syntax-decorators@^7.25.9":
+"@babel/plugin-syntax-decorators@^7.16.7", "@babel/plugin-syntax-decorators@^7.23.3", "@babel/plugin-syntax-decorators@^7.25.9":
   version "7.25.9"
   resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-decorators/-/plugin-syntax-decorators-7.25.9.tgz#986b4ca8b7b5df3f67cee889cedeffc2e2bf14b3"
   integrity sha512-ryzI0McXUPJnRCvMo4lumIKZUzhYUO/ScI+Mz4YVaTLt04DHNSjEUjKVvbzQjZFLuod/cYEc07mJWhzl6v4DPg==
@@ -958,12 +958,42 @@
     mkdirp "^1.0.4"
     silent-error "^1.1.1"
 
+"@ember/test-helpers@^5.2.1":
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/@ember/test-helpers/-/test-helpers-5.2.1.tgz#7ce820beb425133a665c927efabe6fd50e5110c7"
+  integrity sha512-hxY3379AvMolYnQsi9pqrR7tup/SmE/9zzkpiLnu2VTmrW8xsgV7MrXF1a3xw2twLWPSzVF8T3VDPyvuHbvqfw==
+  dependencies:
+    "@ember/test-waiters" "^3.1.0 || ^4.0.0"
+    "@embroider/addon-shim" "^1.8.7"
+    "@embroider/macros" "^1.16.5"
+    "@simple-dom/interface" "^1.4.0"
+    decorator-transforms "^2.0.0"
+    dom-element-descriptors "^0.5.0"
+
+"@ember/test-waiters@^3.1.0 || ^4.0.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@ember/test-waiters/-/test-waiters-4.1.0.tgz#4e676db277b4bc4c52e5d1ed1c8c22b07c54ac57"
+  integrity sha512-qRFA0OumYv7/C3hmx4ETC2dlPzyD549D+naPhcrnV2xCnc3AZlKouWyoFnNF+Cje918kRp9aEefVgV3vmGL5Bg==
+  dependencies:
+    "@embroider/addon-shim" "^1.9.0"
+    "@embroider/macros" "^1.16.9"
+
 "@embroider/addon-shim@^1.8.6":
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@embroider/addon-shim/-/addon-shim-1.9.0.tgz#f729cfaf0f2d5f3c178808a546251743335c62f4"
   integrity sha512-fMzayl/licUL8VRAy4qXROKcYvHwUbV8aTh4m97L5/MRuVpxbcAy92DGGTqx5OBKCSQN3gMg+sUKeE6AviefpQ==
   dependencies:
     "@embroider/shared-internals" "^2.8.1"
+    broccoli-funnel "^3.0.8"
+    common-ancestor-path "^1.0.1"
+    semver "^7.3.8"
+
+"@embroider/addon-shim@^1.8.7", "@embroider/addon-shim@^1.9.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@embroider/addon-shim/-/addon-shim-1.10.0.tgz#7c3325e0939674290a9ca4ad7d744ee69313c0a0"
+  integrity sha512-gcJuHiXgnrzaU8NyU+2bMbtS6PNOr5v5B8OXBqaBvTCsMpXLvKo8OBOQFCoUN0rPX2J6VaFqrbi/371sMvzZug==
+  dependencies:
+    "@embroider/shared-internals" "^3.0.0"
     broccoli-funnel "^3.0.8"
     common-ancestor-path "^1.0.1"
     semver "^7.3.8"
@@ -976,6 +1006,20 @@
     "@embroider/shared-internals" "2.9.0"
     assert-never "^1.2.1"
     babel-import-util "^2.0.0"
+    ember-cli-babel "^7.26.6"
+    find-up "^5.0.0"
+    lodash "^4.17.21"
+    resolve "^1.20.0"
+    semver "^7.3.2"
+
+"@embroider/macros@^1.16.5", "@embroider/macros@^1.16.9":
+  version "1.17.2"
+  resolved "https://registry.yarnpkg.com/@embroider/macros/-/macros-1.17.2.tgz#e1c5fc18bd099e8a076b64701a22655283460073"
+  integrity sha512-mgGdufPjL8MAzhYNN1QfHRCFQzv/KEcH9EmObn7y4QC4nPQAPcxEdR8xYZhgTLtKHaVfmN27rXKk+XI7jQAxAg==
+  dependencies:
+    "@embroider/shared-internals" "3.0.0"
+    assert-never "^1.2.1"
+    babel-import-util "^3.0.1"
     ember-cli-babel "^7.26.6"
     find-up "^5.0.0"
     lodash "^4.17.21"
@@ -999,6 +1043,33 @@
     resolve-package-path "^4.0.1"
     semver "^7.3.5"
     typescript-memoize "^1.0.1"
+
+"@embroider/shared-internals@3.0.0", "@embroider/shared-internals@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@embroider/shared-internals/-/shared-internals-3.0.0.tgz#98251e6b99d36d64120361a449569ef5384b3812"
+  integrity sha512-5J5ipUMCAinQS38WW7wedruq5Z4VnHvNo+ZgOduw0PtI9w0CQWx7/HE+98PBDW8jclikeF+aHwF317vc1hwuzg==
+  dependencies:
+    babel-import-util "^3.0.1"
+    debug "^4.3.2"
+    ember-rfc176-data "^0.3.17"
+    fs-extra "^9.1.0"
+    is-subdir "^1.2.0"
+    js-string-escape "^1.0.1"
+    lodash "^4.17.21"
+    minimatch "^3.0.4"
+    pkg-entry-points "^1.1.0"
+    resolve-package-path "^4.0.1"
+    resolve.exports "^2.0.2"
+    semver "^7.3.5"
+    typescript-memoize "^1.0.1"
+
+"@embroider/test-setup@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@embroider/test-setup/-/test-setup-4.0.0.tgz#080dd40314a53cc6f6fcffed41cd24ee0cb48b3d"
+  integrity sha512-1S3Ebk0CEh3XDqD93AWSwQZBCk+oGv03gtkaGgdgyXGIR7jrVyDgEnEuslN/hJ0cuU8TqhiXrzHMw7bJwIGhWw==
+  dependencies:
+    lodash "^4.17.21"
+    resolve "^1.20.0"
 
 "@eslint-community/eslint-utils@^4.1.2", "@eslint-community/eslint-utils@^4.2.0", "@eslint-community/eslint-utils@^4.4.0":
   version "4.5.1"
@@ -2218,7 +2289,7 @@ babel-import-util@^2.0.0:
   resolved "https://registry.yarnpkg.com/babel-import-util/-/babel-import-util-2.1.1.tgz#0f4905fe899abfb8cd835dd52f3df1966d1ffbb0"
   integrity sha512-3qBQWRjzP9NreSH/YrOEU1Lj5F60+pWSLP0kIdCWxjFHH7pX2YPHIxQ67el4gnMNfYoDxSDGcT0zpVlZ+gVtQA==
 
-babel-import-util@^3.0.0:
+babel-import-util@^3.0.0, babel-import-util@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/babel-import-util/-/babel-import-util-3.0.1.tgz#62dd0476e855bf57522e1d0027916dc0c0b0fdb2"
   integrity sha512-2copPaWQFUrzooJVIVZA/Oppx/S/KOoZ4Uhr+XWEQDMZ8Rvq/0SNQpbdIyMBJ8IELWt10dewuJw+tX4XjOo7Rg==
@@ -3651,6 +3722,14 @@ decompress-response@^3.3.0:
   dependencies:
     mimic-response "^1.0.0"
 
+decorator-transforms@^2.0.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/decorator-transforms/-/decorator-transforms-2.3.0.tgz#521d0617627e289dc47c2186787ac80390ee988a"
+  integrity sha512-jo8c1ss9yFPudHuYYcrJ9jpkDZIoi+lOGvt+Uyp9B+dz32i50icRMx9Bfa8hEt7TnX1FyKWKkjV+cUdT/ep2kA==
+  dependencies:
+    "@babel/plugin-syntax-decorators" "^7.23.3"
+    babel-import-util "^3.0.0"
+
 deep-extend@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.6.0.tgz#c4fa7c95404a17a9c3e8ca7e1537312b736330ac"
@@ -3767,7 +3846,7 @@ doctrine@^3.0.0:
   dependencies:
     esutils "^2.0.2"
 
-dom-element-descriptors@^0.5.1:
+dom-element-descriptors@^0.5.0, dom-element-descriptors@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/dom-element-descriptors/-/dom-element-descriptors-0.5.1.tgz#3ebfcf64198f922dba928f84f7970bb571891317"
   integrity sha512-DLayMRQ+yJaziF4JJX1FMjwjdr7wdTr1y9XvZ+NfHELfOMcYDnCHneAYXAS4FT1gLILh4V0juMZohhH1N5FsoQ==
@@ -3824,7 +3903,7 @@ electron-to-chromium@^1.5.73:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.130.tgz#19f5dd2cf166a8dd1350b08230a33faba0d8f4ec"
   integrity sha512-Ou2u7L9j2XLZbhqzyX0jWDj6gA8D3jIfVzt4rikLf3cGBa0VdReuFimBKS9tQJA4+XpeCxj1NoWlfBXzbMa9IA==
 
-ember-auto-import@^2.6.3:
+ember-auto-import@^2.10.0, ember-auto-import@^2.6.3:
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/ember-auto-import/-/ember-auto-import-2.10.0.tgz#2a29b82335eba4375d115570cbe836666ed2e7cc"
   integrity sha512-bcBFDYVTFHyqyq8BNvsj6UO3pE6Uqou/cNmee0WaqBgZ+1nQqFz0UE26usrtnFAT+YaFZSkqF2H36QW84k0/cg==
@@ -8195,7 +8274,7 @@ quick-temp@^0.1.2, quick-temp@^0.1.3, quick-temp@^0.1.5, quick-temp@^0.1.8:
     rimraf "^2.5.4"
     underscore.string "~3.3.4"
 
-qunit-dom@^3.2.1:
+qunit-dom@^3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/qunit-dom/-/qunit-dom-3.4.0.tgz#46246ba42bec4544a7c03a40c686bde1e8bac7b9"
   integrity sha512-N5PYbJ20RD3JZN4whINdl7dDfxScUy7eNuO8IwUtBWC7d6SH+BqtBqVZdRn9evxLQVzuask6OGvMy4gdpiCceg==
@@ -8207,7 +8286,7 @@ qunit-theme-ember@^1.0.0:
   resolved "https://registry.yarnpkg.com/qunit-theme-ember/-/qunit-theme-ember-1.0.0.tgz#3b750b9e3ab2837cc3b31cc5b73a0b71b964b0db"
   integrity sha512-vdMVVo6ecdCkWttMTKeyq1ZTLGHcA6zdze2zhguNuc3ritlJMhOXY5RDseqazOwqZVfCg3rtlmL3fMUyIzUyFQ==
 
-qunit@^2.22.0:
+qunit@^2.24.1:
   version "2.24.1"
   resolved "https://registry.yarnpkg.com/qunit/-/qunit-2.24.1.tgz#03e39ec00824cc45cabcedf6d2603fedbc7c46af"
   integrity sha512-Eu0k/5JDjx0QnqxsE1WavnDNDgL1zgMZKsMw/AoAxnsl9p4RgyLODyo2N7abZY7CEAnvl5YUqFZdkImzbgXzSg==
@@ -8546,6 +8625,11 @@ resolve-url@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/resolve-url/-/resolve-url-0.2.1.tgz#2c637fe77c893afd2a663fe21aa9080068e2052a"
   integrity sha512-ZuF55hVUQaaczgOIwqWzkEcEidmlD/xl44x1UZnhOXcYuFN2S6+rcxpG+C1N3So0wvNI3DmJICUFfu2SxhBmvg==
+
+resolve.exports@^2.0.2:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/resolve.exports/-/resolve.exports-2.0.3.tgz#41955e6f1b4013b7586f873749a635dea07ebe3f"
+  integrity sha512-OcXjMsGdhL4XnbShKpAcSqPMzQoYkYyhbEaeSko47MjRP9NfEQMhZkXL1DoFlt9LWQn4YttrdnV6X2OiyzBi+A==
 
 resolve@^1.10.0, resolve@^1.11.1, resolve@^1.13.1, resolve@^1.14.2, resolve@^1.17.0, resolve@^1.20.0, resolve@^1.22.0, resolve@^1.22.1, resolve@^1.22.2, resolve@^1.22.3, resolve@^1.22.8, resolve@^1.4.0, resolve@^1.5.0:
   version "1.22.10"
