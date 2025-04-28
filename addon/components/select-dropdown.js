@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { computed, get } from '@ember/object';
+import { action, computed, get } from '@ember/object';
 import { next } from '@ember/runloop';
 import { isEmpty, isNone, isPresent } from '@ember/utils';
 
@@ -7,17 +7,17 @@ import layout from '../templates/components/select-dropdown';
 import { buildTree } from '../utils/tree';
 import { bringInView } from '../utils/view';
 
-export default Component.extend({
-  layout,
-  list: null,
+export default class SelectDropdownComponent extends Component {
+  layout = layout;
+  list = null;
 
   didInsertElement() {
-    this._super(...arguments);
+    super.didInsertElement(...arguments);
     this.parent.on('keyPress', this, this.keys);
-  },
+  }
 
   didReceiveAttrs() {
-    this._super(...arguments);
+    super.didReceiveAttrs(...arguments);
 
     let options = this.getProperties('valueKey', 'labelKey');
     let model = this.get('model');
@@ -25,39 +25,42 @@ export default Component.extend({
 
     this.set('list', list);
     this.filterModel();
-  },
+  }
 
   willDestroyElement() {
-    this._super(...arguments);
+    super.willDestroyElement(...arguments);
     this.parent.off('keyPress', this, this.keys);
-  },
+  }
 
-  options: computed('token', 'model.[]', 'values.[]', function() {
+  @computed('token', 'model.[]', 'values.[]')
+  get options() {
     if (this.get('shouldFilter')) {
       this.filterModel();
     }
 
     return this.get('list');
-  }),
+  }
 
-  actions: {
-    hover(node) {
-      let selected = this.get('selected');
-      if (selected) {
-        selected.set('isSelected', false);
-      }
-
-      this.set('selected', node);
-      node.set('isSelected', true);
-    },
-
-    select(node) {
-      this.select(node.content || node.id, true);
+  @action
+  hover(node) {
+    let selected = this.get('selected');
+    if (selected) {
+      selected.set('isSelected', false);
     }
-  },
 
-  /* Filter out existing selections. Mark everything
-   visible if no search, otherwise update visiblity. */
+    this.set('selected', node);
+    node.set('isSelected', true);
+  }
+
+  @action
+  select(node) {
+    this.onSelect(node.content || node.id, true);
+  }
+
+  /*
+   * Filter out existing selections.
+   * Mark everything visible if no search, otherwise update visiblity.
+   */
   filterModel() {
     let list = this.get('list');
     let token = this.get('token');
@@ -66,7 +69,7 @@ export default Component.extend({
     list.forEach(el => el.set('isVisible', false));
 
     if (isPresent(values)) {
-      list = list.filter(el => values.indexOf(el.content) === -1);
+      list = list.filter(el => !values.includes(el.content));
     }
 
     if (isEmpty(token)) {
@@ -82,7 +85,7 @@ export default Component.extend({
       firstVisible.set('isSelected', true);
       this.set('selected', firstVisible);
     }
-  },
+  }
 
   keys(event) {
     let selected = this.get('selected');
@@ -98,12 +101,12 @@ export default Component.extend({
         this.upDownKeys(selected, event);
         break;
     }
-  },
+  }
 
   // Prevent event bubbling up
   mouseDown(event) {
     event.preventDefault();
-  },
+  }
 
   // Down: 40, Up: 38
   move(list, selected, direction) {
@@ -140,24 +143,24 @@ export default Component.extend({
     node.set('isSelected', true);
 
     next(this, bringInView, '.es-options', '.es-highlight');
-  },
+  }
 
   setVisibility(list, token) {
     list
-      .filter(el => get(el, 'name').toString().toLowerCase().indexOf(token) > -1)
+      .filter(el => get(el, 'name').toString().toLowerCase().includes(token))
       .forEach(el => el.set('isVisible', true));
-  },
+  }
 
   tabEnterKeys(selected) {
     if (selected && this.get('list').includes(selected)) {
-      this.send('select', selected);
+      this.select(selected);
     } else if (this.get('freeText')) {
-      this.select(this.get('token'), false);
+      this.onSelect(this.get('token'), false);
     }
-  },
+  }
 
   upDownKeys(selected, event) {
     let list = this.get('list').filterBy('isVisible');
     this.move(list, selected, event.keyCode);
   }
-});
+}

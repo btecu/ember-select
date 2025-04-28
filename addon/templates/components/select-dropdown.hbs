@@ -1,9 +1,9 @@
 {{#each this.options as |option|}}
   {{#if option.isVisible}}
-    {{select-dropdown-option
-      model=option
-      select=(action "select")
-      hover=(action "hover")
-    }}
+    <SelectDropdownOption
+      @model={{option}}
+      {{on "click" (fn this.select option)}}
+      {{on "mouseenter" (fn this.hover option)}}
+    />
   {{/if}}
 {{/each}}
