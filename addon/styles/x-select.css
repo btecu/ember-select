@@ -24,6 +24,18 @@
   box-shadow: 0 1px 0 rgb(0 0 0 / 6%);
 }
 
+.es-input > input {
+  border: 0 none;
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+  width: 100%;
+}
+
+.es-select input {
+  cursor: pointer;
+}
+
 .es-multiple .es-control {
   padding: 4px 12px;
 }
@@ -64,22 +76,13 @@
   border-color: #adadad;
 }
 
-.es-input > input {
-  border: 0 none;
-  font-family: inherit;
-  font-size: inherit;
-  outline: none;
-  width: 100%;
+.es-focus .es-input > input {
+  cursor: text;
 }
 
 .es-select,
-.es-select input,
 .es-select .es-control .es-input > input {
   cursor: pointer;
-}
-
-.es-focus .es-input > input {
-  cursor: text;
 }
 
 /* Clear */
