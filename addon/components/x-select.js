@@ -5,10 +5,8 @@ import Evented from '@ember/object/evented';
 import { next } from '@ember/runloop';
 import { isPresent, isBlank } from '@ember/utils';
 
-import layout from '../templates/components/x-select';
 
 export default Component.extend(Evented, {
-  layout,
   classNames: ['ember-select'],
   classNameBindings: [
     'isOpen:es-open', 'isFocus:es-focus',

@@ -3,12 +3,10 @@ import { action, computed, get } from '@ember/object';
 import { next } from '@ember/runloop';
 import { isEmpty, isNone, isPresent } from '@ember/utils';
 
-import layout from '../templates/components/select-dropdown';
 import { buildTree } from '../utils/tree';
 import { bringInView } from '../utils/view';
 
 export default class SelectDropdownComponent extends Component {
-  layout = layout;
   list = null;
 
   didInsertElement() {
