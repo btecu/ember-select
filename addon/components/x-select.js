@@ -4,6 +4,7 @@ import { and, bool, not, notEmpty, or } from '@ember/object/computed';
 import Evented from '@ember/object/evented';
 import { next } from '@ember/runloop';
 import { isBlank, isPresent } from '@ember/utils';
+import SelectDropdown from './select-dropdown';
 
 export default class SelectComponent extends Component.extend(Evented) {
   classNames = ['ember-select'];
@@ -12,7 +13,7 @@ export default class SelectComponent extends Component.extend(Evented) {
   autofocus = false;
   canSearch = true;
   disabled = false;
-  dropdown = 'select-dropdown';
+  dropdown = SelectDropdown;
   freeText = false;
   isDirty = false;
   isFocus = false;

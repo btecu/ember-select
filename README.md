@@ -83,15 +83,23 @@ ember install ember-select
 Basic example:
 
 ```handlebars
-{{x-select model=options onSelect=(action 'select')}}
+<XSelect @model={{this.options}} @onSelect={{this.select}} />
 ```
 
 Group example (`id` / `name` properties):
 ```handlebars
-{{x-select model=groups value=value
-  labelKey='name' valueKey='id'
-  dropdown='select-dropdown-group'
-  onSelect=(action 'select')}}
+<XSelect
+  @dropdown={{this.dropdown}}
+  @labelKey="name"
+  @model={{this.groups}}
+  @value={{this.value}}
+  @valueKey="id"
+  @onSelect={{this.select}}
+  />
+```
+
+```js
+import SelectDropdownGroup from 'ember-select/components/select-dropdown-group';
 ```
 
 
@@ -139,10 +147,10 @@ Accepts: `boolean`
 Disable input.
 
 #### dropdown
-Default: `select-dropdown`  
+Default: `SelectDropdown`  
 Accepts: `component`  
 Dropdown component to be rendered.  
-*Note*: For groups use `select-dropdown-group`.
+*Note*: For groups use `SelectDropdownGroup`.
 
 #### freeText
 Default: `false`  
@@ -231,3 +239,4 @@ The component accepts both flat and complex (objects) lists.
 ]
 ```
 Note: Groups require a `parentId`.
+
