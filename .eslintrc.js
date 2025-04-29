@@ -18,15 +18,13 @@ module.exports = {
   },
   rules: {
     // Remove once fixed
+    'ember/classic-decorator-hooks': 0,
     'ember/classic-decorator-no-classic-methods': 0,
-    'ember/no-actions-hash': 0,
-    'ember/no-classic-classes': 0,
     'ember/no-classic-components': 0,
     'ember/no-component-lifecycle-hooks': 0,
     'ember/no-computed-properties-in-native-classes': 0,
     'ember/no-get': 0,
     'ember/no-runloop': 0,
-    'ember/require-return-from-computed': 0,
     'ember/require-tagless-components': 0,
   },
   overrides: [
