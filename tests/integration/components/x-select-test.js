@@ -1,7 +1,8 @@
-import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
 import { blur, click, fillIn, focus, render, triggerKeyEvent } from '@ember/test-helpers';
+import { setupRenderingTest } from 'ember-qunit';
+import SelectDropdownGroup from 'ember-select/components/select-dropdown-group';
 import hbs from 'htmlbars-inline-precompile';
+import { module, test } from 'qunit';
 import { selectOption } from '../../helpers/ember-select';
 
 const CustomObjectModel = [
@@ -644,9 +645,10 @@ module('Integration | Component | x-select', function (hooks) {
     ];
 
     test('renders groups and options correctly', async function (assert) {
+      this.set('dropdown', SelectDropdownGroup);
       this.set('model', GroupModel);
 
-      await render(hbs`<XSelect @dropdown="select-dropdown-group" @model={{this.model}} />`);
+      await render(hbs`<XSelect @dropdown={{this.dropdown}} @model={{this.model}} />`);
       await click('.es-arrow');
 
       assert.dom('.es-options .es-groups').exists({ count: 2 }, 'Renders correct number of groups');
@@ -665,6 +667,7 @@ module('Integration | Component | x-select', function (hooks) {
 
       let lemonRecord = GroupModel.find((x) => x.label === 'Lemon');
 
+      this.set('dropdown', SelectDropdownGroup);
       this.set('model', GroupModel);
       this.set('onSelect', (value, option, isSelected) => {
         assert.strictEqual(value, lemonRecord.value, 'onSelect called with correct value');
@@ -674,7 +677,7 @@ module('Integration | Component | x-select', function (hooks) {
 
       await render(
         hbs`<XSelect
-          @dropdown="select-dropdown-group"
+          @dropdown={{this.dropdown}}
           @model={{this.model}}
           @value={{this.value}}
           @onSelect={{this.onSelect}}
@@ -687,9 +690,10 @@ module('Integration | Component | x-select', function (hooks) {
     });
 
     test('filters options across groups', async function (assert) {
+      this.set('dropdown', SelectDropdownGroup);
       this.set('model', GroupModel);
 
-      await render(hbs`<XSelect @dropdown="select-dropdown-group" @model={{this.model}} />`);
+      await render(hbs`<XSelect @dropdown={{this.dropdown}} @model={{this.model}} />`);
 
       // Match options from both groups: Banana, Orange, Eggplant
       await fillIn('input', 'an');

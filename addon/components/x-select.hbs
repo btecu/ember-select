@@ -38,16 +38,16 @@
 
 {{#if this.isOpen}}
   <div class="es-options">
-    {{component this.dropdown
-      parent=this
-      model=@model
-      token=this.token
-      values=@values
-      labelKey=this.labelKey
-      valueKey=this.valueKey
-      freeText=this.freeText
-      shouldFilter=this.shouldFilter
-      onSelect=this.select
-    }}
+    <this.dropdown
+      @parent={{this}}
+      @model={{@model}}
+      @token={{this.token}}
+      @values={{@values}}
+      @labelKey={{this.labelKey}}
+      @valueKey={{this.valueKey}}
+      @freeText={{this.freeText}}
+      @shouldFilter={{this.shouldFilter}}
+      @onSelect={{this.select}}
+    />
   </div>
 {{/if}}
