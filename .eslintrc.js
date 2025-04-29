@@ -8,21 +8,27 @@ module.exports = {
     sourceType: 'module',
     requireConfigFile: false,
     babelOptions: {
-      plugins: [
-        ['@babel/plugin-proposal-decorators', { decoratorsBeforeExport: true }],
-      ],
+      plugins: [['@babel/plugin-proposal-decorators', { decoratorsBeforeExport: true }]],
     },
   },
   plugins: ['ember'],
-  extends: [
-    'eslint:recommended',
-    'plugin:ember/recommended',
-    'plugin:prettier/recommended',
-  ],
+  extends: ['eslint:recommended', 'plugin:ember/recommended', 'plugin:prettier/recommended'],
   env: {
     browser: true,
   },
-  rules: {},
+  rules: {
+    // Remove once fixed
+    'ember/classic-decorator-no-classic-methods': 0,
+    'ember/no-actions-hash': 0,
+    'ember/no-classic-classes': 0,
+    'ember/no-classic-components': 0,
+    'ember/no-component-lifecycle-hooks': 0,
+    'ember/no-computed-properties-in-native-classes': 0,
+    'ember/no-get': 0,
+    'ember/no-runloop': 0,
+    'ember/require-return-from-computed': 0,
+    'ember/require-tagless-components': 0,
+  },
   overrides: [
     // node files
     {

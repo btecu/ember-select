@@ -18,7 +18,7 @@ export default class SelectDropdownGroupComponent extends SelectDropdownComponen
     this.setProperties({ list, groups });
   }
 
-  @computed('token', 'model.[]', 'values.[]')
+  @computed('groups', 'model.[]', 'shouldFilter', 'token', 'values.[]')
   get options() {
     if (this.get('shouldFilter')) {
       this.filterModel();
@@ -29,14 +29,14 @@ export default class SelectDropdownGroupComponent extends SelectDropdownComponen
 
   setVisibility(list, token) {
     list
-      .filter(el => isPresent(get(el, 'parentId')))
-      .filter(el => get(el, 'name').toString().toLowerCase().includes(token))
-      .forEach(el => {
+      .filter((el) => isPresent(get(el, 'parentId')))
+      .filter((el) => get(el, 'name').toString().toLowerCase().includes(token))
+      .forEach((el) => {
         el.set('isVisible', true);
 
         // Mark parent visible
         list
-          .filter(x => x.id === get(el, 'parentId'))
+          .filter((x) => x.id === get(el, 'parentId'))
           .shift()
           .set('isVisible', true);
       });
@@ -45,7 +45,7 @@ export default class SelectDropdownGroupComponent extends SelectDropdownComponen
   upDownKeys(selected, event) {
     let list = this.get('list')
       .filterBy('isVisible')
-      .filter(el => isPresent(get(el, 'parentId')));
+      .filter((el) => isPresent(get(el, 'parentId')));
 
     this.move(list, selected, event.keyCode);
   }

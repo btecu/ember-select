@@ -30,7 +30,7 @@ export default class SelectDropdownComponent extends Component {
     this.parent.off('keyPress', this, this.keys);
   }
 
-  @computed('token', 'model.[]', 'values.[]')
+  @computed('list', 'model.[]', 'shouldFilter', 'token', 'values.[]')
   get options() {
     if (this.get('shouldFilter')) {
       this.filterModel();
@@ -64,22 +64,22 @@ export default class SelectDropdownComponent extends Component {
     let token = this.get('token');
     let values = this.get('values');
 
-    list.forEach(el => el.set('isVisible', false));
+    list.forEach((el) => el.set('isVisible', false));
 
     if (isPresent(values)) {
-      list = list.filter(el => !values.includes(el.content));
+      list = list.filter((el) => !values.includes(el.content));
     }
 
     if (isEmpty(token)) {
-      list.forEach(el => el.set('isVisible', true));
+      list.forEach((el) => el.set('isVisible', true));
     } else {
       token = typeof token === 'string' ? token.toLowerCase() : token;
       this.setVisibility(list, token);
     }
 
     // Mark first visible element as selected
-    if (!this.get('freeText') && isPresent(token) && list.some(x => get(x, 'isVisible'))) {
-      let [firstVisible] = list.filter(x => get(x, 'isVisible'));
+    if (!this.get('freeText') && isPresent(token) && list.some((x) => get(x, 'isVisible'))) {
+      let [firstVisible] = list.filter((x) => get(x, 'isVisible'));
       firstVisible.set('isSelected', true);
       this.set('selected', firstVisible);
     }
@@ -145,8 +145,8 @@ export default class SelectDropdownComponent extends Component {
 
   setVisibility(list, token) {
     list
-      .filter(el => get(el, 'name').toString().toLowerCase().includes(token))
-      .forEach(el => el.set('isVisible', true));
+      .filter((el) => get(el, 'name').toString().toLowerCase().includes(token))
+      .forEach((el) => el.set('isVisible', true));
   }
 
   tabEnterKeys(selected) {
