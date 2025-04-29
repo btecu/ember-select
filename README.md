@@ -95,7 +95,7 @@ Group example (`id` / `name` properties):
   @value={{this.value}}
   @valueKey="id"
   @onSelect={{this.select}}
-  />
+/>
 ```
 
 ```js
@@ -171,7 +171,6 @@ Open the dropdown when input has focus.
 Default: `Type...`  
 Accepts: `string`  
 Placeholder text to be displayed.  
-Note: IE placeholders are disabled because of a [bug](https://connect.microsoft.com/IE/feedback/details/810538/).
 
 #### required
 Default: `false`  

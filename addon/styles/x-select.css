@@ -78,11 +78,6 @@
   cursor: pointer;
 }
 
-/* Hide IE `clear` on input */
-.es-input > input::-ms-clear {
-  display: none;
-}
-
 .es-focus .es-input > input {
   cursor: text;
 }
@@ -171,11 +166,4 @@
 .es-group {
   font-weight: bold;
   padding: 1rem 0 0 0.5rem;
-}
-
-/* Pseudo elements to disable IE `helpfulness`.
-   Avoids clear and show password buttons. */
-::-ms-clear,
-::-ms-reveal {
-  display: none;
 }

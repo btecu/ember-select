@@ -99,11 +99,6 @@ export default class SelectComponent extends Component.extend(Evented) {
 
   @action
   blur() {
-    // IE bug: prevent closing dropdown on scrollbar click
-    if (document.activeElement.classList.contains('es-options')) {
-      return;
-    }
-
     if (this.get('isDirty')) {
       // Clear unallowed input in strict single mode
       let option = this.get('freeText') ? this.get('token') : '';
