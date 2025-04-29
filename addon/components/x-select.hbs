@@ -1,9 +1,9 @@
-<div class="es-control" {{action "focus" on="mouseUp"}}>
+<div class="es-control" {{on "click" this.focus}}>
   <div class="es-input">
     {{#if this.hasValues}}
       <span class="es-selections">
         {{#each @values as |option|}}
-          <span {{action "remove" option}}>
+          <span {{on "click" (fn this.remove option)}}>
             {{if (get option this.labelKey) (get option this.labelKey) option}} ×
           </span>
         {{/each}}
@@ -17,21 +17,20 @@
       placeholder={{unless this.hasValues this.placeholder ""}}
       readonly={{unless this.canSearch "readonly"}}
       type="text"
-      oninput={{action "change" value="target.value"}}
-      onkeydown={{action "keypress"}}
-      onfocus={{action "focus"}}
-      onblur={{action "blur"}}
+      onkeydown={{this.keypress}}
+      onfocus={{this.focus}}
+      onblur={{this.blur}}
     >
   </div>
 
   {{#if this.canClear}}
-    <span class="es-clear-zone" title="Clear" aria-label="Clear" {{action "clear"}}>
+    <span class="es-clear-zone" title="Clear" aria-label="Clear" {{on "click" this.clear}}>
       <span class="es-clear">×</span>
     </span>
   {{/if}}
 
   {{#if this.hasDropdown}}
-    <span class="es-arrow-zone" {{action "dropdown" on="mouseUp" bubbles=false}}>
+    <span class="es-arrow-zone" {{on "click" this.onDropdown}}>
       <span class="es-arrow"></span>
     </span>
   {{/if}}
@@ -48,7 +47,7 @@
       valueKey=this.valueKey
       freeText=this.freeText
       shouldFilter=this.shouldFilter
-      onSelect=(action "select")
+      onSelect=this.select
     }}
   </div>
 {{/if}}
