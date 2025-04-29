@@ -21,7 +21,7 @@
 }
 
 .es-control:hover {
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 0 rgb(0 0 0 / 6%);
 }
 
 .es-multiple .es-control {
@@ -41,7 +41,9 @@
 
 .es-focus:not(.es-open) > .es-control {
   border-color: #0099e6;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1), 0 0 5px -1px rgba(0, 136, 204, 0.5);
+  box-shadow:
+    inset 0 1px 2px rgb(0 0 0 / 10%),
+    0 0 5px -1px rgb(0 136 204 / 50%);
 }
 
 .es-selections {
@@ -97,7 +99,7 @@
 }
 
 .es-clear-zone:hover {
-  color: #D0021B;
+  color: #d0021b;
 }
 
 .es-clear {
@@ -113,7 +115,7 @@
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   border-top-color: #e6e6e6;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 0 rgb(0 0 0 / 6%);
   box-sizing: border-box;
   margin-top: -2px;
   max-height: 200px;

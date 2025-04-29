@@ -1,13 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import {
-  blur,
-  click,
-  fillIn,
-  focus,
-  render,
-  triggerKeyEvent,
-} from '@ember/test-helpers';
+import { blur, click, fillIn, focus, render, triggerKeyEvent } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import { selectOption } from '../../helpers/ember-select';
 
@@ -17,16 +10,7 @@ const CustomObjectModel = [
   { id: 'C', name: 'Cupra' },
 ];
 
-const FlatModel = [
-  'Amarillo',
-  'Azul',
-  'Blanco',
-  'Naranja',
-  'Negro',
-  'Rojo',
-  'Rosa',
-  'Verde',
-];
+const FlatModel = ['Amarillo', 'Azul', 'Blanco', 'Naranja', 'Negro', 'Rojo', 'Rosa', 'Verde'];
 
 const ObjectModel = [
   { value: 0, label: 'Alfa Romeo' },
@@ -257,7 +241,9 @@ module('Integration | Component | x-select', function (hooks) {
       await triggerKeyEvent('input', 'keydown', 'ArrowDown');
 
       assert.dom('.es-options .es-option:nth-child(1)').doesNotHaveClass('es-highlight', 'First option inactive');
-      assert.dom('.es-options .es-option:nth-child(2)').hasClass('es-highlight', 'Second option active after ArrowDown');
+      assert
+        .dom('.es-options .es-option:nth-child(2)')
+        .hasClass('es-highlight', 'Second option active after ArrowDown');
 
       await triggerKeyEvent('input', 'keydown', 'ArrowUp');
 
@@ -369,7 +355,8 @@ module('Integration | Component | x-select', function (hooks) {
       this.set('onRemove', (option) => {
         assert.strictEqual(option, 'Naranja', 'onRemove called with correct option');
 
-        this.set('values', this.values.filter((x) => x !== option));
+        let values = this.values.filter((x) => x !== option);
+        this.set('values', values);
       });
 
       await render(hbs`<XSelect @model={{this.model}} @values={{this.values}} @onRemove={{this.onRemove}} />`);
@@ -391,7 +378,8 @@ module('Integration | Component | x-select', function (hooks) {
       this.set('onRemove', (option) => {
         assert.strictEqual(option, 'Verde', 'onRemove called with correct option (last one)');
 
-        this.set('values', this.values.filter((x) => x !== option));
+        let values = this.values.filter((x) => x !== option);
+        this.set('values', values);
       });
 
       await render(hbs`<XSelect @model={{this.model}} @values={{this.values}} @onRemove={{this.onRemove}} />`);
@@ -501,7 +489,7 @@ module('Integration | Component | x-select', function (hooks) {
 
       this.set('model', FlatModel);
       this.set('onSelect', (value, option, isSelected) => {
-        assert.strictEqual(value, 'Azul',);
+        assert.strictEqual(value, 'Azul');
         assert.strictEqual(option, 'Azul');
         assert.true(isSelected);
       });
@@ -561,7 +549,7 @@ module('Integration | Component | x-select', function (hooks) {
       await blur('input');
 
       assert.dom('input').hasValue('Rosa', 'Input keeps the valid selected value on blur');
-      assert.strictEqual(this.value, 'Rosa', 'Value remains correct',);
+      assert.strictEqual(this.value, 'Rosa', 'Value remains correct');
     });
 
     test('reverts cleared input on blur', async function (assert) {
@@ -638,7 +626,7 @@ module('Integration | Component | x-select', function (hooks) {
 
       await blur('input');
 
-      assert.dom('input').hasValue('Azul','Input reverts to original value on blur after clearing');
+      assert.dom('input').hasValue('Azul', 'Input reverts to original value on blur after clearing');
       assert.strictEqual(this.value, 'Azul', 'Value remains unchanged');
     });
   });

@@ -5,12 +5,14 @@ import { isPresent, isEmpty } from '@ember/utils';
 
 // Builds a list of proxies from a model of values
 export function buildFlatList(model) {
-  let list = model.map(node => ObjectProxy.create({
-    id: node,
-    name: node,
-    isSelected: false,
-    isVisible: true
-  }));
+  let list = model.map((node) =>
+    ObjectProxy.create({
+      id: node,
+      name: node,
+      isSelected: false,
+      isVisible: true,
+    }),
+  );
 
   return A(list);
 }
@@ -37,12 +39,12 @@ export function buildTree(model, options) {
   }
 
   // Add all nodes to tree
-  model.forEach(node => {
+  model.forEach((node) => {
     let child = {
       content: node,
       children: A(),
       isSelected: false,
-      isVisible: true
+      isVisible: true,
     };
 
     // Alternative name for `id`
@@ -65,7 +67,7 @@ export function buildTree(model, options) {
   });
 
   // Connect all children to their parent
-  model.forEach(node => {
+  model.forEach((node) => {
     let child = tree[get(node, options.valueKey || 'id')];
     let parent = get(node, 'parentId');
 
@@ -82,7 +84,7 @@ export function buildTree(model, options) {
 export function getDescendents(tree) {
   let descendents = A();
 
-  tree.forEach(node => {
+  tree.forEach((node) => {
     descendents.pushObject(node);
     descendents.pushObjects(getDescendents(node.children));
   });

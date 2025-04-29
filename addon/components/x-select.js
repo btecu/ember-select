@@ -5,13 +5,9 @@ import Evented from '@ember/object/evented';
 import { next } from '@ember/runloop';
 import { isPresent, isBlank } from '@ember/utils';
 
-
 export default Component.extend(Evented, {
   classNames: ['ember-select'],
-  classNameBindings: [
-    'isOpen:es-open', 'isFocus:es-focus',
-    'canSearch::es-select', 'multiple:es-multiple'
-  ],
+  classNameBindings: ['isOpen:es-open', 'isFocus:es-focus', 'canSearch::es-select', 'multiple:es-multiple'],
 
   autofocus: false,
   canSearch: true,
@@ -46,7 +42,7 @@ export default Component.extend(Evented, {
     return document.querySelector(`#${this.elementId} input`);
   },
 
-  hasChanged: computed('token', 'value', function() {
+  hasChanged: computed('token', 'value', function () {
     let token = this.get('token');
     let option = this.get('value');
 
@@ -114,7 +110,7 @@ export default Component.extend(Evented, {
 
       this.setProperties({
         isFocus: false,
-        isOpen: false
+        isOpen: false,
       });
 
       if (this.onBlur) {
@@ -125,7 +121,7 @@ export default Component.extend(Evented, {
     change(query) {
       this.setProperties({
         isDirty: true,
-        token: query
+        token: query,
       });
 
       if (this.onChange) {
@@ -179,7 +175,8 @@ export default Component.extend(Evented, {
       let isOpen = this.get('isOpen');
 
       switch (e.keyCode) {
-        case 8: { // Backspace
+        case 8: {
+          // Backspace
           let values = this.get('values');
           if (isPresent(values) && this.get('token') === '') {
             let last = this.getElement(values, get(values, 'length') - 1);
@@ -232,7 +229,7 @@ export default Component.extend(Evented, {
       /* Notify when option is either
        *  - selected
        *  - new, empty and cannot be created */
-      let notify = selected || isNew && !allowNew;
+      let notify = selected || (isNew && !allowNew);
 
       if (allowNew && valid && isNew) {
         this.onCreate(option);
@@ -245,7 +242,7 @@ export default Component.extend(Evented, {
       if (!this.get('multiple')) {
         this.get('input').blur();
       }
-    }
+    },
   },
 
   // Handle plain arrays and Ember Data relationships
@@ -256,7 +253,7 @@ export default Component.extend(Evented, {
   open() {
     this.setProperties({
       isOpen: this.get('hasDropdown') && this.get('canOpen'),
-      isFocus: true
+      isFocus: true,
     });
   },
 
@@ -274,7 +271,7 @@ export default Component.extend(Evented, {
       value = get(option, this.get('valueKey'));
     } else if (isPresent(model) && typeof this.getElement(model, 0) === 'object') {
       let id = this.get('valueKey');
-      option = model.filter(x => get(x, id) === option).shift();
+      option = model.filter((x) => get(x, id) === option).shift();
 
       if (option) {
         label = get(option, this.get('labelKey'));
@@ -311,5 +308,5 @@ export default Component.extend(Evented, {
       this.onSelect(value, option, selected);
       this.set('isOpen', false);
     }
-  }
+  },
 });

@@ -1,4 +1,4 @@
-<div class="es-control" {{action "focus" on="mouseDown"}}>
+<div class="es-control" {{action "focus" on="mouseUp"}}>
   <div class="es-input">
     {{#if this.hasValues}}
       <span class="es-selections">
@@ -11,11 +11,12 @@
     {{/if}}
 
     <input
-      type="text"
+      aria-label={{this.placeholder}}
       autocomplete="off"
       autofocus={{this.autofocus}}
       placeholder={{unless this.hasValues this.placeholder ""}}
       readonly={{unless this.canSearch "readonly"}}
+      type="text"
       oninput={{action "change" value="target.value"}}
       onkeydown={{action "keypress"}}
       onfocus={{action "focus"}}
@@ -30,7 +31,7 @@
   {{/if}}
 
   {{#if this.hasDropdown}}
-    <span class="es-arrow-zone" {{action "dropdown" on="mouseDown" bubbles=false}}>
+    <span class="es-arrow-zone" {{action "dropdown" on="mouseUp" bubbles=false}}>
       <span class="es-arrow"></span>
     </span>
   {{/if}}
