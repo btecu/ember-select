@@ -1,4 +1,4 @@
-import { blur, click, fillIn, focus, render, triggerKeyEvent } from '@ember/test-helpers';
+import { blur, click, fillIn, focus, render, triggerKeyEvent, typeIn } from '@ember/test-helpers';
 import { setupRenderingTest } from 'ember-qunit';
 import SelectDropdownGroup from 'ember-select/components/select-dropdown-group';
 import hbs from 'htmlbars-inline-precompile';
@@ -216,7 +216,8 @@ module('Integration | Component | x-select', function (hooks) {
     assert.dom('.es-options .es-option').exists({ count: 1 }, 'Dropdown shows filtered options');
     assert.dom('.es-options .es-option:first-child').hasText('Azul');
 
-    await fillIn('input', 'ver');
+    await click('.es-clear');
+    await typeIn('input', 'ver');
 
     assert.dom('.es-options .es-option').exists({ count: 1 }, 'Dropdown shows filtered options');
     assert.dom('.es-options .es-option:first-child').hasText('Verde');
@@ -224,6 +225,46 @@ module('Integration | Component | x-select', function (hooks) {
     await fillIn('input', 'transparent');
 
     assert.dom('.es-options .es-option').doesNotExist('Dropdown is hidden when no results');
+  });
+
+  test('it shows the clear button', async function (assert) {
+    this.set('model', FlatModel);
+
+    await render(hbs`<XSelect @model={{this.model}} />`);
+
+    assert.dom('input').hasValue('');
+    assert.dom('.es-clear').doesNotExist();
+    assert.dom('.es-clear-zone').doesNotExist();
+
+    await typeIn('input', 'b');
+
+    assert.dom('input').hasValue('b');
+    assert.dom('.es-clear').exists();
+    assert.dom('.es-clear-zone').exists();
+
+    await fillIn('input', '');
+
+    assert.dom('input').hasValue('');
+    assert.dom('.es-clear').doesNotExist();
+    assert.dom('.es-clear-zone').doesNotExist();
+  });
+
+  test('it clears input when clicking on the clear button', async function (assert) {
+    this.set('model', FlatModel);
+
+    await render(hbs`<XSelect @model={{this.model}} />`);
+
+    await fillIn('input', 'Naranja');
+    assert.dom('input').hasValue('Naranja');
+
+    await click('.es-clear');
+    assert.dom('input').hasValue('');
+
+    await typeIn('input', 'Rojo');
+    assert.dom('input').hasValue('Rojo');
+
+    await click('.es-clear-zone');
+    assert.dom('input').hasValue('');
   });
 
   module('keyboard navigation', function () {

@@ -88,14 +88,14 @@ export default class SelectDropdownComponent extends Component {
   keys(event) {
     let selected = this.get('selected');
 
-    switch (event.keyCode) {
-      case 9: // TAB
-      case 13: // Enter
+    switch (event.key) {
+      case 'Tab':
+      case 'Enter':
         this.tabEnterKeys(selected);
         break;
 
-      case 38: // Up
-      case 40: // Down
+      case 'ArrowUp':
+      case 'ArrowDown':
         this.upDownKeys(selected, event);
         break;
     }
@@ -106,7 +106,6 @@ export default class SelectDropdownComponent extends Component {
     event.preventDefault();
   }
 
-  // Down: 40, Up: 38
   move(list, selected, direction) {
     if (isPresent(selected)) {
       selected.set('isSelected', false);
@@ -119,7 +118,7 @@ export default class SelectDropdownComponent extends Component {
     let index = list.indexOf(selected);
     let node;
 
-    if (direction === 38) {
+    if (direction === 'ArrowUp') {
       if (index !== -1) {
         node = list[index - 1];
       }
@@ -127,7 +126,7 @@ export default class SelectDropdownComponent extends Component {
       if (isNone(node)) {
         node = list[list.length - 1];
       }
-    } else if (direction === 40) {
+    } else if (direction === 'ArrowDown') {
       if (index !== -1) {
         node = list[index + 1];
       }
@@ -159,6 +158,6 @@ export default class SelectDropdownComponent extends Component {
 
   upDownKeys(selected, event) {
     let list = this.get('list').filterBy('isVisible');
-    this.move(list, selected, event.keyCode);
+    this.move(list, selected, event.key);
   }
 }
