@@ -47,6 +47,6 @@ export default class SelectDropdownGroupComponent extends SelectDropdownComponen
       .filterBy('isVisible')
       .filter((el) => isPresent(get(el, 'parentId')));
 
-    this.move(list, selected, event.keyCode);
+    this.move(list, selected, event.key);
   }
 }

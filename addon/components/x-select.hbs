@@ -17,15 +17,15 @@
       placeholder={{unless this.hasValues this.placeholder ""}}
       readonly={{unless this.canSearch "readonly"}}
       type="text"
-      onkeydown={{this.keypress}}
-      onfocus={{this.focus}}
       onblur={{this.blur}}
+      onfocus={{this.focus}}
+      onkeydown={{this.keypress}}
     >
   </div>
 
   {{#if this.canClear}}
     <span class="es-clear-zone" title="Clear" aria-label="Clear" {{on "click" this.clear}}>
-      <span class="es-clear">×</span>
+      <span class="es-clear">&times;</span>
     </span>
   {{/if}}
 

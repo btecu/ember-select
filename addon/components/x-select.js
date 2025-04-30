@@ -120,6 +120,9 @@ export default class SelectComponent extends Component.extend(Evented) {
   @action
   change(event) {
     let query = event.target.value;
+    if (event.key?.length === 1) {
+      query += event.key;
+    }
 
     this.setProperties({
       isDirty: true,
@@ -179,48 +182,49 @@ export default class SelectComponent extends Component.extend(Evented) {
   }
 
   @action
-  keypress(e) {
+  keypress(event) {
     let isOpen = this.get('isOpen');
 
-    switch (e.keyCode) {
-      case 8: {
-        // Backspace
+    switch (event.key) {
+      case 'Backspace': {
         let values = this.get('values');
         if (isPresent(values) && this.get('token') === '') {
           let last = this.getElement(values, get(values, 'length') - 1);
           this.onRemove(last);
-          e.preventDefault();
+          event.preventDefault();
         }
 
         break;
       }
 
-      case 9: // TAB
-      case 13: // Enter
+      case 'Tab':
+      case 'Enter':
         if (isOpen) {
-          this.trigger('keyPress', e);
+          this.trigger('keyPress', event);
         } else if (this.get('freeText')) {
           this.select(this.get('token'), false);
         }
 
         break;
-      case 27: // ESC
+      case 'Escape':
         if (this.get('canSearch') && this.get('hasInput')) {
           this.clear();
         } else {
           this.set('isOpen', false);
         }
         break;
-      case 38: // Up Arrow
-      case 40: // Down Arrow
+      case 'ArrowUp':
+      case 'ArrowDown':
         if (isOpen) {
-          this.trigger('keyPress', e);
+          this.trigger('keyPress', event);
         } else {
           this.set('isOpen', true);
         }
 
-        e.preventDefault();
+        event.preventDefault();
         break;
+      default:
+        this.change(event);
     }
   }
 
