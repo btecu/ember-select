@@ -118,11 +118,8 @@ export default class SelectComponent extends Component.extend(Evented) {
   }
 
   @action
-  change(event) {
+  changeInput(event) {
     let query = event.target.value;
-    if (event.key?.length === 1) {
-      query += event.key;
-    }
 
     this.setProperties({
       isDirty: true,
@@ -223,8 +220,6 @@ export default class SelectComponent extends Component.extend(Evented) {
 
         event.preventDefault();
         break;
-      default:
-        this.change(event);
     }
   }
 
