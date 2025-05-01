@@ -1,4 +1,4 @@
-import { blur, click, fillIn, focus, render, triggerKeyEvent, typeIn } from '@ember/test-helpers';
+import { blur, click, fillIn, focus, render, tab, triggerKeyEvent, typeIn } from '@ember/test-helpers';
 import { setupRenderingTest } from 'ember-qunit';
 import SelectDropdownGroup from 'ember-select/components/select-dropdown-group';
 import hbs from 'htmlbars-inline-precompile';
@@ -192,6 +192,19 @@ module('Integration | Component | x-select', function (hooks) {
     await fillIn('input', typedValue);
   });
 
+  test('it calls `onChange` when input value is typed', async function (assert) {
+    let typedValue = 'Lorem Ipsum -> #42@';
+
+    assert.expect(typedValue.length);
+
+    this.set('onChange', (value) => {
+      assert.true(typedValue.startsWith(value));
+    });
+
+    await render(hbs`<XSelect @onChange={{this.onChange}} />`);
+    await typeIn('input', typedValue);
+  });
+
   test('it calls `onBlur` when input loses focus', async function (assert) {
     assert.expect(1);
 
@@ -276,30 +289,30 @@ module('Integration | Component | x-select', function (hooks) {
 
       assert.dom('.es-options .es-option .es-highlight').doesNotExist('No option initially active');
 
-      await triggerKeyEvent('input', 'keydown', 'ArrowDown');
+      await triggerKeyEvent('input', 'keyup', 'ArrowDown');
 
       assert.dom('.es-options .es-option:nth-child(1)').hasClass('es-highlight', 'First option active after ArrowDown');
 
-      await triggerKeyEvent('input', 'keydown', 'ArrowDown');
+      await triggerKeyEvent('input', 'keyup', 'ArrowDown');
 
       assert.dom('.es-options .es-option:nth-child(1)').doesNotHaveClass('es-highlight', 'First option inactive');
       assert
         .dom('.es-options .es-option:nth-child(2)')
         .hasClass('es-highlight', 'Second option active after ArrowDown');
 
-      await triggerKeyEvent('input', 'keydown', 'ArrowUp');
+      await triggerKeyEvent('input', 'keyup', 'ArrowUp');
 
       assert.dom('.es-options .es-option:nth-child(1)').hasClass('es-highlight', 'First option active after ArrowUp');
       assert.dom('.es-options .es-option:nth-child(2)').doesNotHaveClass('es-highlight', 'Second option inactive');
 
       // Test wrapping around
-      await triggerKeyEvent('input', 'keydown', 'ArrowUp');
+      await triggerKeyEvent('input', 'keyup', 'ArrowUp');
 
       assert
         .dom('.es-options .es-option:last-child')
         .hasClass('es-highlight', 'Last option active after ArrowUp from first');
 
-      await triggerKeyEvent('input', 'keydown', 'ArrowDown');
+      await triggerKeyEvent('input', 'keyup', 'ArrowDown');
 
       assert
         .dom('.es-options .es-option:first-child')
@@ -318,9 +331,9 @@ module('Integration | Component | x-select', function (hooks) {
 
       await click('.es-arrow');
 
-      await triggerKeyEvent('input', 'keydown', 'ArrowDown'); // Highlight first option (Amarillo)
-      await triggerKeyEvent('input', 'keydown', 'ArrowDown'); // Highlight second option (Azul)
-      await triggerKeyEvent('input', 'keydown', 'Enter');
+      await triggerKeyEvent('input', 'keyup', 'ArrowDown'); // Highlight first option (Amarillo)
+      await triggerKeyEvent('input', 'keyup', 'ArrowDown'); // Highlight second option (Azul)
+      await triggerKeyEvent('input', 'keyup', 'Enter');
 
       assert.dom('input').hasValue('Azul', 'Input value updated after Enter');
     });
@@ -333,7 +346,7 @@ module('Integration | Component | x-select', function (hooks) {
 
       assert.dom('.es-options').exists('Dropdown is open');
 
-      await triggerKeyEvent('input', 'keydown', 'Escape');
+      await triggerKeyEvent('input', 'keyup', 'Escape');
 
       assert.dom('.es-options').doesNotExist('Dropdown is closed after Escape');
     });
@@ -428,7 +441,7 @@ module('Integration | Component | x-select', function (hooks) {
 
       assert.dom('.es-selections span').exists({ count: 2 });
 
-      await triggerKeyEvent('input', 'keydown', 'Backspace');
+      await triggerKeyEvent('input', 'keyup', 'Backspace');
 
       assert.dom('.es-selections span').exists({ count: 1 }, 'One option remains after backspace');
       assert.dom('.es-selections span').hasTextContaining('Azul');
@@ -454,10 +467,10 @@ module('Integration | Component | x-select', function (hooks) {
       assert.dom('.es-selections span').exists({ count: 1 });
 
       await fillIn('input', 'Marrón');
-      await triggerKeyEvent('input', 'keydown', 'Enter');
+      await triggerKeyEvent('input', 'keyup', 'Enter');
 
       await fillIn('input', 'Dorado');
-      await triggerKeyEvent('input', 'keydown', 'Tab');
+      await triggerKeyEvent('input', 'keyup', 'Tab');
 
       assert.dom('.es-selections span').exists({ count: 3 }, 'New value is rendered');
       assert.dom('.es-selections span:nth-child(2)').hasTextContaining('Marrón');
@@ -477,7 +490,7 @@ module('Integration | Component | x-select', function (hooks) {
       await render(hbs`<XSelect @model={{this.model}} @values={{this.values}} @onClear={{this.onClear}} />`);
 
       await fillIn('input', 'Gris');
-      await triggerKeyEvent('input', 'keydown', 'Escape');
+      await triggerKeyEvent('input', 'keyup', 'Escape');
     });
   });
 
@@ -499,7 +512,7 @@ module('Integration | Component | x-select', function (hooks) {
       );
 
       await fillIn('input', customOption);
-      await triggerKeyEvent('input', 'keydown', 'Enter');
+      await triggerKeyEvent('input', 'keyup', 'Enter');
 
       assert.dom('input').hasValue(customOption);
     });
@@ -521,7 +534,7 @@ module('Integration | Component | x-select', function (hooks) {
       );
 
       await fillIn('input', customOption);
-      await triggerKeyEvent('input', 'keydown', 'Tab');
+      await tab();
 
       assert.dom('input').hasValue(customOption);
     });
@@ -541,8 +554,8 @@ module('Integration | Component | x-select', function (hooks) {
       );
 
       await fillIn('input', 'Azu');
-      await triggerKeyEvent('input', 'keydown', 'ArrowDown');
-      await triggerKeyEvent('input', 'keydown', 'Enter');
+      await triggerKeyEvent('input', 'keyup', 'ArrowDown');
+      await triggerKeyEvent('input', 'keyup', 'Enter');
 
       assert.dom('input').hasValue('Azul', 'Input shows the selected existing value');
     });
