@@ -79,5 +79,10 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
+  },
+  "packageManager": "pnpm@10.15.0",
+  "volta": {
+    "node": "22.18.0",
+    "pnpm": "10.15.0"
   }
 }
