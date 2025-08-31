@@ -19,13 +19,13 @@
   "repository": "https://github.com/btecu/ember-select",
   "scripts": {
     "build": "ember build",
-    "lint": "concurrently \"yarn:lint:*(!fix)\" --names \"lint:\"",
+    "lint": "concurrently \"pnpm:lint:*(!fix)\" --names \"lint:\"",
     "lint:css": "stylelint \"**/*.css\"",
-    "lint:css:fix": "concurrently \"yarn:lint:css -- --fix\"",
+    "lint:css:fix": "concurrently \"pnpm:lint:css -- --fix\"",
     "lint:hbs": "ember-template-lint .",
     "lint:js": "eslint .",
     "start": "ember serve",
-    "test": "concurrently \"yarn:lint\" \"yarn:test:*\" --names \"lint,test:\"",
+    "test": "concurrently \"pnpm:lint\" \"pnpm:test:*\" --names \"lint,test:\"",
     "test:ember": "ember test",
     "test:ember-compatibility": "ember try:each"
   },
