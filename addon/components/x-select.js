@@ -1,14 +1,15 @@
 import Component from '@ember/component';
 import { action, computed, get } from '@ember/object';
 import { and, bool, not, notEmpty, or } from '@ember/object/computed';
-import Evented from '@ember/object/evented';
 import { next } from '@ember/runloop';
 import { isBlank, isPresent } from '@ember/utils';
 import SelectDropdown from './select-dropdown';
 
-export default class SelectComponent extends Component.extend(Evented) {
+export default class SelectComponent extends Component {
   classNames = ['ember-select'];
   classNameBindings = ['isOpen:es-open', 'isFocus:es-focus', 'canSearch::es-select', 'multiple:es-multiple'];
+
+  #handleDropdownKeypress = null;
 
   autofocus = false;
   canSearch = true;
@@ -197,7 +198,7 @@ export default class SelectComponent extends Component.extend(Evented) {
       case 'Tab':
       case 'Enter':
         if (isOpen) {
-          this.trigger('keyPress', event);
+          this.#handleDropdownKeypress?.(event);
         } else if (this.get('freeText')) {
           this.select(this.get('token'), false);
         }
@@ -213,7 +214,7 @@ export default class SelectComponent extends Component.extend(Evented) {
       case 'ArrowUp':
       case 'ArrowDown':
         if (isOpen) {
-          this.trigger('keyPress', event);
+          this.#handleDropdownKeypress?.(event);
         } else {
           this.set('isOpen', true);
         }
@@ -253,6 +254,11 @@ export default class SelectComponent extends Component.extend(Evented) {
     if (!this.get('multiple')) {
       this.get('input').blur();
     }
+  }
+
+  @action
+  updateDropdownKeypressHandler(handler) {
+    this.#handleDropdownKeypress = handler;
   }
 
   // Handle plain arrays and Ember Data relationships

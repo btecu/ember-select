@@ -11,7 +11,7 @@ export default class SelectDropdownComponent extends Component {
 
   didInsertElement() {
     super.didInsertElement(...arguments);
-    this.parent.on('keyPress', this, this.keys);
+    this.updateDropdownKeypressHandler(this.keys.bind(this));
   }
 
   didReceiveAttrs() {
@@ -27,7 +27,7 @@ export default class SelectDropdownComponent extends Component {
 
   willDestroyElement() {
     super.willDestroyElement(...arguments);
-    this.parent.off('keyPress', this, this.keys);
+    this.updateDropdownKeypressHandler();
   }
 
   @computed('list', 'model.[]', 'shouldFilter', 'token', 'values.[]')
