@@ -40,7 +40,6 @@
 {{#if this.isOpen}}
   <div class="es-options">
     <this.dropdown
-      @parent={{this}}
       @model={{@model}}
       @token={{this.token}}
       @values={{@values}}
@@ -49,6 +48,7 @@
       @freeText={{this.freeText}}
       @shouldFilter={{this.shouldFilter}}
       @onSelect={{this.select}}
+      @updateDropdownKeypressHandler={{this.updateDropdownKeypressHandler}}
     />
   </div>
 {{/if}}
