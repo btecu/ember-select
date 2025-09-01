@@ -1,0 +1,97 @@
+{
+  "name": "ember-select",
+  "version": "0.9.1",
+  "description": "Select component",
+  "keywords": [
+    "ember-addon",
+    "ember-select",
+    "select",
+    "dropdown",
+    "selectize",
+    "power-select"
+  ],
+  "license": "MIT",
+  "author": "Bj Tecu",
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
+  },
+  "repository": "https://github.com/btecu/ember-select",
+  "scripts": {
+    "build": "rollup --config",
+    "lint": "concurrently \"pnpm:lint:*(!fix)\" --names \"lint:\"",
+    "lint:css": "stylelint \"**/*.css\" --allow-empty-input --cache",
+    "lint:css:fix": "stylelint \"**/*.css\" --allow-empty-input --fix",
+    "lint:fix": "concurrently \"pnpm:lint:*:fix\" --names \"fix:\"",
+    "lint:hbs": "ember-template-lint .",
+    "lint:hbs:fix": "ember-template-lint . --fix",
+    "lint:js": "eslint . --cache",
+    "lint:js:fix": "eslint . --fix",
+    "prepack": "rollup --config",
+    "start": "rollup --config --watch",
+    "test": "echo \"A v2 addon does not have tests, run tests in test-app\""
+  },
+  "dependencies": {
+    "@babel/core": "^7.28.3",
+    "@embroider/addon-shim": "^1.10.0",
+    "@glimmer/component": "^2.0.0",
+    "@glimmer/tracking": "^1.1.2",
+    "decorator-transforms": "^2.3.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.3",
+    "@babel/eslint-parser": "^7.28.0",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-decorators": "^7.28.0",
+    "@babel/runtime": "^7.28.3",
+    "@embroider/addon-dev": "^8.1.0",
+    "@eslint/js": "^9.34.0",
+    "@rollup/plugin-babel": "^6.0.4",
+    "babel-plugin-ember-template-compilation": "^3.0.1",
+    "concurrently": "^9.2.1",
+    "ember-template-lint": "^7.9.3",
+    "eslint": "^9.34.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-ember": "^12.7.3",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-n": "^17.21.3",
+    "globals": "^16.3.0",
+    "prettier": "^3.6.2",
+    "rollup": "^4.50.0",
+    "rollup-plugin-copy": "^3.5.0",
+    "stylelint": "^16.23.1"
+  },
+  "engines": {
+    "node": ">= 20"
+  },
+  "ember": {
+    "edition": "octane"
+  },
+  "ember-addon": {
+    "app-js": {
+      "./components/select-dropdown-group.js": "./dist/_app_/components/select-dropdown-group.js",
+      "./components/select-dropdown-option.js": "./dist/_app_/components/select-dropdown-option.js",
+      "./components/select-dropdown.js": "./dist/_app_/components/select-dropdown.js",
+      "./components/x-select.js": "./dist/_app_/components/x-select.js",
+      "./utils/tree.js": "./dist/_app_/utils/tree.js",
+      "./utils/view.js": "./dist/_app_/utils/view.js"
+    },
+    "main": "addon-main.cjs",
+    "type": "addon",
+    "version": 2
+  },
+  "packageManager": "pnpm@10.15.0",
+  "volta": {
+    "node": "22.18.0",
+    "pnpm": "10.15.0"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./*": "./dist/*.js",
+    "./addon-main.js": "./addon-main.cjs"
+  },
+  "files": [
+    "addon-main.cjs",
+    "dist"
+  ]
+}
