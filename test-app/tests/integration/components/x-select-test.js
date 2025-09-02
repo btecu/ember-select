@@ -1,4 +1,4 @@
-import { blur, click, fillIn, focus, render, tab, triggerKeyEvent, typeIn } from '@ember/test-helpers';
+import { blur, click, fillIn, focus, render, tab, triggerEvent, triggerKeyEvent, typeIn } from '@ember/test-helpers';
 import { setupRenderingTest } from 'ember-qunit';
 import SelectDropdownGroup from 'ember-select/components/select-dropdown-group';
 import hbs from 'htmlbars-inline-precompile';
@@ -58,6 +58,57 @@ module('Integration | Component | x-select', function (hooks) {
     assert.dom('.es-options .es-option').exists({ count: 8 }, 'Dropdown shows all options');
     assert.dom('.es-options .es-option:first-child').hasText('Alfa Romeo');
     assert.dom('.es-options .es-option:last-child').hasText('Skoda');
+  });
+
+  test('it updates dropdown values when flat model changes', async function (assert) {
+    this.set('model', FlatModel);
+
+    await render(hbs`<XSelect @model={{this.model}} />`);
+    await click('.es-arrow');
+
+    assert.dom('.es-options .es-option').exists({ count: FlatModel.length });
+    assert.dom('.es-options .es-option:first-child').hasText(FlatModel.at(0));
+    assert.dom('.es-options .es-option:last-child').hasText(FlatModel.at(-1));
+
+    let rgbModel = ['Red', 'Blue', 'Green'];
+    this.set('model', rgbModel);
+
+    assert.dom('.es-options .es-option').exists({ count: rgbModel.length });
+    assert.dom('.es-options .es-option:first-child').hasText(rgbModel.at(0));
+    assert.dom('.es-options .es-option:nth-child(2)').hasText(rgbModel.at(1));
+    assert.dom('.es-options .es-option:last-child').hasText(rgbModel.at(-1));
+
+    this.set('model', FlatModel);
+
+    assert.dom('.es-options .es-option').exists({ count: FlatModel.length });
+    assert.dom('.es-options .es-option:first-child').hasText(FlatModel.at(0));
+    assert.dom('.es-options .es-option:last-child').hasText(FlatModel.at(-1));
+  });
+
+  test('it updates dropdown values when object model changes', async function (assert) {
+    let subsetModelOne = ObjectModel.slice(0, 2);
+    this.set('model', subsetModelOne);
+
+    await render(hbs`<XSelect @model={{this.model}} />`);
+    await click('.es-arrow');
+
+    assert.dom('.es-options .es-option').exists({ count: subsetModelOne.length });
+    assert.dom('.es-options .es-option:first-child').hasText(subsetModelOne.at(0).label);
+    assert.dom('.es-options .es-option:last-child').hasText(subsetModelOne.at(-1).label);
+
+    let subsetModelTwo = ObjectModel.slice(4, 7);
+    this.set('model', subsetModelTwo);
+
+    assert.dom('.es-options .es-option').exists({ count: subsetModelTwo.length });
+    assert.dom('.es-options .es-option:first-child').hasText(subsetModelTwo.at(0).label);
+    assert.dom('.es-options .es-option:nth-child(2)').hasText(subsetModelTwo.at(1).label);
+    assert.dom('.es-options .es-option:last-child').hasText(subsetModelTwo.at(-1).label);
+
+    this.set('model', ObjectModel);
+
+    assert.dom('.es-options .es-option').exists({ count: ObjectModel.length });
+    assert.dom('.es-options .es-option:first-child').hasText(ObjectModel.at(0).label);
+    assert.dom('.es-options .es-option:last-child').hasText(ObjectModel.at(-1).label);
   });
 
   test('it selects a flat option and calls onSelect', async function (assert) {
@@ -349,6 +400,30 @@ module('Integration | Component | x-select', function (hooks) {
       await triggerKeyEvent('input', 'keyup', 'Escape');
 
       assert.dom('.es-options').doesNotExist('Dropdown is closed after Escape');
+    });
+
+    test('hover highlights options', async function (assert) {
+      this.set('model', FlatModel);
+
+      await render(hbs`<XSelect @model={{this.model}} />`);
+      await click('.es-arrow');
+
+      assert.dom('.es-options .es-option .es-highlight').doesNotExist();
+
+      await triggerEvent('.es-options .es-option:nth-child(1)', 'mouseenter');
+      assert.dom('.es-options .es-option:nth-child(1)').hasClass('es-highlight');
+      assert.dom('.es-options .es-option:nth-child(2)').doesNotHaveClass('es-highlight');
+      assert.dom('.es-options .es-option:nth-child(3)').doesNotHaveClass('es-highlight');
+
+      await triggerEvent('.es-options .es-option:nth-child(2)', 'mouseenter');
+      assert.dom('.es-options .es-option:nth-child(1)').doesNotHaveClass('es-highlight');
+      assert.dom('.es-options .es-option:nth-child(2)').hasClass('es-highlight');
+      assert.dom('.es-options .es-option:nth-child(3)').doesNotHaveClass('es-highlight');
+
+      await triggerEvent('.es-options .es-option:nth-child(3)', 'mouseenter');
+      assert.dom('.es-options .es-option:nth-child(1)').doesNotHaveClass('es-highlight');
+      assert.dom('.es-options .es-option:nth-child(2)').doesNotHaveClass('es-highlight');
+      assert.dom('.es-options .es-option:nth-child(3)').hasClass('es-highlight');
     });
   });
 
@@ -772,6 +847,24 @@ module('Integration | Component | x-select', function (hooks) {
 
       assert.dom('.es-options .es-groups:nth-child(1) .es-option').exists({ count: 1 });
       assert.dom('.es-options .es-groups:nth-child(1) .es-option:nth-child(2)').hasText('Garlic');
+    });
+
+    test('hover highlights options within groups', async function (assert) {
+      this.set('dropdown', SelectDropdownGroup);
+      this.set('model', GroupModel);
+
+      await render(hbs`<XSelect @dropdown={{this.dropdown}} @model={{this.model}} />`);
+      await click('.es-arrow');
+
+      assert.dom('.es-options .es-option .es-highlight').doesNotExist();
+
+      await triggerEvent('.es-options .es-groups:nth-child(1) .es-option:nth-child(2)', 'mouseenter');
+      assert.dom('.es-options .es-groups:nth-child(1) .es-option:nth-child(2)').hasClass('es-highlight');
+      assert.dom('.es-options .es-groups:nth-child(2) .es-option:nth-child(2)').doesNotHaveClass('es-highlight');
+
+      await triggerEvent('.es-options .es-groups:nth-child(2) .es-option:nth-child(2)', 'mouseenter');
+      assert.dom('.es-options .es-groups:nth-child(1) .es-option:nth-child(2)').doesNotHaveClass('es-highlight');
+      assert.dom('.es-options .es-groups:nth-child(2) .es-option:nth-child(2)').hasClass('es-highlight');
     });
   });
 });
