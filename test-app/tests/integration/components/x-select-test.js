@@ -640,6 +640,9 @@ module('Integration | Component | x-select', function (hooks) {
     test('reverts non-matching input on blur', async function (assert) {
       this.set('model', FlatModel);
       this.set('value', 'Azul');
+      this.set('onSelect', (option) => {
+        this.set('value', option);
+      });
 
       await render(
         hbs`<XSelect @model={{this.model}} @required={{true}} @value={{this.value}} @onSelect={{this.onSelect}} />`,
@@ -685,6 +688,9 @@ module('Integration | Component | x-select', function (hooks) {
     test('reverts cleared input on blur', async function (assert) {
       this.set('model', FlatModel);
       this.set('value', 'Azul');
+      this.set('onSelect', (option) => {
+        this.set('value', option);
+      });
 
       await render(
         hbs`<XSelect @model={{this.model}} @value={{this.value}} @required={{true}} @onSelect={{this.onSelect}} />`,

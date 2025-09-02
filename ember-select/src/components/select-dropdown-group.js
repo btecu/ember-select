@@ -1,51 +1,40 @@
-import { computed, get } from '@ember/object';
+import { get } from '@ember/object';
+import { cached } from '@glimmer/tracking';
 import { isPresent } from '@ember/utils';
 
 import SelectDropdownComponent from './select-dropdown.js';
 import { getDescendents } from '../utils/tree.js';
 
 export default class SelectDropdownGroupComponent extends SelectDropdownComponent {
-  groups = null;
-  list = null;
-
-  didReceiveAttrs() {
-    super.didReceiveAttrs(...arguments);
-
-    // Tree built in extended component
-    let groups = this.get('list');
-    let list = getDescendents(groups);
-
-    this.setProperties({ list, groups });
+  @cached
+  get flatList() {
+    return getDescendents(this.list);
   }
 
-  @computed('groups', 'model.[]', 'shouldFilter', 'token', 'values.[]')
   get options() {
-    if (this.get('shouldFilter')) {
-      this.filterModel();
+    if (this.args.shouldFilter) {
+      this.filterModel(this.flatList);
     }
 
-    return this.get('groups');
+    return this.list;
   }
 
   setVisibility(list, token) {
-    list
-      .filter((el) => isPresent(get(el, 'parentId')))
-      .filter((el) => get(el, 'name').toString().toLowerCase().includes(token))
-      .forEach((el) => {
-        el.set('isVisible', true);
+    let filteredList = list
+      .filter((x) => isPresent(get(x, 'parentId')))
+      .filter((x) => x.name.toString().toLowerCase().includes(token));
 
-        // Mark parent visible
-        list
-          .filter((x) => x.id === get(el, 'parentId'))
-          .shift()
-          .set('isVisible', true);
-      });
+    for (let element of filteredList) {
+      element.set('isVisible', true);
+
+      // Mark parent visible
+      let parent = this.list.find((x) => x.id === get(element, 'parentId'));
+      parent.set('isVisible', true);
+    }
   }
 
   upDownKeys(selected, event) {
-    let list = this.get('list')
-      .filterBy('isVisible')
-      .filter((el) => isPresent(get(el, 'parentId')));
+    let list = this.flatList.filter((x) => x.isVisible).filter((x) => get(x, 'parentId'));
 
     this.move(list, selected, event.key);
   }
