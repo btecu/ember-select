@@ -1,5 +1,6 @@
-import Component from '@ember/component';
-import { action, computed, get } from '@ember/object';
+import Component from '@glimmer/component';
+import { cached, tracked } from '@glimmer/tracking';
+import { action } from '@ember/object';
 import { next } from '@ember/runloop';
 import { isEmpty, isNone, isPresent } from '@ember/utils';
 
@@ -7,103 +8,100 @@ import { buildTree } from '../utils/tree.js';
 import { bringInView } from '../utils/view.js';
 
 export default class SelectDropdownComponent extends Component {
-  list = null;
+  @tracked selected = null;
 
-  didInsertElement() {
-    super.didInsertElement(...arguments);
-    this.updateDropdownKeypressHandler(this.keys.bind(this));
+  constructor() {
+    super(...arguments);
+    this.args.updateDropdownKeypressHandler?.(this.keys.bind(this));
   }
 
-  didReceiveAttrs() {
-    super.didReceiveAttrs(...arguments);
-
-    let options = this.getProperties('valueKey', 'labelKey');
-    let model = this.get('model');
-    let list = buildTree(model, options);
-
-    this.set('list', list);
-    this.filterModel();
+  willDestroy() {
+    super.willDestroy(...arguments);
+    this.args.updateDropdownKeypressHandler?.();
   }
 
-  willDestroyElement() {
-    super.willDestroyElement(...arguments);
-    this.updateDropdownKeypressHandler();
+  @cached
+  get list() {
+    let options = { labelKey: this.args.labelKey, valueKey: this.args.valueKey };
+
+    return buildTree(this.args.model, options);
   }
 
-  @computed('list', 'model.[]', 'shouldFilter', 'token', 'values.[]')
+  @cached
   get options() {
-    if (this.get('shouldFilter')) {
-      this.filterModel();
+    if (this.args.shouldFilter) {
+      this.filterModel(this.list);
     }
 
-    return this.get('list');
+    return this.list;
   }
 
   @action
   hover(node) {
-    let selected = this.get('selected');
-    if (selected) {
-      selected.set('isSelected', false);
+    if (this.selected?.isSelected === true) {
+      this.selected.set('isSelected', false);
     }
 
-    this.set('selected', node);
+    this.selected = node;
     node.set('isSelected', true);
+  }
+
+  // Prevent event bubbling up
+  @action
+  mouseDown(event) {
+    event.preventDefault();
   }
 
   @action
   select(node) {
-    this.onSelect(node.content || node.id, true);
+    this.args.onSelect(node.content ?? node.id, true);
   }
 
   /*
    * Filter out existing selections.
    * Mark everything visible if no search, otherwise update visiblity.
    */
-  filterModel() {
-    let list = this.get('list');
-    let token = this.get('token');
-    let values = this.get('values');
+  filterModel(list) {
+    let token = this.args.token;
 
-    list.forEach((el) => el.set('isVisible', false));
+    // Reset all visibility
+    for (let element of list.filter((x) => x.isVisible)) {
+      element.set('isVisible', false);
+    }
 
-    if (isPresent(values)) {
-      list = list.filter((el) => !values.includes(el.content));
+    if (this.args.values?.length > 0) {
+      list = list.filter((x) => !this.args.values.includes(x.content));
     }
 
     if (isEmpty(token)) {
-      list.forEach((el) => el.set('isVisible', true));
+      for (let element of list.filter((x) => !x.isVisible)) {
+        element.set('isVisible', true);
+      }
     } else {
       token = typeof token === 'string' ? token.toLowerCase() : token;
       this.setVisibility(list, token);
     }
 
     // Mark first visible element as selected
-    if (!this.get('freeText') && isPresent(token) && list.some((x) => get(x, 'isVisible'))) {
-      let [firstVisible] = list.filter((x) => get(x, 'isVisible'));
+    if (!this.args.freeText && isPresent(token) && list.some((x) => x.isVisible)) {
+      let [firstVisible] = list.filter((x) => x.isVisible);
       firstVisible.set('isSelected', true);
-      this.set('selected', firstVisible);
+      this.selected = firstVisible;
     }
   }
 
   keys(event) {
-    let selected = this.get('selected');
-
     switch (event.key) {
       case 'Tab':
       case 'Enter':
-        this.tabEnterKeys(selected);
+        this.tabEnterKeys(this.selected);
         break;
 
       case 'ArrowUp':
       case 'ArrowDown':
-        this.upDownKeys(selected, event);
+        this.upDownKeys(this.selected, event);
         break;
     }
-  }
-
-  // Prevent event bubbling up
-  mouseDown(event) {
-    event.preventDefault();
   }
 
   move(list, selected, direction) {
@@ -120,44 +118,44 @@ export default class SelectDropdownComponent extends Component {
 
     if (direction === 'ArrowUp') {
       if (index !== -1) {
-        node = list[index - 1];
+        node = list.at(index - 1);
       }
 
       if (isNone(node)) {
-        node = list[list.length - 1];
+        node = list.at(-1);
       }
     } else if (direction === 'ArrowDown') {
       if (index !== -1) {
-        node = list[index + 1];
+        node = list.at(index + 1);
       }
 
       if (isNone(node)) {
-        node = list[0];
+        node = list.at(0);
       }
     }
 
-    this.set('selected', node);
+    this.selected = node;
     node.set('isSelected', true);
 
     next(this, bringInView, '.es-options', '.es-highlight');
   }
 
   setVisibility(list, token) {
-    list
-      .filter((el) => get(el, 'name').toString().toLowerCase().includes(token))
-      .forEach((el) => el.set('isVisible', true));
+    for (let element of list.filter((x) => x.name.toString().toLowerCase().includes(token))) {
+      element.set('isVisible', true);
+    }
   }
 
   tabEnterKeys(selected) {
-    if (selected && this.get('list').includes(selected)) {
+    if (selected && this.list.includes(selected)) {
       this.select(selected);
-    } else if (this.get('freeText')) {
-      this.onSelect(this.get('token'), false);
+    } else if (this.args.freeText) {
+      this.args.onSelect(this.args.token, false);
     }
   }
 
   upDownKeys(selected, event) {
-    let list = this.get('list').filterBy('isVisible');
+    let list = this.list.filter((x) => x.isVisible);
     this.move(list, selected, event.key);
   }
 }
