@@ -1,4 +1,4 @@
-import { blur, click, fillIn, focus, render, tab, triggerKeyEvent, typeIn } from '@ember/test-helpers';
+import { blur, click, fillIn, focus, render, tab, triggerEvent, triggerKeyEvent, typeIn } from '@ember/test-helpers';
 import { setupRenderingTest } from 'ember-qunit';
 import SelectDropdownGroup from 'ember-select/components/select-dropdown-group';
 import hbs from 'htmlbars-inline-precompile';
@@ -58,6 +58,57 @@ module('Integration | Component | x-select', function (hooks) {
     assert.dom('.es-options .es-option').exists({ count: 8 }, 'Dropdown shows all options');
     assert.dom('.es-options .es-option:first-child').hasText('Alfa Romeo');
     assert.dom('.es-options .es-option:last-child').hasText('Skoda');
+  });
+
+  test('it updates dropdown values when flat model changes', async function (assert) {
+    this.set('model', FlatModel);
+
+    await render(hbs`<XSelect @model={{this.model}} />`);
+    await click('.es-arrow');
+
+    assert.dom('.es-options .es-option').exists({ count: FlatModel.length });
+    assert.dom('.es-options .es-option:first-child').hasText(FlatModel.at(0));
+    assert.dom('.es-options .es-option:last-child').hasText(FlatModel.at(-1));
+
+    let rgbModel = ['Red', 'Blue', 'Green'];
+    this.set('model', rgbModel);
+
+    assert.dom('.es-options .es-option').exists({ count: rgbModel.length });
+    assert.dom('.es-options .es-option:first-child').hasText(rgbModel.at(0));
+    assert.dom('.es-options .es-option:nth-child(2)').hasText(rgbModel.at(1));
+    assert.dom('.es-options .es-option:last-child').hasText(rgbModel.at(-1));
+
+    this.set('model', FlatModel);
+
+    assert.dom('.es-options .es-option').exists({ count: FlatModel.length });
+    assert.dom('.es-options .es-option:first-child').hasText(FlatModel.at(0));
+    assert.dom('.es-options .es-option:last-child').hasText(FlatModel.at(-1));
+  });
+
+  test('it updates dropdown values when object model changes', async function (assert) {
+    let subsetModelOne = ObjectModel.slice(0, 2);
+    this.set('model', subsetModelOne);
+
+    await render(hbs`<XSelect @model={{this.model}} />`);
+    await click('.es-arrow');
+
+    assert.dom('.es-options .es-option').exists({ count: subsetModelOne.length });
+    assert.dom('.es-options .es-option:first-child').hasText(subsetModelOne.at(0).label);
+    assert.dom('.es-options .es-option:last-child').hasText(subsetModelOne.at(-1).label);
+
+    let subsetModelTwo = ObjectModel.slice(4, 7);
+    this.set('model', subsetModelTwo);
+
+    assert.dom('.es-options .es-option').exists({ count: subsetModelTwo.length });
+    assert.dom('.es-options .es-option:first-child').hasText(subsetModelTwo.at(0).label);
+    assert.dom('.es-options .es-option:nth-child(2)').hasText(subsetModelTwo.at(1).label);
+    assert.dom('.es-options .es-option:last-child').hasText(subsetModelTwo.at(-1).label);
+
+    this.set('model', ObjectModel);
+
+    assert.dom('.es-options .es-option').exists({ count: ObjectModel.length });
+    assert.dom('.es-options .es-option:first-child').hasText(ObjectModel.at(0).label);
+    assert.dom('.es-options .es-option:last-child').hasText(ObjectModel.at(-1).label);
   });
 
   test('it selects a flat option and calls onSelect', async function (assert) {
@@ -131,6 +182,64 @@ module('Integration | Component | x-select', function (hooks) {
     assert.dom('.es-control').exists();
     assert.dom('.es-arrow').doesNotExist();
     assert.dom('input').hasAttribute('readonly');
+  });
+
+  test('it works with multiple components on the same page', async function (assert) {
+    this.set('modelOne', FlatModel.slice(0, 3));
+    this.set('modelTwo', FlatModel.slice(3, 6));
+    this.set('valueOne', '');
+    this.set('valueTwo', '');
+    this.set('onSelectOne', (value) => this.set('valueOne', value));
+    this.set('onSelectTwo', (value) => this.set('valueTwo', value));
+
+    await render(hbs`
+      <div data-test-one>
+        <XSelect @model={{this.modelOne}} @value={{this.valueOne}} @onSelect={{this.onSelectOne}} />
+      </div>
+
+      <div data-test-two>
+        <XSelect @model={{this.modelTwo}} @value={{this.valueTwo}} @onSelect={{this.onSelectTwo}} />
+      </div>
+    `);
+
+    assert.dom('[data-test-one] .ember-select').exists('First component exists');
+    assert.dom('[data-test-two] .ember-select').exists('Second component exists');
+
+    assert.dom('[data-test-one] input').hasValue('', 'First input is empty');
+    assert.dom('[data-test-two] input').hasValue('', 'Second input is empty');
+
+    // Select from first component
+    await click('[data-test-one] .es-arrow');
+    assert.dom('[data-test-one] .es-options').exists('First dropdown opens');
+    assert.dom('[data-test-two] .es-options').doesNotExist('Second dropdown stays closed');
+
+    await click('[data-test-one] .es-options .es-option:first-child');
+    assert.dom('[data-test-one] input').hasValue(this.modelOne.at(0), 'First input updates');
+    assert.dom('[data-test-two] input').hasValue('', 'Second input unchanged');
+
+    assert.strictEqual(this.valueOne, this.modelOne.at(0), 'First value updated');
+    assert.strictEqual(this.valueTwo, '', 'Second value unchanged');
+
+    // Select from second component
+    await click('[data-test-two] .es-arrow');
+    assert.dom('[data-test-two] .es-options').exists('Second dropdown opens');
+    assert.dom('[data-test-one] .es-options').doesNotExist('First dropdown stays closed');
+
+    await click('[data-test-two] .es-options .es-option:last-child');
+    assert.dom('[data-test-two] input').hasValue(this.modelTwo.at(-1), 'Second input updates');
+    assert.dom('[data-test-one] input').hasValue(this.modelOne.at(0), 'First input unchanged');
+
+    assert.strictEqual(this.valueTwo, this.modelTwo.at(-1), 'Second value updated');
+    assert.strictEqual(this.valueOne, this.modelOne.at(0), 'First value unchanged');
+
+    // Test that each component operates independently
+    await fillIn('[data-test-one] input', 'Am');
+    assert.dom('[data-test-one] .es-options').exists('First dropdown opens when typing');
+    assert.dom('[data-test-two] .es-options').doesNotExist('Second dropdown stays closed');
+
+    await fillIn('[data-test-two] input', 'Na');
+    assert.dom('[data-test-two] .es-options').exists('Second dropdown opens when typing');
+    assert.dom('[data-test-one] .es-options').doesNotExist('First dropdown stays closed');
   });
 
   test('it autofocuses input when autofocus=true', async function (assert) {
@@ -350,6 +459,30 @@ module('Integration | Component | x-select', function (hooks) {
 
       assert.dom('.es-options').doesNotExist('Dropdown is closed after Escape');
     });
+
+    test('hover highlights options', async function (assert) {
+      this.set('model', FlatModel);
+
+      await render(hbs`<XSelect @model={{this.model}} />`);
+      await click('.es-arrow');
+
+      assert.dom('.es-options .es-option .es-highlight').doesNotExist();
+
+      await triggerEvent('.es-options .es-option:nth-child(1)', 'mouseenter');
+      assert.dom('.es-options .es-option:nth-child(1)').hasClass('es-highlight');
+      assert.dom('.es-options .es-option:nth-child(2)').doesNotHaveClass('es-highlight');
+      assert.dom('.es-options .es-option:nth-child(3)').doesNotHaveClass('es-highlight');
+
+      await triggerEvent('.es-options .es-option:nth-child(2)', 'mouseenter');
+      assert.dom('.es-options .es-option:nth-child(1)').doesNotHaveClass('es-highlight');
+      assert.dom('.es-options .es-option:nth-child(2)').hasClass('es-highlight');
+      assert.dom('.es-options .es-option:nth-child(3)').doesNotHaveClass('es-highlight');
+
+      await triggerEvent('.es-options .es-option:nth-child(3)', 'mouseenter');
+      assert.dom('.es-options .es-option:nth-child(1)').doesNotHaveClass('es-highlight');
+      assert.dom('.es-options .es-option:nth-child(2)').doesNotHaveClass('es-highlight');
+      assert.dom('.es-options .es-option:nth-child(3)').hasClass('es-highlight');
+    });
   });
 
   module('multiple', function () {
@@ -565,6 +698,9 @@ module('Integration | Component | x-select', function (hooks) {
     test('reverts non-matching input on blur', async function (assert) {
       this.set('model', FlatModel);
       this.set('value', 'Azul');
+      this.set('onSelect', (option) => {
+        this.set('value', option);
+      });
 
       await render(
         hbs`<XSelect @model={{this.model}} @required={{true}} @value={{this.value}} @onSelect={{this.onSelect}} />`,
@@ -610,6 +746,9 @@ module('Integration | Component | x-select', function (hooks) {
     test('reverts cleared input on blur', async function (assert) {
       this.set('model', FlatModel);
       this.set('value', 'Azul');
+      this.set('onSelect', (option) => {
+        this.set('value', option);
+      });
 
       await render(
         hbs`<XSelect @model={{this.model}} @value={{this.value}} @required={{true}} @onSelect={{this.onSelect}} />`,
@@ -772,6 +911,24 @@ module('Integration | Component | x-select', function (hooks) {
 
       assert.dom('.es-options .es-groups:nth-child(1) .es-option').exists({ count: 1 });
       assert.dom('.es-options .es-groups:nth-child(1) .es-option:nth-child(2)').hasText('Garlic');
+    });
+
+    test('hover highlights options within groups', async function (assert) {
+      this.set('dropdown', SelectDropdownGroup);
+      this.set('model', GroupModel);
+
+      await render(hbs`<XSelect @dropdown={{this.dropdown}} @model={{this.model}} />`);
+      await click('.es-arrow');
+
+      assert.dom('.es-options .es-option .es-highlight').doesNotExist();
+
+      await triggerEvent('.es-options .es-groups:nth-child(1) .es-option:nth-child(2)', 'mouseenter');
+      assert.dom('.es-options .es-groups:nth-child(1) .es-option:nth-child(2)').hasClass('es-highlight');
+      assert.dom('.es-options .es-groups:nth-child(2) .es-option:nth-child(2)').doesNotHaveClass('es-highlight');
+
+      await triggerEvent('.es-options .es-groups:nth-child(2) .es-option:nth-child(2)', 'mouseenter');
+      assert.dom('.es-options .es-groups:nth-child(1) .es-option:nth-child(2)').doesNotHaveClass('es-highlight');
+      assert.dom('.es-options .es-groups:nth-child(2) .es-option:nth-child(2)').hasClass('es-highlight');
     });
   });
 });

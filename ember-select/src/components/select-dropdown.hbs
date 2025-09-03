@@ -3,6 +3,7 @@
     <SelectDropdownOption
       @model={{option}}
       {{on "click" (fn this.select option)}}
+      {{on "mousedown" this.mouseDown}}
       {{on "mouseenter" (fn this.hover option)}}
     />
   {{/if}}
