@@ -184,6 +184,64 @@ module('Integration | Component | x-select', function (hooks) {
     assert.dom('input').hasAttribute('readonly');
   });
 
+  test('it works with multiple components on the same page', async function (assert) {
+    this.set('modelOne', FlatModel.slice(0, 3));
+    this.set('modelTwo', FlatModel.slice(3, 6));
+    this.set('valueOne', '');
+    this.set('valueTwo', '');
+    this.set('onSelectOne', (value) => this.set('valueOne', value));
+    this.set('onSelectTwo', (value) => this.set('valueTwo', value));
+
+    await render(hbs`
+      <div data-test-one>
+        <XSelect @model={{this.modelOne}} @value={{this.valueOne}} @onSelect={{this.onSelectOne}} />
+      </div>
+
+      <div data-test-two>
+        <XSelect @model={{this.modelTwo}} @value={{this.valueTwo}} @onSelect={{this.onSelectTwo}} />
+      </div>
+    `);
+
+    assert.dom('[data-test-one] .ember-select').exists('First component exists');
+    assert.dom('[data-test-two] .ember-select').exists('Second component exists');
+
+    assert.dom('[data-test-one] input').hasValue('', 'First input is empty');
+    assert.dom('[data-test-two] input').hasValue('', 'Second input is empty');
+
+    // Select from first component
+    await click('[data-test-one] .es-arrow');
+    assert.dom('[data-test-one] .es-options').exists('First dropdown opens');
+    assert.dom('[data-test-two] .es-options').doesNotExist('Second dropdown stays closed');
+
+    await click('[data-test-one] .es-options .es-option:first-child');
+    assert.dom('[data-test-one] input').hasValue(this.modelOne.at(0), 'First input updates');
+    assert.dom('[data-test-two] input').hasValue('', 'Second input unchanged');
+
+    assert.strictEqual(this.valueOne, this.modelOne.at(0), 'First value updated');
+    assert.strictEqual(this.valueTwo, '', 'Second value unchanged');
+
+    // Select from second component
+    await click('[data-test-two] .es-arrow');
+    assert.dom('[data-test-two] .es-options').exists('Second dropdown opens');
+    assert.dom('[data-test-one] .es-options').doesNotExist('First dropdown stays closed');
+
+    await click('[data-test-two] .es-options .es-option:last-child');
+    assert.dom('[data-test-two] input').hasValue(this.modelTwo.at(-1), 'Second input updates');
+    assert.dom('[data-test-one] input').hasValue(this.modelOne.at(0), 'First input unchanged');
+
+    assert.strictEqual(this.valueTwo, this.modelTwo.at(-1), 'Second value updated');
+    assert.strictEqual(this.valueOne, this.modelOne.at(0), 'First value unchanged');
+
+    // Test that each component operates independently
+    await fillIn('[data-test-one] input', 'Am');
+    assert.dom('[data-test-one] .es-options').exists('First dropdown opens when typing');
+    assert.dom('[data-test-two] .es-options').doesNotExist('Second dropdown stays closed');
+
+    await fillIn('[data-test-two] input', 'Na');
+    assert.dom('[data-test-two] .es-options').exists('Second dropdown opens when typing');
+    assert.dom('[data-test-one] .es-options').doesNotExist('First dropdown stays closed');
+  });
+
   test('it autofocuses input when autofocus=true', async function (assert) {
     await render(hbs`<XSelect @autofocus={{true}} />`);
 
