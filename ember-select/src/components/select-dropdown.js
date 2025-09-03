@@ -12,12 +12,12 @@ export default class SelectDropdownComponent extends Component {
 
   constructor() {
     super(...arguments);
-    this.args.updateDropdownKeypressHandler?.(this.keys.bind(this));
+    this.args.updateDropdownKeyHandler?.(this.keys.bind(this));
   }
 
   willDestroy() {
     super.willDestroy(...arguments);
-    this.args.updateDropdownKeypressHandler?.();
+    this.args.updateDropdownKeyHandler?.();
   }
 
   @cached

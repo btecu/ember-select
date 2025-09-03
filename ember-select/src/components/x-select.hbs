@@ -1,54 +1,56 @@
-<div class="es-control" {{on "click" this.focus}}>
-  <div class="es-input">
-    {{#if this.hasValues}}
-      <span class="es-selections">
-        {{#each @values as |option|}}
-          <span {{on "click" (fn this.remove option)}}>
-            {{if (get option this.labelKey) (get option this.labelKey) option}} ×
-          </span>
-        {{/each}}
+<div class="ember-select {{if this.isOpen "es-open"}} {{if this.isFocus "es-focus"}} {{unless this.canSearch "es-select"}} {{if this.isMultiple "es-multiple"}}">
+  <div class="es-control" {{on "click" this.focus}}>
+    <div class="es-input">
+      {{#if this.hasValues}}
+        <span class="es-selections">
+          {{#each @values as |option|}}
+            <span {{on "click" (fn this.remove option)}}>
+              {{if (get option this.labelKey) (get option this.labelKey) option}} ×
+            </span>
+          {{/each}}
+        </span>
+      {{/if}}
+
+      <input
+        autocomplete="off"
+        autofocus={{this.autofocus}}
+        id={{this.inputId}}
+        placeholder={{if this.hasValues "" this.placeholder}}
+        readonly={{unless this.canSearch "readonly"}}
+        type="text"
+        onblur={{this.blur}}
+        onfocus={{this.focus}}
+        oninput={{this.changeInput}}
+        onkeyup={{this.keypress}}
+      >
+    </div>
+
+    {{#if this.canClear}}
+      <span class="es-clear-zone" title="Clear" aria-label="Clear" {{on "click" this.clear}}>
+        <span class="es-clear">&times;</span>
       </span>
     {{/if}}
 
-    <input
-      aria-label={{this.placeholder}}
-      autocomplete="off"
-      autofocus={{this.autofocus}}
-      placeholder={{unless this.hasValues this.placeholder ""}}
-      readonly={{unless this.canSearch "readonly"}}
-      type="text"
-      onblur={{this.blur}}
-      onfocus={{this.focus}}
-      oninput={{this.changeInput}}
-      onkeyup={{this.keypress}}
-    >
+    {{#if this.hasDropdown}}
+      <span class="es-arrow-zone" {{on "click" this.onDropdown}}>
+        <span class="es-arrow"></span>
+      </span>
+    {{/if}}
   </div>
 
-  {{#if this.canClear}}
-    <span class="es-clear-zone" title="Clear" aria-label="Clear" {{on "click" this.clear}}>
-      <span class="es-clear">&times;</span>
-    </span>
-  {{/if}}
-
-  {{#if this.hasDropdown}}
-    <span class="es-arrow-zone" {{on "click" this.onDropdown}}>
-      <span class="es-arrow"></span>
-    </span>
+  {{#if this.isOpen}}
+    <div class="es-options">
+      <this.dropdown
+        @model={{@model}}
+        @token={{this.token}}
+        @values={{@values}}
+        @labelKey={{this.labelKey}}
+        @valueKey={{this.valueKey}}
+        @freeText={{@freeText}}
+        @shouldFilter={{this.shouldFilter}}
+        @onSelect={{this.select}}
+        @updateDropdownKeyHandler={{this.updateDropdownKeyHandler}}
+      />
+    </div>
   {{/if}}
 </div>
-
-{{#if this.isOpen}}
-  <div class="es-options">
-    <this.dropdown
-      @model={{@model}}
-      @token={{this.token}}
-      @values={{@values}}
-      @labelKey={{this.labelKey}}
-      @valueKey={{this.valueKey}}
-      @freeText={{this.freeText}}
-      @shouldFilter={{this.shouldFilter}}
-      @onSelect={{this.select}}
-      @updateDropdownKeypressHandler={{this.updateDropdownKeypressHandler}}
-    />
-  </div>
-{{/if}}
