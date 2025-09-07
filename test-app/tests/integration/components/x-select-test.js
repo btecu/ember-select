@@ -28,6 +28,8 @@ module('Integration | Component | x-select', function (hooks) {
   setupRenderingTest(hooks);
 
   test('it renders basic structure', async function (assert) {
+    assert.expect(4);
+
     await render(hbs`<XSelect />`);
 
     assert.dom('.ember-select').exists('Container exists');
@@ -37,6 +39,8 @@ module('Integration | Component | x-select', function (hooks) {
   });
 
   test('it renders with flat array model', async function (assert) {
+    assert.expect(4);
+
     this.set('model', FlatModel);
     await render(hbs`<XSelect @model={{this.model}} />`);
 
@@ -49,6 +53,8 @@ module('Integration | Component | x-select', function (hooks) {
   });
 
   test('it renders with object array model', async function (assert) {
+    assert.expect(4);
+
     this.set('model', ObjectModel);
     await render(hbs`<XSelect @model={{this.model}} />`);
 
@@ -61,6 +67,8 @@ module('Integration | Component | x-select', function (hooks) {
   });
 
   test('it updates dropdown values when flat model changes', async function (assert) {
+    assert.expect(10);
+
     this.set('model', FlatModel);
 
     await render(hbs`<XSelect @model={{this.model}} />`);
@@ -86,6 +94,8 @@ module('Integration | Component | x-select', function (hooks) {
   });
 
   test('it updates dropdown values when object model changes', async function (assert) {
+    assert.expect(10);
+
     let subsetModelOne = ObjectModel.slice(0, 2);
     this.set('model', subsetModelOne);
 
@@ -171,12 +181,16 @@ module('Integration | Component | x-select', function (hooks) {
   });
 
   test('it displays placeholder', async function (assert) {
+    assert.expect(1);
+
     await render(hbs`<XSelect @placeholder="Select a Car" />`);
 
     assert.dom('input').hasAttribute('placeholder', 'Select a Car');
   });
 
   test('it disables input when disabled=true', async function (assert) {
+    assert.expect(3);
+
     await render(hbs`<XSelect @disabled={{true}} />`);
 
     assert.dom('.es-control').exists();
@@ -185,6 +199,8 @@ module('Integration | Component | x-select', function (hooks) {
   });
 
   test('it does not open dropdown on down arrow when disabled=true', async function (assert) {
+    assert.expect(2);
+
     this.set('model', FlatModel);
 
     await render(hbs`<XSelect @model={{this.model}} @disabled={{true}} />`);
@@ -238,6 +254,8 @@ module('Integration | Component | x-select', function (hooks) {
   });
 
   test('it works with multiple components on the same page', async function (assert) {
+    assert.expect(20);
+
     this.set('modelOne', FlatModel.slice(0, 3));
     this.set('modelTwo', FlatModel.slice(3, 6));
     this.set('valueOne', '');
@@ -296,12 +314,16 @@ module('Integration | Component | x-select', function (hooks) {
   });
 
   test('it autofocuses input when autofocus=true', async function (assert) {
+    assert.expect(1);
+
     await render(hbs`<XSelect @autofocus={{true}} />`);
 
     assert.dom('input').hasAttribute('autofocus');
   });
 
   test('it does not opens dropdown on focus', async function (assert) {
+    assert.expect(2);
+
     this.set('model', FlatModel);
 
     await render(hbs`<XSelect @model={{this.model}} />`);
@@ -314,6 +336,8 @@ module('Integration | Component | x-select', function (hooks) {
   });
 
   test('it opens dropdown on focus when openOnFocus=true', async function (assert) {
+    assert.expect(2);
+
     this.set('model', FlatModel);
 
     await render(hbs`<XSelect @model={{this.model}} @openOnFocus={{true}} />`);
@@ -326,6 +350,8 @@ module('Integration | Component | x-select', function (hooks) {
   });
 
   test('it behaves like a native select when canSearch=false', async function (assert) {
+    assert.expect(5);
+
     this.set('model', FlatModel);
 
     await render(hbs`<XSelect @model={{this.model}} @canSearch={{false}} />`);
@@ -381,6 +407,8 @@ module('Integration | Component | x-select', function (hooks) {
   });
 
   test('it filters options based on search input', async function (assert) {
+    assert.expect(6);
+
     this.set('model', FlatModel);
 
     await render(hbs`<XSelect @model={{this.model}} />`);
@@ -403,6 +431,8 @@ module('Integration | Component | x-select', function (hooks) {
   });
 
   test('it shows the clear button', async function (assert) {
+    assert.expect(9);
+
     this.set('model', FlatModel);
 
     await render(hbs`<XSelect @model={{this.model}} />`);
@@ -425,6 +455,8 @@ module('Integration | Component | x-select', function (hooks) {
   });
 
   test('it clears input when clicking on the clear button', async function (assert) {
+    assert.expect(4);
+
     this.set('model', FlatModel);
 
     await render(hbs`<XSelect @model={{this.model}} />`);
@@ -444,6 +476,8 @@ module('Integration | Component | x-select', function (hooks) {
 
   module('keyboard navigation', function () {
     test('Arrows navigate options', async function (assert) {
+      assert.expect(8);
+
       this.set('model', FlatModel);
 
       await render(hbs`<XSelect @model={{this.model}} />`);
@@ -501,6 +535,8 @@ module('Integration | Component | x-select', function (hooks) {
     });
 
     test('Escape closes dropdown', async function (assert) {
+      assert.expect(2);
+
       this.set('model', FlatModel);
 
       await render(hbs`<XSelect @model={{this.model}} />`);
@@ -514,6 +550,8 @@ module('Integration | Component | x-select', function (hooks) {
     });
 
     test('hover highlights options', async function (assert) {
+      assert.expect(10);
+
       this.set('model', FlatModel);
 
       await render(hbs`<XSelect @model={{this.model}} />`);
@@ -540,6 +578,8 @@ module('Integration | Component | x-select', function (hooks) {
 
   module('multiple', function () {
     test('renders with pre-selected flat values', async function (assert) {
+      assert.expect(4);
+
       this.set('model', FlatModel);
       this.set('values', ['Azul', 'Rojo']);
 
@@ -555,6 +595,8 @@ module('Integration | Component | x-select', function (hooks) {
     });
 
     test('renders with pre-selected object values', async function (assert) {
+      assert.expect(3);
+
       this.set('model', ObjectModel);
       this.set('values', [ObjectModel.at(5), ObjectModel.at(6)]);
 
@@ -567,6 +609,8 @@ module('Integration | Component | x-select', function (hooks) {
     });
 
     test('selects multiple options', async function (assert) {
+      assert.expect(6);
+
       this.set('model', FlatModel);
       this.set('values', []);
       this.set('onSelect', (value) => {
@@ -749,6 +793,8 @@ module('Integration | Component | x-select', function (hooks) {
 
   module('required', function () {
     test('reverts non-matching input on blur', async function (assert) {
+      assert.expect(4);
+
       this.set('model', FlatModel);
       this.set('value', 'Azul');
       this.set('onSelect', (option) => {
@@ -772,6 +818,8 @@ module('Integration | Component | x-select', function (hooks) {
     });
 
     test('keeps valid selection on blur', async function (assert) {
+      assert.expect(5);
+
       this.set('model', FlatModel);
       this.set('value', 'Azul');
       this.set('onSelect', (option) => {
@@ -797,6 +845,8 @@ module('Integration | Component | x-select', function (hooks) {
     });
 
     test('reverts cleared input on blur', async function (assert) {
+      assert.expect(4);
+
       this.set('model', FlatModel);
       this.set('value', 'Azul');
       this.set('onSelect', (option) => {
@@ -820,6 +870,8 @@ module('Integration | Component | x-select', function (hooks) {
     });
 
     test('allows custom input and keeps it on blur when freeText=true', async function (assert) {
+      assert.expect(4);
+
       this.set('model', FlatModel);
       this.set('value', 'Beige');
       this.set('onSelect', (option) => {
@@ -849,6 +901,8 @@ module('Integration | Component | x-select', function (hooks) {
     });
 
     test('reverts cleared input on blur if previously set, even when freeText=true', async function (assert) {
+      assert.expect(4);
+
       this.set('model', FlatModel);
       this.set('value', 'Azul');
       this.set('onSelect', (option) => {
@@ -891,6 +945,8 @@ module('Integration | Component | x-select', function (hooks) {
     ];
 
     test('renders groups and options correctly', async function (assert) {
+      assert.expect(7);
+
       this.set('dropdown', SelectDropdownGroup);
       this.set('model', GroupModel);
 
@@ -936,6 +992,8 @@ module('Integration | Component | x-select', function (hooks) {
     });
 
     test('filters options across groups', async function (assert) {
+      assert.expect(13);
+
       this.set('dropdown', SelectDropdownGroup);
       this.set('model', GroupModel);
 
@@ -967,6 +1025,8 @@ module('Integration | Component | x-select', function (hooks) {
     });
 
     test('hover highlights options within groups', async function (assert) {
+      assert.expect(5);
+
       this.set('dropdown', SelectDropdownGroup);
       this.set('model', GroupModel);
 
