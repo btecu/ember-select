@@ -1,11 +1,20 @@
-<div class="ember-select {{if this.isOpen "es-open"}} {{if this.isFocus "es-focus"}} {{unless this.canSearch "es-select"}} {{if this.isMultiple "es-multiple"}}">
+<div class="ember-select
+    {{unless this.canSearch "es-select"}}
+    {{if @disabled "es-disabled"}}
+    {{if this.isFocus "es-focus"}}
+    {{if this.isOpen "es-open"}}
+    {{if this.isMultiple "es-multiple"}}
+  ">
   <div class="es-control" {{on "click" this.focus}}>
     <div class="es-input">
       {{#if this.hasValues}}
         <span class="es-selections">
           {{#each @values as |option|}}
             <span {{on "click" (fn this.remove option)}}>
-              {{if (get option this.labelKey) (get option this.labelKey) option}} ×
+              <span data-test-label>
+                {{if (get option this.labelKey) (get option this.labelKey) option}}
+              </span>
+              ×
             </span>
           {{/each}}
         </span>

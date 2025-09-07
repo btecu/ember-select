@@ -240,17 +240,17 @@ module('Integration | Component | x-select', function (hooks) {
 
     await render(hbs`<XSelect @model={{this.model}} @values={{this.values}} />`);
 
-    assert.dom('.es-selections span').exists({ count: 2 }, 'Initial values are displayed');
-    assert.dom('.es-selections span:nth-child(1)').hasTextContaining(FlatModel.at(0));
-    assert.dom('.es-selections span:nth-child(2)').hasTextContaining(FlatModel.at(2));
+    assert.dom('.es-selections > span').exists({ count: 2 }, 'Initial values are displayed');
+    assert.dom('.es-selections span:nth-child(1) [data-test-label]').hasText(FlatModel.at(0));
+    assert.dom('.es-selections span:nth-child(2) [data-test-label]').hasText(FlatModel.at(2));
 
     // Change values array externally (behind the scenes)
     this.set('values', [FlatModel.at(1), FlatModel.at(4), FlatModel.at(6)]);
 
-    assert.dom('.es-selections span').exists({ count: 3 }, 'Updated values are reflected');
-    assert.dom('.es-selections span:nth-child(1)').hasTextContaining(FlatModel.at(1));
-    assert.dom('.es-selections span:nth-child(2)').hasTextContaining(FlatModel.at(4));
-    assert.dom('.es-selections span:nth-child(3)').hasTextContaining(FlatModel.at(6));
+    assert.dom('.es-selections > span').exists({ count: 3 }, 'Updated values are reflected');
+    assert.dom('.es-selections span:nth-child(1) [data-test-label]').hasText(FlatModel.at(1));
+    assert.dom('.es-selections span:nth-child(2) [data-test-label]').hasText(FlatModel.at(4));
+    assert.dom('.es-selections span:nth-child(3) [data-test-label]').hasText(FlatModel.at(6));
   });
 
   test('it works with multiple components on the same page', async function (assert) {
@@ -585,11 +585,10 @@ module('Integration | Component | x-select', function (hooks) {
 
       await render(hbs`<XSelect @model={{this.model}} @values={{this.values}} />`);
 
-      assert.dom('.es-selections span').exists({ count: 2 }, 'Renders pre-selected options');
+      assert.dom('.es-selections > span').exists({ count: 2 }, 'Renders pre-selected options');
 
-      // TODO: Could use `.hasText` if the `×` is separated
-      assert.dom('.es-selections span:nth-child(1)').hasTextContaining('Azul');
-      assert.dom('.es-selections span:nth-child(2)').hasTextContaining('Rojo');
+      assert.dom('.es-selections span:nth-child(1) [data-test-label]').hasText('Azul');
+      assert.dom('.es-selections span:nth-child(2) [data-test-label]').hasText('Rojo');
 
       assert.dom('input').hasValue('', 'Input is empty after rendering selections');
     });
@@ -602,10 +601,10 @@ module('Integration | Component | x-select', function (hooks) {
 
       await render(hbs`<XSelect @model={{this.model}} @values={{this.values}} />`);
 
-      assert.dom('.es-selections span').exists({ count: 2 }, 'Renders pre-selected options');
+      assert.dom('.es-selections > span').exists({ count: 2 }, 'Renders pre-selected options');
 
-      assert.dom('.es-selections span:nth-child(1)').hasTextContaining('Peugeot');
-      assert.dom('.es-selections span:nth-child(2)').hasTextContaining('Seat');
+      assert.dom('.es-selections span:nth-child(1) [data-test-label]').hasText('Peugeot');
+      assert.dom('.es-selections span:nth-child(2) [data-test-label]').hasText('Seat');
     });
 
     test('selects multiple options', async function (assert) {
@@ -621,14 +620,14 @@ module('Integration | Component | x-select', function (hooks) {
 
       await selectOption('.ember-select', 'Blanco');
 
-      assert.dom('.es-selections span').exists({ count: 1 }, 'Renders first selected option');
-      assert.dom('.es-selections span:nth-child(1)').hasTextContaining('Blanco');
+      assert.dom('.es-selections > span').exists({ count: 1 }, 'Renders first selected option');
+      assert.dom('.es-selections span:nth-child(1) [data-test-label]').hasText('Blanco');
       assert.deepEqual(this.values, ['Blanco'], 'Values array updated after first selection');
 
       await selectOption('.ember-select', 'Verde');
 
-      assert.dom('.es-selections span').exists({ count: 2 }, 'Renders second selected option');
-      assert.dom('.es-selections span:nth-child(1)').hasTextContaining('Blanco');
+      assert.dom('.es-selections > span').exists({ count: 2 }, 'Renders second selected option');
+      assert.dom('.es-selections span:nth-child(1) [data-test-label]').hasText('Blanco');
       assert.deepEqual(this.values, ['Blanco', 'Verde'], 'Values array updated after second selection');
     });
 
@@ -646,12 +645,12 @@ module('Integration | Component | x-select', function (hooks) {
 
       await render(hbs`<XSelect @model={{this.model}} @values={{this.values}} @onRemove={{this.onRemove}} />`);
 
-      assert.dom('.es-selections span').exists({ count: 2 });
+      assert.dom('.es-selections > span').exists({ count: 2 });
 
       await click('.es-selections span:first-child');
 
-      assert.dom('.es-selections span').exists({ count: 1 }, 'One option remains after removal');
-      assert.dom('.es-selections span').hasTextContaining('Negro');
+      assert.dom('.es-selections > span').exists({ count: 1 }, 'One option remains after removal');
+      assert.dom('.es-selections span [data-test-label]').hasText('Negro');
       assert.deepEqual(this.values, ['Negro'], 'Values array updated after removal');
     });
 
@@ -669,12 +668,12 @@ module('Integration | Component | x-select', function (hooks) {
 
       await render(hbs`<XSelect @model={{this.model}} @values={{this.values}} @onRemove={{this.onRemove}} />`);
 
-      assert.dom('.es-selections span').exists({ count: 2 });
+      assert.dom('.es-selections > span').exists({ count: 2 });
 
       await triggerKeyEvent('input', 'keyup', 'Backspace');
 
-      assert.dom('.es-selections span').exists({ count: 1 }, 'One option remains after backspace');
-      assert.dom('.es-selections span').hasTextContaining('Azul');
+      assert.dom('.es-selections > span').exists({ count: 1 }, 'One option remains after backspace');
+      assert.dom('.es-selections span [data-test-label]').hasText('Azul');
       assert.deepEqual(this.values, ['Azul'], 'Values array updated after backspace');
     });
 
@@ -694,7 +693,7 @@ module('Integration | Component | x-select', function (hooks) {
         hbs`<XSelect @freeText={{true}} @model={{this.model}} @values={{this.values}} @onCreate={{this.onCreate}} />`,
       );
 
-      assert.dom('.es-selections span').exists({ count: 1 });
+      assert.dom('.es-selections > span').exists({ count: 1 });
 
       await fillIn('input', 'Marrón');
       await triggerKeyEvent('input', 'keyup', 'Enter');
@@ -702,9 +701,9 @@ module('Integration | Component | x-select', function (hooks) {
       await fillIn('input', 'Dorado');
       await triggerKeyEvent('input', 'keyup', 'Tab');
 
-      assert.dom('.es-selections span').exists({ count: 3 }, 'New value is rendered');
-      assert.dom('.es-selections span:nth-child(2)').hasTextContaining('Marrón');
-      assert.dom('.es-selections span:nth-child(3)').hasTextContaining('Dorado');
+      assert.dom('.es-selections > span').exists({ count: 3 }, 'New value is rendered');
+      assert.dom('.es-selections span:nth-child(2) [data-test-label]').hasText('Marrón');
+      assert.dom('.es-selections span:nth-child(3) [data-test-label]').hasText('Dorado');
       assert.deepEqual(this.values, ['Azul', 'Marrón', 'Dorado'], 'Values array includes the new values');
     });
 
