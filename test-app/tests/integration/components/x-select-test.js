@@ -188,6 +188,14 @@ module('Integration | Component | x-select', function (hooks) {
     assert.dom('input').hasAttribute('placeholder', 'Select a Car');
   });
 
+  test('it passes the id to the input element', async function (assert) {
+    assert.expect(1);
+
+    await render(hbs`<XSelect @inputId="select86" />`);
+
+    assert.dom('input').hasAttribute('id', 'select86');
+  });
+
   test('it disables input when disabled=true', async function (assert) {
     assert.expect(3);
 

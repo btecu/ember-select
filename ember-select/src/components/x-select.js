@@ -12,7 +12,7 @@ export default class SelectComponent extends Component {
 
   autofocus = this.args.autofocus ?? false;
   dropdown = this.args.dropdown ?? SelectDropdown;
-  inputId = this.args.id ?? guidFor(this);
+  inputId = this.args.inputId ?? guidFor(this);
   labelKey = this.args.labelKey ?? 'label';
   placeholder = this.args.placeholder ?? 'Type...';
   valueKey = this.args.valueKey ?? 'value';

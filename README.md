@@ -1,5 +1,5 @@
 # ember-select
-Ready to use and extensible select component
+Minimalistic but ready to use and extensible select component.
 
 <details>
   <summary>Why not use an existing solution?</summary>
@@ -157,6 +157,11 @@ Default: `false`
 Accepts: `boolean`  
 Allow any input set and not just a provided option.
 
+#### inputId
+Default: _generated_  
+Accepts: `string`  
+Set the input element `id`.
+
 #### labelKey
 Default: `label`  
 Accepts: `string`  
@@ -238,4 +243,3 @@ The component accepts both flat and complex (objects) lists.
 ]
 ```
 Note: Groups require a `parentId`.
-
