@@ -184,6 +184,18 @@ module('Integration | Component | x-select', function (hooks) {
     assert.dom('input').hasAttribute('readonly');
   });
 
+  test('it does not open dropdown on down arrow when disabled=true', async function (assert) {
+    this.set('model', FlatModel);
+
+    await render(hbs`<XSelect @model={{this.model}} @disabled={{true}} />`);
+
+    assert.dom('.es-options').doesNotExist('Dropdown is initially closed');
+
+    await triggerKeyEvent('input', 'keyup', 'ArrowDown');
+
+    assert.dom('.es-options').doesNotExist('Dropdown stays closed after down arrow when disabled');
+  });
+
   test('it works with multiple components on the same page', async function (assert) {
     this.set('modelOne', FlatModel.slice(0, 3));
     this.set('modelTwo', FlatModel.slice(3, 6));
