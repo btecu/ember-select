@@ -184,7 +184,7 @@ export default class SelectComponent extends Component {
         if (this.isOpen) {
           this.#handleDropdownKey?.(event);
         } else {
-          this.isOpen = true;
+          this.open();
         }
 
         event.preventDefault();
