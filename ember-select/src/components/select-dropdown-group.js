@@ -33,9 +33,16 @@ export default class SelectDropdownGroupComponent extends SelectDropdownComponen
     }
   }
 
-  upDownKeys(selected, event) {
-    let list = this.flatList.filter((x) => x.isVisible).filter((x) => get(x, 'parentId'));
+  tabEnterKeys(selected) {
+    if (selected && this.flatList.includes(selected)) {
+      this.select(selected);
+    } else if (this.args.freeText) {
+      this.args.onSelect(this.args.token, false);
+    }
+  }
 
+  upDownKeys(selected, event) {
+    let list = this.flatList.filter((x) => x.isVisible).filter((x) => isPresent(get(x, 'parentId')));
     this.move(list, selected, event.key);
   }
 }
