@@ -990,6 +990,54 @@ module('Integration | Component | x-select', function (hooks) {
       assert.dom('input').hasValue('Lemon', 'Input updates with selected grouped option label');
     });
 
+    test('selects option from first group with keyboard navigation', async function (assert) {
+      assert.expect(4);
+
+      this.set('dropdown', SelectDropdownGroup);
+      this.set('model', GroupModel);
+      this.set('onSelect', (value, option, isSelected) => {
+        assert.strictEqual(value, GroupModel.at(2).value, 'onSelect called with correct value');
+        assert.deepEqual(option, GroupModel.at(2), 'onSelect called with correct option object');
+        assert.true(isSelected, 'Option is marked as selected');
+      });
+
+      await render(hbs`<XSelect @dropdown={{this.dropdown}} @model={{this.model}} @onSelect={{this.onSelect}} />`);
+
+      await click('.es-arrow');
+
+      await triggerKeyEvent('input', 'keyup', 'ArrowDown');
+      await triggerKeyEvent('input', 'keyup', 'ArrowDown');
+      await triggerKeyEvent('input', 'keyup', 'Enter');
+
+      assert.dom('input').hasValue(GroupModel.at(2).label, 'Input value matches selected option from first group');
+    });
+
+    test('navigates between groups with keyboard', async function (assert) {
+      assert.expect(2);
+
+      let index = GroupModel.findIndex((x) => x.parentId > 0);
+
+      this.set('dropdown', SelectDropdownGroup);
+      this.set('model', GroupModel);
+
+      await render(hbs`<XSelect @dropdown={{this.dropdown}} @model={{this.model}} />`);
+
+      await click('.es-arrow');
+
+      // Navigate through first group and into second group
+      for (let i = 1; i < index; i++) {
+        await triggerKeyEvent('input', 'keyup', 'ArrowDown');
+      }
+
+      assert
+        .dom('.es-options .es-groups:nth-child(1) .es-option')
+        .doesNotHaveClass('es-highlight', 'No option in first group is highlighted');
+
+      assert
+        .dom('.es-options .es-groups:nth-child(2) .es-option:nth-child(2)')
+        .hasClass('es-highlight', 'First option in second group is highlighted');
+    });
+
     test('filters options across groups', async function (assert) {
       assert.expect(13);
 
