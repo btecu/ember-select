@@ -196,6 +196,47 @@ module('Integration | Component | x-select', function (hooks) {
     assert.dom('.es-options').doesNotExist('Dropdown stays closed after down arrow when disabled');
   });
 
+  test('it reflects external value changes', async function (assert) {
+    assert.expect(4);
+
+    this.set('model', FlatModel);
+    this.set('value', FlatModel.at(1));
+
+    await render(hbs`<XSelect @model={{this.model}} @value={{this.value}} />`);
+
+    assert.dom('input').hasValue(FlatModel.at(1), 'Initial value is displayed');
+
+    this.set('value', FlatModel.at(3));
+    assert.dom('input').hasValue(FlatModel.at(3), 'Input reflects external value change');
+
+    this.set('value', null);
+    assert.dom('input').hasValue('', 'Input reflects external clear');
+
+    this.set('value', FlatModel.at(4));
+    assert.dom('input').hasValue(FlatModel.at(4), 'Input reflects another external value change');
+  });
+
+  test('it reflects external values changes in multiple selection mode', async function (assert) {
+    assert.expect(7);
+
+    this.set('model', FlatModel);
+    this.set('values', [FlatModel.at(0), FlatModel.at(2)]);
+
+    await render(hbs`<XSelect @model={{this.model}} @values={{this.values}} />`);
+
+    assert.dom('.es-selections span').exists({ count: 2 }, 'Initial values are displayed');
+    assert.dom('.es-selections span:nth-child(1)').hasTextContaining(FlatModel.at(0));
+    assert.dom('.es-selections span:nth-child(2)').hasTextContaining(FlatModel.at(2));
+
+    // Change values array externally (behind the scenes)
+    this.set('values', [FlatModel.at(1), FlatModel.at(4), FlatModel.at(6)]);
+
+    assert.dom('.es-selections span').exists({ count: 3 }, 'Updated values are reflected');
+    assert.dom('.es-selections span:nth-child(1)').hasTextContaining(FlatModel.at(1));
+    assert.dom('.es-selections span:nth-child(2)').hasTextContaining(FlatModel.at(4));
+    assert.dom('.es-selections span:nth-child(3)').hasTextContaining(FlatModel.at(6));
+  });
+
   test('it works with multiple components on the same page', async function (assert) {
     this.set('modelOne', FlatModel.slice(0, 3));
     this.set('modelTwo', FlatModel.slice(3, 6));

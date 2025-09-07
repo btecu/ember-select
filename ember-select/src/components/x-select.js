@@ -78,6 +78,12 @@ export default class SelectComponent extends Component {
     return this.isDirty || this.isMultiple || this.hasChanged;
   }
 
+  get value() {
+    let { label } = this.retrieveOption(this.args.value);
+
+    return label;
+  }
+
   constructor() {
     super(...arguments);
 
