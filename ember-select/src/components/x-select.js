@@ -5,6 +5,7 @@ import { tracked } from '@glimmer/tracking';
 import { next } from '@ember/runloop';
 import { isBlank, isPresent } from '@ember/utils';
 import SelectDropdown from './select-dropdown.js';
+import '../css/x-select.css';
 
 export default class SelectComponent extends Component {
   #handleDropdownKey = null;
