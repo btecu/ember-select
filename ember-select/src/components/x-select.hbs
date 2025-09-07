@@ -18,6 +18,7 @@
         placeholder={{if this.hasValues "" this.placeholder}}
         readonly={{unless this.canSearch "readonly"}}
         type="text"
+        value={{this.value}}
         onblur={{this.blur}}
         onfocus={{this.focus}}
         oninput={{this.changeInput}}
