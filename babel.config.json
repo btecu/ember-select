@@ -1,13 +1,7 @@
 {
   "plugins": [
-    [
-      "@babel/plugin-proposal-decorators",
-      { "legacy": true }
-    ],
-    [
-      "@babel/plugin-proposal-class-properties",
-      { "loose": true }
-    ],
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["@babel/plugin-transform-class-properties", { "loose": true }],
     "@embroider/addon-dev/template-colocation-plugin",
     [
       "babel-plugin-ember-template-compilation",
@@ -16,9 +10,6 @@
         "transforms": []
       }
     ],
-    [
-      "module:decorator-transforms",
-      { "runtime": { "import": "decorator-transforms/runtime" } }
-    ]
+    ["module:decorator-transforms", { "runtime": { "import": "decorator-transforms/runtime" } }]
   ]
 }

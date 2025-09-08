@@ -18,10 +18,10 @@
     "test": "pnpm --filter \"*\" test"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.28.0",
-    "@eslint/js": "^9.34.0",
+    "@babel/eslint-parser": "^7.28.4",
+    "@eslint/js": "^9.35.0",
     "concurrently": "^9.2.1",
-    "eslint": "^9.34.0",
+    "eslint": "^9.35.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-ember": "^12.7.3",
     "eslint-plugin-import": "^2.32.0",
@@ -33,9 +33,9 @@
     "ember-select",
     "test-app"
   ],
-  "packageManager": "pnpm@10.15.0",
+  "packageManager": "pnpm@10.15.1",
   "volta": {
-    "node": "22.18.0",
-    "pnpm": "10.15.0"
+    "node": "22.19.0",
+    "pnpm": "10.15.1"
   }
 }
