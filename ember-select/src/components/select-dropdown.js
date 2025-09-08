@@ -64,9 +64,15 @@ export default class SelectDropdownComponent extends Component {
   filterModel(list) {
     let token = this.args.token;
 
-    // Reset all visibility
-    for (let element of list.filter((x) => x.isVisible)) {
-      element.set('isVisible', false);
+    // Reset all selection and visibility states
+    for (let element of list) {
+      if (element.isSelected) {
+        element.set('isSelected', false);
+      }
+
+      if (element.isVisible) {
+        element.set('isVisible', false);
+      }
     }
 
     if (this.args.values?.length > 0) {
@@ -87,6 +93,8 @@ export default class SelectDropdownComponent extends Component {
       let [firstVisible] = list.filter((x) => x.isVisible);
       firstVisible.set('isSelected', true);
       this.selected = firstVisible;
+    } else {
+      this.selected = null;
     }
   }
 
