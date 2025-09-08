@@ -453,6 +453,67 @@ module('Integration | Component | x-select', function (hooks) {
     assert.dom('.es-options .es-option').doesNotExist('Dropdown is hidden when no results');
   });
 
+  test('hover highlights options', async function (assert) {
+    assert.expect(10);
+
+    this.set('model', FlatModel);
+
+    await render(hbs`<XSelect @model={{this.model}} />`);
+    await click('.es-arrow');
+
+    assert.dom('.es-options .es-option .es-highlight').doesNotExist();
+
+    await triggerEvent('.es-options .es-option:nth-child(1)', 'mouseenter');
+    assert.dom('.es-options .es-option:nth-child(1)').hasClass('es-highlight');
+    assert.dom('.es-options .es-option:nth-child(2)').doesNotHaveClass('es-highlight');
+    assert.dom('.es-options .es-option:nth-child(3)').doesNotHaveClass('es-highlight');
+
+    await triggerEvent('.es-options .es-option:nth-child(2)', 'mouseenter');
+    assert.dom('.es-options .es-option:nth-child(1)').doesNotHaveClass('es-highlight');
+    assert.dom('.es-options .es-option:nth-child(2)').hasClass('es-highlight');
+    assert.dom('.es-options .es-option:nth-child(3)').doesNotHaveClass('es-highlight');
+
+    await triggerEvent('.es-options .es-option:nth-child(3)', 'mouseenter');
+    assert.dom('.es-options .es-option:nth-child(1)').doesNotHaveClass('es-highlight');
+    assert.dom('.es-options .es-option:nth-child(2)').doesNotHaveClass('es-highlight');
+    assert.dom('.es-options .es-option:nth-child(3)').hasClass('es-highlight');
+  });
+
+  test('it maintains correct hover states when filtering options by changing the input', async function (assert) {
+    assert.expect(12);
+
+    this.set('model', FlatModel);
+
+    await render(hbs`<XSelect @model={{this.model}} />`);
+
+    await fillIn('input', 'az');
+
+    assert.dom('.es-options').exists('Dropdown appears on input');
+    assert.dom('.es-options .es-option').exists({ count: 1 });
+    assert.dom('.es-options .es-option:first-child').hasText('Azul');
+
+    await triggerEvent('.es-options .es-option:first-child', 'mouseenter');
+    assert.dom('.es-options .es-option:first-child').hasClass('es-highlight');
+
+    await fillIn('input', 'a');
+
+    assert.dom('.es-options .es-option').exists({ count: 5 });
+    assert.dom('.es-options .es-option:first-child').hasText('Amarillo');
+    assert.dom('.es-options .es-option:nth-child(2)').hasText('Azul');
+
+    assert.dom('.es-options .es-option:first-child').hasClass('es-highlight');
+    assert.dom('.es-options .es-option:nth-child(2)').doesNotHaveClass('es-highlight');
+
+    await triggerEvent('.es-options .es-option:nth-child(2)', 'mouseenter');
+    assert.dom('.es-options .es-option:first-child').doesNotHaveClass('es-highlight');
+    assert.dom('.es-options .es-option:nth-child(2)').hasClass('es-highlight');
+
+    await fillIn('input', '');
+    await triggerKeyEvent('input', 'keyup', 'ArrowDown');
+
+    assert.dom('.es-options .es-option:first-child').hasClass('es-highlight');
+  });
+
   test('it shows the clear button', async function (assert) {
     assert.expect(9);
 
@@ -570,32 +631,6 @@ module('Integration | Component | x-select', function (hooks) {
       await triggerKeyEvent('input', 'keyup', 'Escape');
 
       assert.dom('.es-options').doesNotExist('Dropdown is closed after Escape');
-    });
-
-    test('hover highlights options', async function (assert) {
-      assert.expect(10);
-
-      this.set('model', FlatModel);
-
-      await render(hbs`<XSelect @model={{this.model}} />`);
-      await click('.es-arrow');
-
-      assert.dom('.es-options .es-option .es-highlight').doesNotExist();
-
-      await triggerEvent('.es-options .es-option:nth-child(1)', 'mouseenter');
-      assert.dom('.es-options .es-option:nth-child(1)').hasClass('es-highlight');
-      assert.dom('.es-options .es-option:nth-child(2)').doesNotHaveClass('es-highlight');
-      assert.dom('.es-options .es-option:nth-child(3)').doesNotHaveClass('es-highlight');
-
-      await triggerEvent('.es-options .es-option:nth-child(2)', 'mouseenter');
-      assert.dom('.es-options .es-option:nth-child(1)').doesNotHaveClass('es-highlight');
-      assert.dom('.es-options .es-option:nth-child(2)').hasClass('es-highlight');
-      assert.dom('.es-options .es-option:nth-child(3)').doesNotHaveClass('es-highlight');
-
-      await triggerEvent('.es-options .es-option:nth-child(3)', 'mouseenter');
-      assert.dom('.es-options .es-option:nth-child(1)').doesNotHaveClass('es-highlight');
-      assert.dom('.es-options .es-option:nth-child(2)').doesNotHaveClass('es-highlight');
-      assert.dom('.es-options .es-option:nth-child(3)').hasClass('es-highlight');
     });
   });
 
