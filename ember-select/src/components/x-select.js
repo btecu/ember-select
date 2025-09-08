@@ -190,7 +190,7 @@ export default class SelectComponent extends Component {
         if (this.isOpen) {
           this.#handleDropdownKey?.(event);
         } else {
-          this.open();
+          this.open(true);
         }
 
         event.preventDefault();
@@ -246,8 +246,8 @@ export default class SelectComponent extends Component {
     this.#handleDropdownKey = handler;
   }
 
-  open() {
-    this.isOpen = this.hasDropdown && this.canOpen;
+  open(isOpening) {
+    this.isOpen = this.hasDropdown && (this.canOpen || isOpening);
     this.isFocus = true;
   }
 

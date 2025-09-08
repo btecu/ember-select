@@ -343,6 +343,21 @@ module('Integration | Component | x-select', function (hooks) {
     assert.dom('.es-options').doesNotExist('Dropdown not open on focus');
   });
 
+  test('it opens dropdown on down arrow when input is focused', async function (assert) {
+    assert.expect(2);
+
+    this.set('model', FlatModel);
+
+    await render(hbs`<XSelect @model={{this.model}} />`);
+
+    await focus('input');
+    assert.dom('.es-options').doesNotExist('Dropdown initially closed');
+
+    await triggerKeyEvent('input', 'keyup', 'ArrowDown');
+
+    assert.dom('.es-options').exists('Dropdown opens on down arrow when input is focused');
+  });
+
   test('it opens dropdown on focus when openOnFocus=true', async function (assert) {
     assert.expect(2);
 
