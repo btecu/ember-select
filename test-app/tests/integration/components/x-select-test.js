@@ -558,6 +558,110 @@ module('Integration | Component | x-select', function (hooks) {
     assert.dom('input').hasValue('');
   });
 
+  module('async model', function () {
+    test('it works when model is set after a delay', async function (assert) {
+      assert.expect(7);
+
+      this.set('model', null);
+      this.set('onSelect', (option) => {
+        this.set('value', option);
+      });
+
+      await render(hbs`<XSelect @model={{this.model}} @onSelect={{this.onSelect}} />`);
+
+      assert.dom('.es-arrow').doesNotExist('No dropdown button appears when model is null');
+
+      // Set model after a delay (simulate async data loading)
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          this.set('model', FlatModel);
+          resolve();
+        }, 250);
+      });
+
+      await click('.es-arrow');
+      assert.dom('.es-options').exists('Dropdown appears after model is set');
+      assert.dom('.es-options .es-option').exists({ count: FlatModel.length }, 'All options are visible');
+      assert.dom('.es-options .es-option:first-child').hasText(FlatModel.at(0), 'First option displays correctly');
+      assert.dom('.es-options .es-option:last-child').hasText(FlatModel.at(-1), 'Last option displays correctly');
+
+      await selectOption('.ember-select', FlatModel.at(1));
+      assert.dom('input').hasValue(FlatModel.at(1), 'Selected option appears in input');
+      assert.strictEqual(this.value, FlatModel.at(1), 'onSelect callback was called with correct value');
+    });
+
+    test('it updates initial input label when object model is set after a delay', async function (assert) {
+      assert.expect(6);
+
+      let { label, value } = ObjectModel.at(3);
+
+      this.set('model', null);
+      this.set('value', value);
+
+      await render(hbs`<XSelect @model={{this.model}} @value={{this.value}} />`);
+
+      assert.dom('input').hasValue(`${value}`, 'Input shows value before model is loaded');
+      assert.dom('.es-arrow').doesNotExist('No dropdown button appears when model is null');
+
+      // Set model after a delay (simulate async data loading)
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          this.set('model', ObjectModel);
+          resolve();
+        }, 200);
+      });
+
+      assert.dom('input').hasValue(label, 'Input shows label after model is loaded');
+      assert.dom('.es-arrow').exists('Dropdown button appears after model is set');
+
+      await click('.es-arrow');
+      assert.dom('.es-options').exists('Dropdown opens after model is set');
+      assert.dom('.es-options .es-option').exists({ count: ObjectModel.length }, 'All options are visible');
+    });
+
+    test('it updates dropdown options when model is swapped after delay', async function (assert) {
+      assert.expect(10);
+
+      let subsetModelOne = ObjectModel.slice(0, 3);
+      let subsetModelTwo = ObjectModel.slice(4, 7);
+
+      this.set('model', subsetModelOne);
+      this.set('onSelect', (value) => {
+        this.set('value', value);
+      });
+
+      await render(hbs`<XSelect @model={{this.model}} @value={{this.value}} @onSelect={{this.onSelect}} />`);
+
+      await click('.es-arrow');
+      assert.dom('.es-options').exists('Dropdown opens with first subset');
+      assert.dom('.es-options .es-option').exists({ count: subsetModelOne.length });
+      assert.dom('.es-options .es-option:first-child').hasText(subsetModelOne.at(0).label);
+      assert.dom('.es-options .es-option:last-child').hasText(subsetModelOne.at(-1).label);
+
+      await selectOption('.ember-select', subsetModelOne.at(1).label);
+      assert.dom('input').hasValue(subsetModelOne.at(1).label);
+
+      this.set('value', null);
+
+      // Swap model after a delay (simulate dynamic data loading)
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          this.set('model', subsetModelTwo);
+          resolve();
+        }, 150);
+      });
+
+      await click('.es-arrow');
+      assert.dom('.es-options').exists('Dropdown opens with second subset');
+      assert.dom('.es-options .es-option').exists({ count: subsetModelTwo.length });
+      assert.dom('.es-options .es-option:first-child').hasText(subsetModelTwo.at(0).label);
+      assert.dom('.es-options .es-option:last-child').hasText(subsetModelTwo.at(-1).label);
+
+      await selectOption('.ember-select', subsetModelTwo.at(1).label);
+      assert.dom('input').hasValue(subsetModelTwo.at(1).label);
+    });
+  });
+
   module('keyboard navigation', function () {
     test('Arrows navigate options', async function (assert) {
       assert.expect(8);
