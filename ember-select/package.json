@@ -71,9 +71,7 @@
       "./components/select-dropdown-group.js": "./dist/_app_/components/select-dropdown-group.js",
       "./components/select-dropdown-option.js": "./dist/_app_/components/select-dropdown-option.js",
       "./components/select-dropdown.js": "./dist/_app_/components/select-dropdown.js",
-      "./components/x-select.js": "./dist/_app_/components/x-select.js",
-      "./utils/tree.js": "./dist/_app_/utils/tree.js",
-      "./utils/view.js": "./dist/_app_/utils/view.js"
+      "./components/x-select.js": "./dist/_app_/components/x-select.js"
     },
     "main": "addon-main.cjs",
     "type": "addon",
