@@ -19,7 +19,7 @@ export default class SelectComponent extends Component {
 
   @tracked isDirty = false;
   @tracked isFocus = false;
-  @tracked isOpen = false;
+  @tracked shouldOpen = false;
   @tracked token = '';
 
   get canClear() {
@@ -70,6 +70,10 @@ export default class SelectComponent extends Component {
     return document.getElementById(this.inputId);
   }
 
+  get isOpen() {
+    return this.hasDropdown && this.shouldOpen;
+  }
+
   get isMultiple() {
     return this.args.values !== null && this.args.values !== undefined;
   }
@@ -103,7 +107,7 @@ export default class SelectComponent extends Component {
     }
 
     this.isFocus = false;
-    this.isOpen = false;
+    this.shouldOpen = false;
 
     if (this.args.onBlur) {
       this.args.onBlur();
@@ -182,7 +186,7 @@ export default class SelectComponent extends Component {
         if (this.canSearch && this.hasInput) {
           this.clear();
         } else {
-          this.isOpen = false;
+          this.shouldOpen = false;
         }
         break;
       case 'ArrowUp':
@@ -200,9 +204,9 @@ export default class SelectComponent extends Component {
 
   @action
   onDropdown(event) {
-    this.isOpen = !this.isOpen;
+    this.shouldOpen = !this.shouldOpen;
 
-    if (this.isOpen) {
+    if (this.shouldOpen) {
       this.input?.focus();
     }
 
@@ -247,7 +251,7 @@ export default class SelectComponent extends Component {
   }
 
   open(isOpening) {
-    this.isOpen = this.hasDropdown && (this.canOpen || isOpening);
+    this.shouldOpen = this.canOpen || isOpening;
     this.isFocus = true;
   }
 
@@ -299,7 +303,7 @@ export default class SelectComponent extends Component {
 
     if (notify && this.args.onSelect) {
       this.args.onSelect(value, option, selected);
-      this.isOpen = false;
+      this.shouldOpen = false;
     }
   }
 }
