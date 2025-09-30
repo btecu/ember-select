@@ -660,6 +660,88 @@ module('Integration | Component | x-select', function (hooks) {
       await selectOption('.ember-select', subsetModelTwo.at(1).label);
       assert.dom('input').hasValue(subsetModelTwo.at(1).label);
     });
+
+    test('it updates dropdown when model is set while input is focused', async function (assert) {
+      assert.expect(8);
+
+      this.set('model', null);
+
+      await render(hbs`<XSelect @model={{this.model}} @openOnFocus={{true}} />`);
+
+      await focus('input');
+      await fillIn('input', 'Au');
+
+      assert.dom('input').hasValue('Au');
+      assert.dom('.es-options').doesNotExist();
+
+      // Set model after a delay while user has typed value and input is focused
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          this.set('model', ObjectModel);
+          resolve();
+        }, 200);
+      });
+
+      assert.dom('input').hasValue('Au', 'Input still contains user typed value after model loads');
+      assert.dom('.es-options').exists('Dropdown appears after model is set with user search active');
+      assert.dom('.es-options .es-option').exists({ count: 1 }, 'Dropdown shows filtered results based on user input');
+      assert.dom('.es-options .es-option:first-child').hasText('Audi', 'Dropdown shows correct filtered option');
+
+      await fillIn('input', 'Ci');
+
+      assert.dom('.es-options .es-option').exists({ count: 1 }, 'Dropdown continues to filter correctly');
+      assert.dom('.es-options .es-option:first-child').hasText('Citroën', 'Dropdown shows updated filtered option');
+    });
+
+    test('it updates dropdown when when used with debounced model search', async function (assert) {
+      assert.expect(9);
+
+      this.set('model', null);
+      this.set('onSelect', (value) => {
+        this.set('value', value);
+      });
+
+      await render(hbs`<XSelect @model={{this.model}} @openOnFocus={{true}} @onSelect={{this.onSelect}} />`);
+
+      assert.dom('.es-options').doesNotExist();
+
+      await focus('input');
+      await fillIn('input', 'a');
+
+      let filteredModel = ObjectModel.filter((x) => x.label.toLowerCase().includes('a'));
+
+      // Set model after a delay while user has typed value and input is focused
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          this.set('model', filteredModel);
+          resolve();
+        }, 200);
+      });
+
+      assert.dom('input').hasValue('a');
+      assert.dom('.es-options').exists('Dropdown appears after model is set with user search active');
+      assert.dom('.es-options .es-option').exists({ count: filteredModel.length }, 'Dropdown shows filtered results');
+      assert.dom('.es-options .es-option:first-child').hasText(filteredModel.at(0).label);
+
+      await fillIn('input', 'au');
+      filteredModel = ObjectModel.filter((x) => x.label.toLowerCase().includes('au'));
+
+      // Set model after a delay while user has typed value and input is focused
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          this.set('model', filteredModel);
+          resolve();
+        }, 100);
+      });
+
+      let record = filteredModel.at(0);
+      assert.dom('.es-options .es-option').exists({ count: filteredModel.length });
+      assert.dom('.es-options .es-option:first-child').hasText(record.label);
+
+      await selectOption('.ember-select', record.label);
+      assert.deepEqual(this.value, record.value);
+      assert.dom('input').hasValue(record.label);
+    });
   });
 
   module('keyboard navigation', function () {
