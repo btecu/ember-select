@@ -19,23 +19,23 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.28.4",
-    "@eslint/js": "^9.35.0",
+    "@eslint/js": "^9.36.0",
     "concurrently": "^9.2.1",
-    "eslint": "^9.35.0",
+    "eslint": "^9.36.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-ember": "^12.7.3",
+    "eslint-plugin-ember": "^12.7.4",
     "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-n": "^17.21.3",
-    "globals": "^16.3.0",
+    "eslint-plugin-n": "^17.23.1",
+    "globals": "^16.4.0",
     "prettier-plugin-ember-template-tag": "^2.1.0"
   },
   "workspaces": [
     "ember-select",
     "test-app"
   ],
-  "packageManager": "pnpm@10.15.1",
+  "packageManager": "pnpm@10.18.0",
   "volta": {
-    "node": "22.19.0",
-    "pnpm": "10.15.1"
+    "node": "22.20.0",
+    "pnpm": "10.18.0"
   }
 }
