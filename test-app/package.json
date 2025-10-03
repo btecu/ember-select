@@ -1,6 +1,6 @@
 {
   "name": "test-app",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "Select component",
   "keywords": [
     "ember-select",
