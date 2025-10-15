@@ -4,7 +4,9 @@
     {{if this.isFocus "es-focus"}}
     {{if this.isOpen "es-open"}}
     {{if this.isMultiple "es-multiple"}}
-  ">
+  "
+  ...attributes
+>
   <div class="es-control" {{on "click" this.focus}}>
     <div class="es-input">
       {{#if this.hasValues}}
