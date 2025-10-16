@@ -38,6 +38,16 @@ module('Integration | Component | x-select', function (hooks) {
     assert.dom('.es-options').doesNotExist('Dropdown is initially closed');
   });
 
+  test('it passes in class and other attributes', async function (assert) {
+    assert.expect(3);
+
+    await render(hbs`<XSelect class="test-class" data-test-id="test-id" />`);
+
+    assert.dom('.ember-select').exists('Container exists');
+    assert.dom('.ember-select').hasClass('test-class');
+    assert.dom('.ember-select').hasAttribute('data-test-id', 'test-id');
+  });
+
   test('it renders with flat array model', async function (assert) {
     assert.expect(4);
 
