@@ -1,10 +1,17 @@
-'use strict';
-
+'use strict';;
 const sideWatch = require('@embroider/broccoli-side-watch');
 const { maybeEmbroider } = require('@embroider/test-setup');
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
-module.exports = function (defaults) {
+const {
+  compatBuild
+} = require("@embroider/compat");
+
+module.exports = async function(defaults) {
+  const {
+    buildOnce
+  } = await import("@embroider/vite");
+
   const app = new EmberApp(defaults, {
     // Add options here
     autoImport: {
@@ -17,5 +24,5 @@ module.exports = function (defaults) {
     },
   });
 
-  return maybeEmbroider(app);
+  return compatBuild(app, buildOnce);
 };

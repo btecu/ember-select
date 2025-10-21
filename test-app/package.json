@@ -17,7 +17,7 @@
   },
   "repository": "https://github.com/btecu/ember-select",
   "scripts": {
-    "build": "ember build --environment=production",
+    "build": "vite build",
     "lint": "concurrently \"pnpm:lint:*(!fix)\" --names \"lint:\"",
     "lint:css": "stylelint \"**/*.css\" --allow-empty-input --cache",
     "lint:css:fix": "stylelint \"**/*.css\" --allow-empty-input --fix",
@@ -26,29 +26,35 @@
     "lint:hbs:fix": "ember-template-lint . --fix",
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
-    "start": "ember serve",
+    "start": "vite",
     "test": "ember test",
-    "test:ember-compatibility": "ember try:one"
+    "test:ember-compatibility": "ember try:one",
+    "test:ember": "vite build --mode test && ember test --path dist"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.28.4",
     "@babel/plugin-proposal-decorators": "^7.28.0",
+    "@babel/plugin-transform-runtime": "^7.26.9",
     "@ember/optional-features": "^2.2.0",
+    "@ember/string": "^4.0.0",
     "@ember/test-helpers": "^5.3.0",
     "@embroider/broccoli-side-watch": "^1.1.0",
+    "@embroider/compat": "^4.0.3",
+    "@embroider/config-meta-loader": "^1.0.0",
+    "@embroider/core": "^4.0.3",
     "@embroider/test-setup": "^4.0.0",
+    "@embroider/vite": "^1.1.1",
     "@eslint/js": "^9.36.0",
     "@glimmer/component": "^2.0.0",
     "@glimmer/tracking": "^1.1.2",
-    "broccoli-asset-rev": "^3.0.0",
+    "@rollup/plugin-babel": "^6.0.4",
+    "babel-plugin-ember-template-compilation": "^2.3.0",
     "concurrently": "^9.2.1",
+    "decorator-transforms": "^2.3.0",
     "ember-auto-import": "^2.11.0",
     "ember-cli": "^6.7.0",
     "ember-cli-babel": "^8.2.0",
-    "ember-cli-clean-css": "^3.0.0",
-    "ember-cli-dependency-checker": "^3.3.3",
     "ember-cli-htmlbars": "^6.3.0",
-    "ember-cli-terser": "^4.0.2",
     "ember-load-initializers": "^3.0.1",
     "ember-qunit": "^9.0.4",
     "ember-resolver": "^13.1.1",
@@ -65,14 +71,13 @@
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-qunit": "^8.2.5",
     "globals": "^16.4.0",
-    "loader.js": "^4.7.0",
     "prettier": "^3.6.2",
     "qunit": "^2.24.1",
     "qunit-dom": "^3.5.0",
     "stylelint": "^16.24.0",
     "stylelint-config-standard": "^39.0.0",
     "stylelint-prettier": "^5.0.3",
-    "webpack": "^5.102.0"
+    "vite": "^6.0.0"
   },
   "engines": {
     "node": ">= 20"
@@ -85,5 +90,13 @@
     "node": "22.20.0",
     "pnpm": "10.18.0"
   },
-  "private": true
+  "private": true,
+  "ember-addon": {
+    "type": "app",
+    "version": 2
+  },
+  "exports": {
+    "./tests/*": "./tests/*",
+    "./*": "./app/*"
+  }
 }
