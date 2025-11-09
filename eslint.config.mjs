@@ -92,7 +92,7 @@ const config = [
    * Node.js configuration files
    */
   {
-    files: ['**/config/**/*.js', '**/ember-cli-build.js', '**/testem.js'],
+    files: ['./config/**/*.js', './test-app/config/**/*.js', '**/ember-cli-build.js', '**/testem.js'],
     languageOptions: {
       sourceType: 'script',
       globals: {
