@@ -15,8 +15,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: "Tests"
+  lint:
+    name: "Lints"
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -32,6 +32,22 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Lint
         run: pnpm lint
+
+  test:
+    name: "Tests"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          cache: pnpm
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
       - name: Run Tests
         run: pnpm test
 
