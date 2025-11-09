@@ -27,9 +27,9 @@
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
     "start": "vite",
-    "test": "ember test",
+    "test": "pnpm test:ember",
     "test:ember-compatibility": "ember try:one",
-    "test:ember": "vite build --mode test && ember test --path dist"
+    "test:ember": "vite build --mode development && ember test --path dist"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.28.5",
@@ -59,7 +59,7 @@
     "ember-qunit": "^9.0.4",
     "ember-resolver": "^13.1.1",
     "ember-select": "workspace:*",
-    "ember-source": "^6.4.0",
+    "ember-source": "^6.8.1",
     "ember-source-channel-url": "^3.0.0",
     "ember-template-lint": "^7.9.3",
     "ember-try": "^4.0.0",
