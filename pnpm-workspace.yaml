@@ -1,3 +1,5 @@
 packages:
   - 'ember-select'
   - 'test-app'
+allowBuilds:
+  esbuild: true

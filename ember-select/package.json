@@ -32,31 +32,31 @@
     "test": "echo \"A v2 addon does not have tests, run tests in test-app\""
   },
   "dependencies": {
-    "@babel/core": "^7.29.0",
-    "@embroider/addon-shim": "^1.10.2",
-    "@glimmer/component": "^2.0.0",
+    "@babel/core": "^7.29.7",
+    "@embroider/addon-shim": "^1.10.3",
+    "@glimmer/component": "^2.1.1",
     "@glimmer/tracking": "^1.1.2",
-    "decorator-transforms": "^2.3.1"
+    "decorator-transforms": "^2.3.2"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.28.6",
-    "@babel/plugin-proposal-decorators": "^7.29.0",
-    "@babel/plugin-transform-class-properties": "^7.28.6",
-    "@babel/runtime": "^7.28.6",
+    "@babel/eslint-parser": "^7.29.7",
+    "@babel/plugin-proposal-decorators": "^7.29.7",
+    "@babel/plugin-transform-class-properties": "^7.29.7",
+    "@babel/runtime": "^7.29.7",
     "@embroider/addon-dev": "^8.3.0",
-    "@eslint/js": "^9.39.3",
+    "@eslint/js": "^9.39.4",
     "@rollup/plugin-babel": "^6.1.0",
-    "babel-plugin-ember-template-compilation": "^2.4.1",
+    "babel-plugin-ember-template-compilation": "^4.0.0",
     "concurrently": "^9.2.1",
     "ember-template-lint": "^7.9.3",
-    "eslint": "^9.39.3",
+    "eslint": "^9.39.4",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-ember": "^12.7.5",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-n": "^17.24.0",
     "globals": "^16.5.0",
-    "prettier": "^3.8.1",
-    "rollup": "^4.59.0",
+    "prettier": "^3.8.4",
+    "rollup": "^4.62.0",
     "rollup-plugin-copy": "^3.5.0",
     "stylelint": "^16.26.1"
   },
@@ -77,10 +77,10 @@
     "type": "addon",
     "version": 2
   },
-  "packageManager": "pnpm@10.30.3",
+  "packageManager": "pnpm@11.8.0",
   "volta": {
-    "node": "22.22.0",
-    "pnpm": "10.30.3"
+    "node": "24.17.0",
+    "pnpm": "11.8.0"
   },
   "exports": {
     ".": "./dist/index.js",

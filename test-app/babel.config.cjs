@@ -1,11 +1,23 @@
 const { babelCompatSupport, templateCompatSupport } = require('@embroider/compat/babel');
 
+function compilerPath() {
+  let templateCompiler = 'ember-source/dist/ember-template-compiler.js';
+
+  try {
+    require.resolve(templateCompiler);
+
+    return templateCompiler;
+  } catch {
+    // Ember >= 7 doesn't need `compilerPath`
+  }
+}
+
 module.exports = {
   plugins: [
     [
       'babel-plugin-ember-template-compilation',
       {
-        compilerPath: 'ember-source/dist/ember-template-compiler.js',
+        compilerPath: compilerPath(),
         enableLegacyModules: [
           'ember-cli-htmlbars',
           'ember-cli-htmlbars-inline-precompile',

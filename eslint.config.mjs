@@ -52,6 +52,8 @@ const config = [
       parserOptions: {
         requireConfigFile: false,
         babelOptions: {
+          configFile: false,
+          babelrc: false,
           parserOpts: {
             plugins: ['classProperties', 'decorators-legacy'],
           },
