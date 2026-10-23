@@ -1,0 +1,7 @@
+node_modules
+test-app
+tmp
+.DS_Store
+.env*
+.eslintcache
+pnpm-debug.log
