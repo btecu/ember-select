@@ -36,7 +36,8 @@
     "@embroider/addon-shim": "^1.10.3",
     "@glimmer/component": "^2.1.1",
     "@glimmer/tracking": "^1.1.2",
-    "decorator-transforms": "^2.4.0"
+    "decorator-transforms": "^2.4.0",
+    "ember-modifier": "^4.3.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.29.7",

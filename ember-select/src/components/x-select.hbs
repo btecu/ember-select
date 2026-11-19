@@ -51,18 +51,20 @@
   </div>
 
   {{#if this.isOpen}}
-    <div class="es-options">
-      <this.dropdown
-        @model={{@model}}
-        @token={{this.token}}
-        @values={{@values}}
-        @labelKey={{this.labelKey}}
-        @valueKey={{this.valueKey}}
-        @freeText={{@freeText}}
-        @shouldFilter={{this.shouldFilter}}
-        @onSelect={{this.select}}
-        @updateDropdownKeyHandler={{this.updateDropdownKeyHandler}}
-      />
-    </div>
+    {{#in-element this.dropdownDestination insertBefore=null}}
+      <div class="es-options" id={{this.dropdownId}} {{this.positionDropdown}}>
+        <this.dropdown
+          @model={{@model}}
+          @token={{this.token}}
+          @values={{@values}}
+          @labelKey={{this.labelKey}}
+          @valueKey={{this.valueKey}}
+          @freeText={{@freeText}}
+          @shouldFilter={{this.shouldFilter}}
+          @onSelect={{this.select}}
+          @updateDropdownKeyHandler={{this.updateDropdownKeyHandler}}
+        />
+      </div>
+    {{/in-element}}
   {{/if}}
 </div>

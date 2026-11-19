@@ -4,17 +4,25 @@ export function currentOption(target) {
   return getElement(target).querySelector('input').value;
 }
 
+function getDropdown(target) {
+  let { id } = getElement(target).querySelector('input');
+
+  return document.getElementById(`${id}-options`);
+}
+
 export async function selectOption(target, option) {
   let element = getElement(target);
   let inputElement = element.querySelector('input');
+  let dropdown = getDropdown(element);
 
-  if (element.querySelector('.es-options') === null) {
-    await click('.es-arrow');
+  if (dropdown === null) {
+    await click(element.querySelector('.es-arrow'));
+    dropdown = getDropdown(element);
   }
 
   await focus(inputElement);
 
-  for (let optionElement of element.querySelectorAll('.es-option')) {
+  for (let optionElement of dropdown.querySelectorAll('.es-option')) {
     if (optionElement.innerText === option) {
       optionElement.click();
       break;

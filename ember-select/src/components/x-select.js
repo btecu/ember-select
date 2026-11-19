@@ -4,6 +4,7 @@ import { guidFor } from '@ember/object/internals';
 import { tracked } from '@glimmer/tracking';
 import { next } from '@ember/runloop';
 import { isBlank, isPresent } from '@ember/utils';
+import { modifier } from 'ember-modifier';
 import SelectDropdown from './select-dropdown.js';
 import '../css/x-select.css';
 
@@ -87,6 +88,71 @@ export default class SelectComponent extends Component {
 
     return label;
   }
+
+  get dropdownId() {
+    return `${this.inputId}-options`;
+  }
+
+  get dropdownDestination() {
+    let destination = this.args.destination ?? document.body;
+
+    if (typeof destination === 'string') {
+      destination = document.querySelector(destination);
+    }
+
+    return destination instanceof Element ? destination : document.body;
+  }
+
+  positionDropdown = modifier((dropdown) => {
+    let trigger = this.input?.closest('.ember-select');
+
+    if (!trigger) {
+      return;
+    }
+
+    let update = () => {
+      let { clientHeight, clientWidth } = document.documentElement;
+      let rect = trigger.getBoundingClientRect();
+      let spaceBelow = clientHeight - rect.bottom;
+      let above = dropdown.offsetHeight > spaceBelow && rect.top > spaceBelow;
+      let left = Math.max(Math.min(rect.left, clientWidth - rect.width), 0);
+
+      Object.assign(dropdown.style, {
+        bottom: above ? `${clientHeight - rect.top}px` : '',
+        left: `${left}px`,
+        top: above ? '' : `${rect.bottom}px`,
+        width: `${rect.width}px`,
+      });
+
+      for (let element of [dropdown, trigger]) {
+        element.classList.toggle('es-above', above);
+      }
+    };
+
+    update();
+
+    let frame;
+    // Fired when the size of the control or list changes
+    let observer = new ResizeObserver(() => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(update);
+    });
+    observer.observe(trigger);
+    observer.observe(dropdown);
+
+    // Fired when the viewport changes size
+    window.addEventListener('resize', update);
+    // Fired when the scroll position changes
+    document.addEventListener('scroll', update, true);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      window.removeEventListener('resize', update);
+      document.removeEventListener('scroll', update, true);
+      trigger.classList.remove('es-above');
+    };
+  });
 
   constructor() {
     super(...arguments);
