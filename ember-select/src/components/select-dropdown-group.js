@@ -1,4 +1,3 @@
-import { get } from '@ember/object';
 import { cached } from '@glimmer/tracking';
 import { isPresent } from '@ember/utils';
 
@@ -19,17 +18,16 @@ export default class SelectDropdownGroupComponent extends SelectDropdownComponen
     return this.list;
   }
 
-  setVisibility(list, token) {
+  setVisibility(list, token, visible) {
     let filteredList = list
-      .filter((x) => isPresent(get(x, 'parentId')))
+      .filter((x) => isPresent(x.parentId))
       .filter((x) => x.name.toString().toLowerCase().includes(token));
 
     for (let element of filteredList) {
-      element.set('isVisible', true);
+      visible.add(element);
 
       // Mark parent visible
-      let parent = this.list.find((x) => x.id === get(element, 'parentId'));
-      parent.set('isVisible', true);
+      visible.add(this.list.find((x) => x.id === element.parentId));
     }
   }
 
@@ -42,7 +40,7 @@ export default class SelectDropdownGroupComponent extends SelectDropdownComponen
   }
 
   upDownKeys(selected, event) {
-    let list = this.flatList.filter((x) => x.isVisible).filter((x) => isPresent(get(x, 'parentId')));
+    let list = this.flatList.filter((x) => x.isVisible).filter((x) => isPresent(x.parentId));
     this.move(list, selected, event.key);
   }
 }
