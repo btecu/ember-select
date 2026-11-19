@@ -225,7 +225,7 @@ importers:
         version: 13.2.0
       ember-select:
         specifier: file:../ember-select
-        version: file:ember-select
+        version: link:../ember-select
       ember-source:
         specifier: ^7.1.0
         version: 7.1.0(@glimmer/component@2.1.1)
@@ -3145,10 +3145,6 @@ packages:
   ember-router-generator@2.0.0:
     resolution: {integrity: sha512-89oVHVJwmLDvGvAUWgS87KpBoRhy3aZ6U0Ql6HOmU4TrPkyaa8pM0W81wj9cIwjYprcQtN9EwzZMHnq46+oUyw==}
     engines: {node: 8.* || 10.* || >= 12}
-
-  ember-select@file:ember-select:
-    resolution: {directory: ember-select, type: directory}
-    engines: {node: '>= 20'}
 
   ember-source-channel-url@3.0.0:
     resolution: {integrity: sha512-vF/8BraOc66ZxIDo3VuNP7iiDrnXEINclJgSJmqwAAEpg84Zb1DHPI22XTXSDA+E8fW5btPUxu65c3ZXi8AQFA==}
@@ -9473,16 +9469,6 @@ snapshots:
       '@babel/parser': 7.29.7
       '@babel/traverse': 7.29.7
       recast: 0.18.10
-    transitivePeerDependencies:
-      - supports-color
-
-  ember-select@file:ember-select:
-    dependencies:
-      '@babel/core': 7.29.13
-      '@embroider/addon-shim': 1.11.0
-      '@glimmer/component': 2.1.1
-      '@glimmer/tracking': 1.1.2
-      decorator-transforms: 2.4.0(@babel/core@7.29.13)
     transitivePeerDependencies:
       - supports-color
 
