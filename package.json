@@ -8,14 +8,22 @@
   "license": "MIT",
   "author": "Bj Tecu",
   "scripts": {
-    "build": "pnpm --filter ember-select build",
-    "lint": "pnpm --filter \"*\" lint",
-    "lint:fix": "pnpm --filter \"*\" lint:fix",
-    "prepare": "pnpm build",
+    "build": "cd ember-select && rollup --config",
+    "lint": "pnpm --filter ./ember-select --filter ./test-app lint",
+    "lint:fix": "pnpm --filter ./ember-select --filter ./test-app lint:fix",
+    "prepare": "node ./prepare.mjs",
     "start": "concurrently \"pnpm:start:*\" --restart-after 5000 --prefix-colors cyan,white,yellow",
-    "start:addon": "pnpm --filter ember-select start",
+    "start:addon": "pnpm --filter ./ember-select start",
     "start:test-app": "pnpm --filter test-app start",
-    "test": "pnpm --filter \"*\" test"
+    "test": "pnpm --filter ./ember-select --filter ./test-app test"
+  },
+  "dependencies": {
+    "@babel/core": "^7.29.7",
+    "@embroider/addon-shim": "^1.10.3",
+    "@glimmer/component": "^2.1.1",
+    "@glimmer/tracking": "^1.1.2",
+    "decorator-transforms": "^2.4.0",
+    "ember-modifier": "^4.3.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.29.7",
@@ -27,12 +35,29 @@
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-n": "^18.2.2",
     "globals": "^17.8.0",
-    "prettier-plugin-ember-template-tag": "^2.1.7"
+    "prettier-plugin-ember-template-tag": "^2.1.7",
+    "rollup": "^4.62.3"
   },
   "workspaces": [
     "ember-select",
     "test-app"
   ],
+  "ember-addon": {
+    "app-js": {
+      "./components/select-dropdown-group.js": "./ember-select/dist/_app_/components/select-dropdown-group.js",
+      "./components/select-dropdown-option.js": "./ember-select/dist/_app_/components/select-dropdown-option.js",
+      "./components/select-dropdown.js": "./ember-select/dist/_app_/components/select-dropdown.js",
+      "./components/x-select.js": "./ember-select/dist/_app_/components/x-select.js"
+    },
+    "main": "./ember-select/addon-main.cjs",
+    "type": "addon",
+    "version": 2
+  },
+  "exports": {
+    ".": "./ember-select/dist/index.js",
+    "./*": "./ember-select/dist/*.js",
+    "./addon-main.js": "./ember-select/addon-main.cjs"
+  },
   "packageManager": "pnpm@11.8.0",
   "volta": {
     "node": "24.17.0",

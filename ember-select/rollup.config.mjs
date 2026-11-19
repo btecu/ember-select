@@ -1,6 +1,9 @@
 import { Addon } from '@embroider/addon-dev/rollup';
 import { babel } from '@rollup/plugin-babel';
+import path from 'node:path';
 import copy from 'rollup-plugin-copy';
+
+const srcGlobRoot = path.resolve('src').split(path.sep).join('/');
 
 const addon = new Addon({
   srcDir: 'src',
@@ -36,11 +39,10 @@ export default {
     // It exists only to provide development niceties for you, like automatic
     // template colocation.
     //
-    // By default, this will load the actual babel config from the file
-    // babel.config.json.
+    // Loads ember-select/babel.config.json. That file has to sit next to the
+    // addon so Babel can resolve plugins from this package's node_modules.
     babel({
       babelHelpers: 'bundled',
-      configFile: '../babel.config.json',
       extensions: ['.js', '.gjs'],
     }),
 
@@ -52,7 +54,9 @@ export default {
 
     // addons are allowed to contain imports of .css files, which we want rollup
     // to leave alone and keep in the published output.
-    addon.keepAssets(['**/*.css']),
+    // keepAssets matches absolute module ids, and `**` skips dot-directories such as
+    // ~/.npm, where npm builds git dependencies. The rooted pattern still matches there.
+    addon.keepAssets(['**/*.css', `${srcGlobRoot}/**/*.css`]),
 
     // Remove leftover build artifacts when starting a new build.
     addon.clean(),
@@ -64,5 +68,21 @@ export default {
         { src: '../LICENSE.md', dest: '.' },
       ],
     }),
+
+    // keepAssets emits Windows separators. esbuild treats `\x` in that import as an escape.
+    {
+      name: 'posix-asset-imports',
+      generateBundle(_options, bundle) {
+        for (const file of Object.values(bundle)) {
+          if (file.type !== 'chunk') {
+            continue;
+          }
+          file.code = file.code.replace(
+            /(import\s+(?:[^'"]+\s+from\s+)?)(["'])([^"']*\\[^"']*)\2/g,
+            (_match, lead, quote, specifier) => `${lead}${quote}${specifier.replaceAll('\\', '/')}${quote}`,
+          );
+        }
+      },
+    },
   ],
 };
