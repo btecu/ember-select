@@ -8,14 +8,14 @@
   "license": "MIT",
   "author": "Bj Tecu",
   "scripts": {
-    "build": "cd ember-select && rollup --config",
-    "lint": "pnpm --filter ./ember-select --filter ./test-app lint",
-    "lint:fix": "pnpm --filter ./ember-select --filter ./test-app lint:fix",
+    "build": "pnpm --filter ember-select build",
+    "lint": "pnpm --filter \"*\" lint",
+    "lint:fix": "pnpm --filter \"*\" lint:fix",
     "prepare": "node ./prepare.mjs",
     "start": "concurrently \"pnpm:start:*\" --restart-after 5000 --prefix-colors cyan,white,yellow",
-    "start:addon": "pnpm --filter ./ember-select start",
+    "start:addon": "pnpm --filter ember-select start",
     "start:test-app": "pnpm --filter test-app start",
-    "test": "pnpm --filter ./ember-select --filter ./test-app test"
+    "test": "pnpm --filter \"*\" test"
   },
   "dependencies": {
     "@babel/core": "^7.29.7",
