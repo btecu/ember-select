@@ -12,10 +12,6 @@
   ],
   "license": "MIT",
   "author": "Bj Tecu",
-  "directories": {
-    "doc": "doc",
-    "test": "tests"
-  },
   "repository": "https://github.com/btecu/ember-select",
   "scripts": {
     "build": "rollup --config",

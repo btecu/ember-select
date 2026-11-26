@@ -15,7 +15,9 @@
     "start": "concurrently \"pnpm:start:*\" --restart-after 5000 --prefix-colors cyan,white,yellow",
     "start:addon": "pnpm --filter ember-select start",
     "start:test-app": "pnpm --filter test-app start",
-    "test": "pnpm --filter \"*\" test"
+    "test": "pnpm --filter \"*\" test",
+    "test:ember": "pnpm --filter test-app test:ember",
+    "test:ember-compatibility": "pnpm --filter test-app test:ember-compatibility"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.29.7",
