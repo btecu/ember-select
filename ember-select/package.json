@@ -33,8 +33,8 @@
   },
   "dependencies": {
     "@babel/core": "^7.29.7",
-    "@embroider/addon-shim": "^1.10.3",
-    "@glimmer/component": "^2.1.1",
+    "@embroider/addon-shim": "^1.11.0",
+    "@glimmer/component": "^2.2.1",
     "@glimmer/tracking": "^1.1.2",
     "decorator-transforms": "^2.4.0"
   },
@@ -43,27 +43,27 @@
     "@babel/plugin-proposal-decorators": "^7.29.7",
     "@babel/plugin-transform-class-properties": "^7.29.7",
     "@babel/runtime": "^7.29.7",
-    "@embroider/addon-dev": "^8.3.1",
+    "@embroider/addon-dev": "^8.5.2",
     "@eslint/js": "^9.39.5",
     "@rollup/plugin-babel": "^7.1.0",
-    "babel-plugin-ember-template-compilation": "^4.0.0",
-    "concurrently": "^10.0.4",
-    "ember-template-lint": "^7.9.3",
+    "babel-plugin-ember-template-compilation": "^4.0.2",
+    "concurrently": "^10.0.7",
+    "ember-template-lint": "^7.9.4",
     "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-ember": "^13.4.1",
+    "eslint-plugin-ember": "^13.11.6",
     "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-n": "^18.2.2",
-    "globals": "^17.8.0",
-    "prettier": "^3.9.6",
-    "rollup": "^4.62.3",
+    "eslint-plugin-n": "^18.6.0",
+    "globals": "^17.14.0",
+    "prettier": "^3.10.1",
+    "rollup": "^4.68.8",
     "rollup-plugin-copy": "^3.5.0",
-    "stylelint": "^17.14.1",
-    "stylelint-config-standard": "^40.0.0",
-    "stylelint-prettier": "^5.0.3"
+    "stylelint": "^18.1.0",
+    "stylelint-config-standard": "^41.1.0",
+    "stylelint-prettier": "^5.1.0"
   },
   "engines": {
-    "node": ">= 20"
+    "node": ">= 22"
   },
   "ember": {
     "edition": "octane"
@@ -79,11 +79,7 @@
     "type": "addon",
     "version": 2
   },
-  "packageManager": "pnpm@11.8.0",
-  "volta": {
-    "node": "24.17.0",
-    "pnpm": "11.8.0"
-  },
+  "packageManager": "pnpm@12.23.0",
   "exports": {
     ".": "./dist/index.js",
     "./*": "./dist/*.js",
