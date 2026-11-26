@@ -1,18 +1,28 @@
 import { A } from '@ember/array';
 import { get } from '@ember/object';
-import ObjectProxy from '@ember/object/proxy';
 import { isPresent, isEmpty } from '@ember/utils';
+import { tracked } from '@glimmer/tracking';
 
-// Builds a list of proxies from a model of values
+// Wrapper class to hold internal visibility state
+export class TreeNode {
+  @tracked isSelected = false;
+  @tracked isVisible = true;
+  @tracked isExpanded;
+
+  children = A();
+
+  constructor({ content, id, name, parentId, isExpanded }) {
+    this.content = content;
+    this.id = id;
+    this.name = name;
+    this.parentId = parentId;
+    this.isExpanded = isExpanded;
+  }
+}
+
+// Builds a list of nodes from a model of values
 export function buildFlatList(model) {
-  let list = model.map((node) =>
-    ObjectProxy.create({
-      id: node,
-      name: node,
-      isSelected: false,
-      isVisible: true,
-    }),
-  );
+  let list = model.map((node) => new TreeNode({ id: node, name: node }));
 
   return A(list);
 }
@@ -40,36 +50,19 @@ export function buildTree(model, options) {
 
   // Add all nodes to tree
   model.forEach((node) => {
-    let child = {
-      content: node,
-      children: A(),
-      isSelected: false,
-      isVisible: true,
-    };
+    let id = get(node, options.valueKey || 'id');
+    let name = get(node, options.labelKey || 'name');
+    let parentId = get(node, 'parentId');
+    let isExpanded = isPresent(options.isExpanded) ? options.isExpanded : undefined;
 
-    // Alternative name for `id`
-    if (options.valueKey) {
-      child.id = get(node, options.valueKey);
-    }
-
-    // Alternative name for `name`
-    if (options.labelKey) {
-      child.name = get(node, options.labelKey);
-    }
-
-    // Decide if node is expanded
-    if (isPresent(options.isExpanded)) {
-      child.isExpanded = options.isExpanded;
-    }
-
-    // Proxy options to keep model intact
-    tree[get(child, 'id')] = ObjectProxy.create(child);
+    tree[id] = new TreeNode({ content: node, id, name, parentId, isExpanded });
   });
 
   // Connect all children to their parent
   model.forEach((node) => {
-    let child = tree[get(node, options.valueKey || 'id')];
-    let parent = get(node, 'parentId');
+    let id = get(node, options.valueKey || 'id');
+    let child = tree[id];
+    let parent = child.parentId;
 
     if (isEmpty(parent)) {
       roots.push(child);

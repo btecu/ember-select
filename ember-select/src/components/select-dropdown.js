@@ -39,11 +39,11 @@ export default class SelectDropdownComponent extends Component {
   @action
   hover(node) {
     if (this.selected?.isSelected === true) {
-      this.selected.set('isSelected', false);
+      this.selected.isSelected = false;
     }
 
     this.selected = node;
-    node.set('isSelected', true);
+    node.isSelected = true;
   }
 
   // Prevent event bubbling up
@@ -64,38 +64,32 @@ export default class SelectDropdownComponent extends Component {
   filterModel(list) {
     let token = this.args.token;
 
-    // Reset all selection and visibility states
-    for (let element of list) {
-      if (element.isSelected) {
-        element.set('isSelected', false);
-      }
-
-      if (element.isVisible) {
-        element.set('isVisible', false);
-      }
-    }
+    let all = list;
+    let visible = new Set();
 
     if (this.args.values?.length > 0) {
       list = list.filter((x) => !this.args.values.includes(x.content));
     }
 
     if (isEmpty(token)) {
-      for (let element of list.filter((x) => !x.isVisible)) {
-        element.set('isVisible', true);
-      }
+      list.forEach((x) => visible.add(x));
     } else {
       token = typeof token === 'string' ? token.toLowerCase() : token;
-      this.setVisibility(list, token);
+      this.setVisibility(list, token, visible);
     }
 
     // Mark first visible element as selected
-    if (!this.args.freeText && isPresent(token) && list.some((x) => x.isVisible)) {
-      let [firstVisible] = list.filter((x) => x.isVisible);
-      firstVisible.set('isSelected', true);
-      this.selected = firstVisible;
-    } else {
-      this.selected = null;
+    let firstVisible = null;
+    if (!this.args.freeText && isPresent(token)) {
+      firstVisible = list.find((x) => visible.has(x)) ?? null;
     }
+
+    for (let element of all) {
+      element.isVisible = visible.has(element);
+      element.isSelected = element === firstVisible;
+    }
+
+    this.selected = firstVisible;
   }
 
   keys(event) {
@@ -114,7 +108,7 @@ export default class SelectDropdownComponent extends Component {
 
   move(list, selected, direction) {
     if (isPresent(selected)) {
-      selected.set('isSelected', false);
+      selected.isSelected = false;
     }
 
     if (isEmpty(list)) {
@@ -143,14 +137,14 @@ export default class SelectDropdownComponent extends Component {
     }
 
     this.selected = node;
-    node.set('isSelected', true);
+    node.isSelected = true;
 
     next(this, bringInView, '.es-options', '.es-highlight');
   }
 
-  setVisibility(list, token) {
+  setVisibility(list, token, visible) {
     for (let element of list.filter((x) => x.name.toString().toLowerCase().includes(token))) {
-      element.set('isVisible', true);
+      visible.add(element);
     }
   }
 
