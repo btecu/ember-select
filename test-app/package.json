@@ -28,7 +28,7 @@
     "lint:js:fix": "eslint . --fix",
     "start": "vite",
     "test": "pnpm test:ember",
-    "test:ember-compatibility": "ember try:one",
+    "test:ember-compatibility": "ember try:each",
     "test:ember": "vite build --mode development && ember test --path dist"
   },
   "devDependencies": {
@@ -42,7 +42,6 @@
     "@embroider/compat": "^4.1.29",
     "@embroider/config-meta-loader": "^1.0.1",
     "@embroider/core": "^4.6.10",
-    "@embroider/test-setup": "^4.0.0",
     "@embroider/vite": "^1.8.2",
     "@eslint/js": "^9.39.5",
     "@glimmer/component": "^2.2.1",
