@@ -333,9 +333,6 @@ importers:
       '@embroider/core':
         specifier: ^4.6.10
         version: 4.6.10(supports-color@10.2.2)
-      '@embroider/test-setup':
-        specifier: ^4.0.0
-        version: 4.0.0(@embroider/compat@4.1.29(@embroider/core@4.6.10(supports-color@10.2.2))(supports-color@10.2.2))(@embroider/core@4.6.10(supports-color@10.2.2))
       '@embroider/vite':
         specifier: ^1.8.2
         version: 1.8.2(@babel/core@7.29.7(supports-color@10.2.2))(@embroider/core@4.6.10(supports-color@10.2.2))(supports-color@10.2.2)(vite@8.3.8(@types/node@26.1.2)(esbuild@0.28.1)(terser@5.49.0)(yaml@2.9.0))
@@ -1156,21 +1153,6 @@ packages:
   '@embroider/shared-internals@3.2.1':
     resolution: {integrity: sha512-ZHTVF1Md6HiPPdpi5ESU5JlG2m4HRXIVebCka6BoMIfzyPlSjgYmpflv6Cmiq9UUyhe+/3LTMdx53vAV7O9g2Q==}
     engines: {node: 12.* || 14.* || >= 16}
-
-  '@embroider/test-setup@4.0.0':
-    resolution: {integrity: sha512-1S3Ebk0CEh3XDqD93AWSwQZBCk+oGv03gtkaGgdgyXGIR7jrVyDgEnEuslN/hJ0cuU8TqhiXrzHMw7bJwIGhWw==}
-    engines: {node: 12.* || 14.* || >= 16}
-    peerDependencies:
-      '@embroider/compat': ^3.4.8
-      '@embroider/core': ^3.4.8
-      '@embroider/webpack': ^4.0.0
-    peerDependenciesMeta:
-      '@embroider/compat':
-        optional: true
-      '@embroider/core':
-        optional: true
-      '@embroider/webpack':
-        optional: true
 
   '@embroider/vite@1.8.2':
     resolution: {integrity: sha512-r4lNREgEx++WO+Yn708pQC/wO3ZkUHb23z8KFxGx2N5KTrJtLiisR9wVSY5cl30Sg7NuWX/VPhvopQm2A5STzg==}
@@ -7253,14 +7235,6 @@ snapshots:
       typescript-memoize: 1.1.1
     transitivePeerDependencies:
       - supports-color
-
-  '@embroider/test-setup@4.0.0(@embroider/compat@4.1.29(@embroider/core@4.6.10(supports-color@10.2.2))(supports-color@10.2.2))(@embroider/core@4.6.10(supports-color@10.2.2))':
-    dependencies:
-      lodash: 4.18.1
-      resolve: 1.22.12
-    optionalDependencies:
-      '@embroider/compat': 4.1.29(@embroider/core@4.6.10(supports-color@10.2.2))(supports-color@10.2.2)
-      '@embroider/core': 4.6.10(supports-color@10.2.2)
 
   '@embroider/vite@1.8.2(@babel/core@7.29.7(supports-color@10.2.2))(@embroider/core@4.6.10(supports-color@10.2.2))(supports-color@10.2.2)(vite@8.3.8(@types/node@26.1.2)(esbuild@0.28.1)(terser@5.49.0)(yaml@2.9.0))':
     dependencies:
