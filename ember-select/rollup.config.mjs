@@ -40,7 +40,6 @@ export default {
     // babel.config.json.
     babel({
       babelHelpers: 'bundled',
-      configFile: '../babel.config.json',
       extensions: ['.js', '.gjs'],
     }),
 
